@@ -4,82 +4,95 @@ namespace App\Http\Controllers;
 
 use App\Models\Locality;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LocalityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-    }
+        try {
+            $localities = Locality::all();
+            return response()->json([
+              'status' => true,
+                'data' => $localities
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+             'status' => false,
+             'message' => "Error occurred while found elements"
+            ],500);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'loc_name' => 'required|string|min:1|max:50'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if($validator->fails()){
+            return response()->json([
+              'status' => false,
+              'message' => $validator->errors()->all()
+            ],400);
+        }else{
+            $localities = new Locality($request->input());
+            $localities->save();
+            return response()->json([
+            'status' => true,
+               'data' => "Localities saved successfully"
+            ],200);
+        };
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Locality  $locality
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Locality $locality)
+    public function show($id)
     {
-        //
+        $localities = Locality::find($id);
+        if($localities == null){
+            return response()->json([
+              'status' => false,
+                'data' => ['message' => 'No se encuentra la localidad buscada']
+                ],400);
+            }else{
+                return response()->json([
+                'status' => true,
+                   'data' => $localities
+                ],200);
+            }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Locality  $locality
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Locality $locality)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $locality = Locality::find($id);
+        if ($locality == null) {
+             return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra la localidad solicitada']
+             ],400);
+        }else{
+            $rules = [
+                'loc_name' =>'required|string|min:1|max:50'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if($validator->fails()){
+                return response()->json([
+                 'status' => false,
+                 'message' => $validator->errors()->all()
+                ],400);
+            }else{
+                $locality->loc_name = $request->loc_name;
+                $locality->save();
+                return response()->json([
+               'status' => true,
+                   'data' => "Localidad actualizada con exito"
+                ],200);
+            };  
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Locality  $locality
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Locality $locality)
-    {
-        //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Locality  $locality
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Locality $locality)
     {
-        //
+        return response()->json([
+            'status' => false,
+            'message' => "Funcion no disponible"
+        ],400);
     }
 }

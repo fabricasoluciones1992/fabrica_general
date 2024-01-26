@@ -9,10 +9,10 @@ class Locality extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'loc_id';
 
     protected $fillable = [
-        'eps_name',
+        'loc_name',
     ];
 
     public $timestamps = false;
