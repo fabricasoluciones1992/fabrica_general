@@ -9,10 +9,11 @@ class Position extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'pos_id';
 
     protected $fillable = [
-        'eps_name',
+        'pos_name',
+        'are_id',
     ];
 
     public $timestamps = false;
