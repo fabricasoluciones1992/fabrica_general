@@ -9,10 +9,13 @@ class News extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'new_id';
 
     protected $fillable = [
-        'eps_name',
+        'new_date',
+        'new_type_id',
+        'proj_id',
+        'use_id',
     ];
 
     public $timestamps = false;
