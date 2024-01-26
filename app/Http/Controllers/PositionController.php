@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 
 class PositionController extends Controller
 {
+     
     public function index()
     {
-        $positions = Position::all();
+        $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
         return response()->json([
             'status' => true,
             'data' => $positions
@@ -40,7 +42,7 @@ class PositionController extends Controller
     }
     public function show($id)
     {
-        $position = Position::find($id);
+        $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id WHERE $id = positions.pos_id ;");
         if ($position == null) {
             return response()->json([
                'status' => false,
