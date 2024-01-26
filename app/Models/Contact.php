@@ -9,10 +9,13 @@ class Contact extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'con_id';
 
     protected $fillable = [
-        'eps_name',
+        'con_name',
+        'con_relationship',
+        'con_mail',
+        'con_telephone',
     ];
 
     public $timestamps = false;

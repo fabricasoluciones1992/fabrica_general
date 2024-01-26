@@ -9,10 +9,10 @@ class Area extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'are_id';
 
     protected $fillable = [
-        'eps_name',
+        'are_name',
     ];
 
     public $timestamps = false;

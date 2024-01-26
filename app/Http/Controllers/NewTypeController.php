@@ -4,82 +4,90 @@ namespace App\Http\Controllers;
 
 use App\Models\NewType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NewTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $newTypes = NewType::all();
+        return response()->json([
+            'status' => true,
+            'data' => $newTypes
+        ],200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'new_typ_type' => 'required|string|min:1|max:50'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        }else{
+            $newType = new NewType($request->input());
+            $newType->save();
+            return response()->json([
+                'status' => True,
+                'message' => "el tipo de novedad ".$newType->new_typ_type." ha sido creado exitosamente."
+            ],200);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\NewType  $newType
-     * @return \Illuminate\Http\Response
-     */
-    public function show(NewType $newType)
+    public function show($id)
     {
-        //
+        $newType = NewType::find($id);
+        if ($newType == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el tipo de novedad solicitada']
+            ],400);
+        }else{
+            return response()->json([
+                'status' => true,
+                'data' => $newType
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\NewType  $newType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(NewType $newType)
+    public function update(Request $request, $id)
     {
-        //
+        $newType = NewType::find($id);
+        if ($newType == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el tipo de novedad solicitada']
+            ],400);
+        }else{
+            $rules = [
+                'new_typ_type' => 'required|string|min:1|max:50'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            }else{
+                $newType->new_typ_type = $request->new_typ_type;
+                $newType->save();
+                return response()->json([
+                    'status' => True,
+                    'message' => "el tipo de novedad ".$newType->new_typ_type." ha sido actualizado exitosamente."
+                ],200);
+            }
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\NewType  $newType
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, NewType $newType)
+    public function destroy(newType $newTypes)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\NewType  $newType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(NewType $newType)
-    {
-        //
+        return response()->json([
+            'status' => false,
+            'message' => "Funcion no disponible"
+        ],400);
     }
 }

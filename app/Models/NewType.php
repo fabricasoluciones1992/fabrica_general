@@ -9,10 +9,10 @@ class NewType extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'new_typ_id';
 
     protected $fillable = [
-        'eps_name',
+        'new_typ_type',
     ];
 
     public $timestamps = false;

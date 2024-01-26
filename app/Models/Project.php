@@ -9,10 +9,11 @@ class Project extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'proj_id';
 
     protected $fillable = [
-        'eps_name',
+        'proj_name',
+        'are_id',
     ];
 
     public $timestamps = false;
