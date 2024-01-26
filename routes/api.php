@@ -1,7 +1,15 @@
 <?php
 
+use App\Http\Controllers\AccessController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EpsController;
-use App\Http\Controllers\GendersController;
+use App\Http\Controllers\GenderController;
+use App\Http\Controllers\LocalityController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewTypeController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('eps', EpsController::class)->names('eps');
-Route::resource('genders', GendersController::class)->names('genders');
+Route::apiResource('access', AccessController::class)->names('access');
+Route::apiResource('areas', AreaController::class)->names('areas');
+Route::apiResource('contacts', ContactController::class)->names('contacts');
+Route::apiResource('eps', EpsController::class)->names('eps');
+Route::apiResource('genders', GenderController::class)->names('genders');
+Route::apiResource('localities', LocalityController::class)->names('localities');
+Route::apiResource('news', NewsController::class)->names('news');
+Route::apiResource('new_types', NewTypeController::class)->names('new_types');
+Route::apiResource('persons', PersonController::class)->names('persons');
+Route::apiResource('projects', ProjectController::class)->names('projects');

@@ -6,7 +6,7 @@ use App\Models\Genders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class GendersController extends Controller
+class GenderController extends Controller
 {
     public function index()
     {
@@ -15,14 +15,6 @@ class GendersController extends Controller
             'status' => true,
             'data' => $genders
         ],200);
-    }
-
-    public function create()
-    {
-        return response()->json([
-            'status' => true,
-            'message' => "Funcion no disponible"
-        ],400);
     }
 
     public function store(Request $request)
@@ -62,14 +54,6 @@ class GendersController extends Controller
         }
     }
 
-    public function edit()
-    {
-        return response()->json([
-            'status' => true,
-            'message' => "Funcion no disponible"
-        ],400);
-    }
-
     public function update(Request $request, $id)
     {
         $gender = Genders::find($id);
@@ -102,7 +86,7 @@ class GendersController extends Controller
     public function destroy(Genders $genders)
     {
         return response()->json([
-            'status' => true,
+            'status' => false,
             'message' => "Funcion no disponible"
         ],400);
     }
