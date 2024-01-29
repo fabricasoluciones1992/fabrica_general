@@ -2,16 +2,19 @@
 
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DocTypesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\LocalityController;
+use App\Http\Controllers\MulticulturalismsController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewTypeController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProjectController;
+use App\Models\multiculturalisms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,3 +44,6 @@ Route::apiResource('new_types', NewTypeController::class)->names('new_types');
 Route::apiResource('persons', PersonController::class)->names('persons');
 Route::apiResource('projects', ProjectController::class)->names('projects');
 Route::apiResource('positions', PositionController::class)->names('positions');
+Route::apiResource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
+Route::apiResource('civilstates', CivilStatesController::class)->names('civilstates');
+

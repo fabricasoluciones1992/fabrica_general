@@ -50,7 +50,6 @@ class NewTypeController extends Controller
         }else{
             return response()->json([
                 'status' => true,
-
                 'data' => $newType
             ]);
         }
