@@ -4,82 +4,94 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $projects =DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
+        return response()->json([
+            'status' => true,
+            'data' => $projects
+        ],200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'proj_name' => 'required|string|min:1|max:50',
+            'are_id' => 'required|numeric'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        }else{
+            $project = new project($request->input());
+            $project->save();
+            return response()->json([
+                'status' => True,
+                'message' => "El proyecto ".$project->proj_name." ha sido creado exitosamente."
+            ],200);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project)
+    public function show($id)
     {
-        //
+        $project = DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_idWHERE projects.proj_id = $id;");
+        if ($project == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el proyecto solicitada']
+            ],400);
+        }else{
+            return response()->json([
+                'status' => true,
+                'data' => $project
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($id);
+        if ($project == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el proyecto solicitada']
+            ],400);
+        }else{
+            $rules = [
+                'proj_name' => 'required|string|min:1|max:50',
+                'are_id' => 'required|numeric'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            }else{
+                $project->proj_name = $request->proj_name;
+                $project->are_id = $request->are_id;
+                $project->save();
+                return response()->json([
+                    'status' => True,
+                    'message' => "El proyecto ".$project->proj_name." ha sido actualizado exitosamente."
+                ],200);
+            }
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Project $project)
+    public function destroy(project $projects)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
+        return response()->json([
+            'status' => false,
+            'message' => "Funcion no disponible"
+        ],400);
     }
 }

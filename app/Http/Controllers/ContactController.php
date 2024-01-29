@@ -4,82 +4,96 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $contacts = Contact::all();
+        return response()->json([
+            'status' => true,
+            'data' => $contacts
+        ],200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'con_name' => 'required|string|min:1|max:250',
+            'con_relationship' => 'required|string|min:1|max:50',
+            'con_mail' => 'required|string|email|min:1|max:250',
+            'con_telephone' => 'required|numeric|min:10000|max:999999999999999'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+            ]);
+        }else{
+            $contact = new Contact($request->input());
+            $contact->save();
+            return response()->json([
+                'status' => True,
+                'message' => "El contacto ".$contact->con_name." ha sido creado exitosamente."
+            ],200);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact)
+    public function show($id)
     {
-        //
+        $contact = Contact::find($id);
+        if ($contact == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el contacto solicitado']
+            ],400);
+        }else{
+            return response()->json([
+                'status' => true,
+                'data' => $contact
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact)
+    public function update(Request $request, $id)
     {
-        //
+        $contact = Contact::find($id);
+        if ($contact == null) {
+            return response()->json([
+                'status' => false,
+                'data' => ['message' => 'no se encuentra el contacto solicitado']
+            ],400);
+        }else{
+            $rules = [
+                'con_name' => 'required|string|min:1|max:250',
+                'con_relationship' => 'required|string|min:1|max:50',
+                'con_mail' => 'required|string|email|min:1|max:250',
+                'con_telephone' => 'required|numeric|min:10000|max:999999999999999'
+            ];
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            }else{
+                $contact->con_name = $request->con_name;
+                $contact->save();
+                return response()->json([
+                    'status' => True,
+                    'message' => "El contacto ".$contact->con_name." ha sido actualizado exitosamente."
+                ],200);
+            }
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Contact $contact)
+    public function destroy(contact $contacts)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contact $contact)
-    {
-        //
+        return response()->json([
+            'status' => false,
+            'message' => "Funcion no disponible"
+        ],400);
     }
 }
