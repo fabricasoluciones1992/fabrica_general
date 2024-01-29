@@ -29,6 +29,7 @@ class GenderController extends Controller
                 'message' => $validator->errors()->all()
             ]);
         }else{
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,6,1);
             $gender = new Genders($request->input());
             $gender->save();
             return response()->json([
