@@ -12,10 +12,11 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = DB::select("SELECT news.new_id, news.new_date, new_types.new_typ_type, projects.proj_name, users.use_mail FROM news
+        $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
         INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
         INNER JOIN projects ON news.proj_id = projects.proj_id
-        INNER JOIN users ON news.use_id = users.use_id;
+        INNER JOIN users ON news.use_id = users.use_id
+        INNER JOIN persons ON users.use_id = persons.use_id;
         ");
         return response()->json([
            'status' => true,
@@ -49,10 +50,11 @@ class NewsController extends Controller
     }
     public function show($id)
     {
-        $new =  DB::select("SELECT news.new_id, news.new_date, new_types.new_typ_type, projects.proj_name, users.use_mail FROM news
+        $new =  DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
         INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
         INNER JOIN projects ON news.proj_id = projects.proj_id
-        INNER JOIN users ON news.use_id = users.use_id WHERE $id = news.new_id;
+        INNER JOIN users ON news.use_id = users.use_id
+        INNER JOIN persons ON users.use_id = persons.use_id WHERE $id = news.new_id;
         ");
         if ($new == null) {
             return response()->json([
