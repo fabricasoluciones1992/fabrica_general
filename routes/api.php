@@ -14,7 +14,9 @@ use App\Http\Controllers\NewTypeController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RelationshipsController;
 use App\Models\multiculturalisms;
+use App\Models\relationships;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +48,6 @@ Route::apiResource('projects', ProjectController::class)->names('projects');
 Route::apiResource('positions', PositionController::class)->names('positions');
 Route::apiResource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
 Route::apiResource('civilstates', CivilStatesController::class)->names('civilstates');
+Route::apiResource('relationships', RelationshipsController::class)->names('relationships');
+
 
