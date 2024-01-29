@@ -11,10 +11,13 @@ class Access extends Model
 
 
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'eps_id';
+    protected $primaryKey = 'acc_id';
+    protected $table = 'access';
 
     protected $fillable = [
-        'eps_name',
+        'acc_status',
+        'proj_id',
+        'are_id'
     ];
 
     public $timestamps = false;
