@@ -5,10 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\DocTypesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\LocalityController;
+use App\Http\Controllers\MailsController;
 use App\Http\Controllers\MulticulturalismsController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewTypeController;
@@ -16,6 +18,7 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RelationshipsController;
+use App\Http\Controllers\TelephonesController;
 use App\Models\multiculturalisms;
 use App\Models\relationships;
 use Illuminate\Http\Request;
@@ -51,6 +54,10 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
     Route::resource('civilstates', CivilStatesController::class)->names('civilstates');
     Route::resource('relationships', RelationshipsController::class)->names('relationships');
+    Route::resource('disaeses', DiseasesController::class)->names('disaeses');
+    Route::resource('mails', MailsController::class)->names('mails');
+    Route::resource('telephones', TelephonesController::class)->names('telephones');
+
 });
 
 
