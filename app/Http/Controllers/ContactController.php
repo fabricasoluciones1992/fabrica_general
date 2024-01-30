@@ -10,11 +10,20 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = Contact::all();
-        return response()->json([
-            'status' => true,
-            'data' => $contacts
-        ],200);
+        try {
+            $contacts = Contact::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla contact",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $contacts
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => $th
+            ],500);
+        }
+
     }
 
     public function store(Request $request)
@@ -34,6 +43,7 @@ class ContactController extends Controller
         }else{
             $contact = new Contact($request->input());
             $contact->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "El contacto ".$contact->con_name." ha sido creado exitosamente."
@@ -50,6 +60,7 @@ class ContactController extends Controller
                 'data' => ['message' => 'no se encuentra el contacto solicitado']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Contact por dato especifico: $id",4,6,1);
             return response()->json([
                 'status' => true,
                 'data' => $contact
@@ -81,6 +92,7 @@ class ContactController extends Controller
             }else{
                 $contact->con_name = $request->con_name;
                 $contact->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,6,1);
                 return response()->json([
                     'status' => True,
                     'message' => "El contacto ".$contact->con_name." ha sido actualizado exitosamente."

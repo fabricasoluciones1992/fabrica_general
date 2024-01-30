@@ -10,11 +10,20 @@ class GenderController extends Controller
 {
     public function index()
     {
-        $genders = Genders::all();
-        return response()->json([
-            'status' => true,
-            'data' => $genders
-        ],200);
+        try {
+            $genders = Genders::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $genders
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+             'status' => false,
+             'message' => $th
+            ],500);
+        }
+
     }
 
     public function store(Request $request)
@@ -29,9 +38,9 @@ class GenderController extends Controller
                 'message' => $validator->errors()->all()
             ]);
         }else{
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,6,1);
             $gender = new Genders($request->input());
             $gender->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "El genero ".$gender->gen_name." ha sido creado exitosamente."
@@ -48,6 +57,7 @@ class GenderController extends Controller
                 'data' => ['message' => 'no se encuentra el genero solicitado']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders por usuario especifico",4,6,1);
             return response()->json([
                 'status' => true,
                 'data' => $gender
@@ -58,6 +68,7 @@ class GenderController extends Controller
     public function update(Request $request, $id)
     {
         $gender = Genders::find($id);
+        $msg = $gender->gen_name;
         if ($gender == null) {
             return response()->json([
                 'status' => false,
@@ -76,6 +87,7 @@ class GenderController extends Controller
             }else{
                 $gender->gen_name = $request->gen_name;
                 $gender->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$msg. con el dato: $request->gen_name",1,6,1);
                 return response()->json([
                     'status' => True,
                     'message' => "El genero ".$gender->gen_name." ha sido actualizado exitosamente."

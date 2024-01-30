@@ -12,11 +12,19 @@ class CivilStatesController extends Controller
 {
     public function index()
     {
-        $civilStates = civilStates::all();
-        return response()->json([
-          'status' => true,
-            'data' => $civilStates
-        ],200);
+        try {
+            $civilStates = civilStates::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla CivilStates",4,6,1);
+            return response()->json([
+              'status' => true,
+                'data' => $civilStates
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th
+            ]);
+        }
     }
     public function store(Request $request)
     {
@@ -34,6 +42,7 @@ class CivilStatesController extends Controller
         }else{
             $civilStates = new civilStates($request->input());
             $civilStates->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,6,1);
             return response()->json([
           'status' => True,
           'message' => "El estado civil ".$civilStates->civ_sta_name." ha sido creado exitosamente."
@@ -49,6 +58,7 @@ class CivilStatesController extends Controller
                 'data' => ['message' => 'no se encuentra el estado civil solicitada']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla civilStates por dato especifico: $id",4,6,1);
             return response()->json([
               'status' => true,
                 'data' => $civilState
@@ -58,6 +68,7 @@ class CivilStatesController extends Controller
     public function update(Request $request,$id)
     {
         $civilState = civilStates::find($id);
+        $msg = $civilState->civ_sta_name;
         if($civilState == null) {
         return response()->json([
               'status' => false,
@@ -77,6 +88,7 @@ class CivilStatesController extends Controller
             }else{
                 $civilState->civ_sta_name = $request->civ_sta_name;
                 $civilState->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6,1);
                 return response()->json([
                'status' => True,
                'message' => "El estado civil ".$civilState->civ_sta_name." ha sido actualizado exitosamente."

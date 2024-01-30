@@ -12,11 +12,20 @@ class RelationshipsController extends Controller
 {
     public function index()
     {
-        $relationships = relationships::all();
-        return response()->json([
-            'status' => true,
-            'data' => $relationships
-        ],200);
+        try {
+            $relationships = relationships::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $relationships
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([ 
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
+
     }
     public function store(Request $request)
     {
@@ -32,6 +41,7 @@ class RelationshipsController extends Controller
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,6,1);
             return response()->json([
              'status' => True,
              'message' => "La relación ".$relationship->rel_name." ha sido creada exitosamente."
@@ -47,6 +57,7 @@ class RelationshipsController extends Controller
                 'data' => ['message' => 'no se encuentra la relación solicitada']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,6,1);
             return response()->json([
                 'status' => true,
                 'data' => $relationship
@@ -74,6 +85,7 @@ class RelationshipsController extends Controller
             }else{
                 $relationship->rel_name = $request->rel_name;
                 $relationship->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,6,1);
                 return response()->json([
                   'status' => True,
                   'message' => "La relación ".$relationship->rel_name." ha sido actualizada exitosamente."

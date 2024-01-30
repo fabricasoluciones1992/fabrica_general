@@ -12,21 +12,29 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
-        INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
-        INNER JOIN projects ON news.proj_id = projects.proj_id
-        INNER JOIN users ON news.use_id = users.use_id
-        INNER JOIN persons ON users.use_id = persons.use_id;
-        ");
-        return response()->json([
-           'status' => true,
-            'data' => $news
-        ],200);
+        try {
+            $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
+            INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
+            INNER JOIN projects ON news.proj_id = projects.proj_id
+            INNER JOIN users ON news.use_id = users.use_id
+            INNER JOIN persons ON users.use_id = persons.use_id;
+            ");
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,6,1);
+            return response()->json([
+               'status' => true,
+                'data' => $news
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
+
     }
 
     public function store(Request $request)
     {
-        // return $request;
         $rules = [
             'new_date' =>'required|date',
             'new_typ_id' =>'required|integer',
@@ -42,6 +50,7 @@ class NewsController extends Controller
         }else{
             $news = new News($request->input());
             $news->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla News : $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id ",3,6,1);
             return response()->json([
              'status' => True,
              'message' => "The news: ".$news->new_date." success has been created."
@@ -62,6 +71,7 @@ class NewsController extends Controller
                 "data" => ['message' => 'The searched novelty was not found']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News por dato especifico: $id",4,6,1);
             return response()->json([
                'status' => true,
                 'data' => $new
@@ -95,9 +105,10 @@ class NewsController extends Controller
                 $new->proj_id = $request->proj_id;
                 $new->use_id = $request->use_id;
                 $new->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla news del dato: $id con el dato: $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id",1,6,1);
                 return response()->json([
                   'status' => True,
-                  'message' => "The news: ".$new->new_date." has been updated."
+                  'message' => "The news $id has been updated."
                 ],200);
             }
         }

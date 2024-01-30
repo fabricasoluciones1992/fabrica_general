@@ -11,11 +11,19 @@ class MulticulturalismsController extends Controller
 {
     public function index()
     {
-        $multiculturalism = multiculturalisms::all();
-        return response()->json([
-          'status' => true,
-            'data' => $multiculturalism
-        ],200);
+        try {
+            $multiculturalism = multiculturalisms::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism",4,6,1);
+            return response()->json([
+              'status' => true,
+                'data' => $multiculturalism
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => "Error occurred while found elements"
+            ],500);
+        }
     }
     public function store(Request $request)
     {
@@ -33,6 +41,7 @@ class MulticulturalismsController extends Controller
         }else{
             $multiculturalism = new multiculturalisms($request->input());
             $multiculturalism->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,6,1);
             return response()->json([
          'status' => True,
          'message' => "El tipo de cultura ".$multiculturalism->mul_name." ha sido creado exitosamente."
@@ -48,6 +57,7 @@ class MulticulturalismsController extends Controller
                 "data" => ['message' => 'The searched culturalism was not found']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism por dato especifico: $id",4,6,1);
             return response()->json([
               'status' => true,
                 'data' => $multiculturalism
@@ -76,6 +86,7 @@ class MulticulturalismsController extends Controller
             }else{
                 $multiculturalism->mul_name = $request->mul_name;
                 $multiculturalism->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,6,1);
                 return response()->json([
                 'status' => True,
                 'message' => "El tipo de cultura ".$multiculturalism->mul_name." ha sido actualizado exitosamente."

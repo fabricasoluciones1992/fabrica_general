@@ -15,11 +15,19 @@ class EpsController extends Controller
      */
     public function index()
     {
-        $eps = Eps::all();
-        return response()->json([
-            'status' => true,
-            'data' => $eps
-        ],200);
+        try {
+            $eps = Eps::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Eps",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $eps
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+               'status' => false,
+              'message' => "Error en index, not found elements"
+            ],500);
+        }
     }
 
     public function store(Request $request)
@@ -36,6 +44,7 @@ class EpsController extends Controller
         }else{
             $eps = new Eps($request->input());
             $eps->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla EPS : $request->eps_name ",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "la eps ".$eps->eps_name." ha sido creado exitosamente."
@@ -52,6 +61,7 @@ class EpsController extends Controller
                 'data' => ['message' => 'no se encuentra la eps solicitado']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla EPS por dato especifico: $id",4,6,1);
             return response()->json([
                 'status' => true,
                 'data' => $eps
@@ -80,6 +90,7 @@ class EpsController extends Controller
             }else{
                 $eps->eps_name = $request->eps_name;
                 $eps->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla EPS del dato: $id con el dato: $request->eps_name",1,6,1);
                 return response()->json([
                     'status' => True,
                     'message' => "la eps ".$eps->eps_name." ha sido actualizada exitosamente."

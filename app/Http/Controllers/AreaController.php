@@ -10,11 +10,20 @@ class AreaController extends Controller
 {
     public function index()
     {
-        $areas = Area::all();
-        return response()->json([
-            'status' => true,
-            'data' => $areas
-        ],200);
+        try {
+            $areas = Area::all();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $areas
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([         
+                'status' => false,
+                'message' => $th
+            ]);
+        }
+
     }
 
     public function store(Request $request)
@@ -31,6 +40,7 @@ class AreaController extends Controller
         }else{
             $area = new Area($request->input());
             $area->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "La area ".$area->are_name." ha sido creado exitosamente."
@@ -47,6 +57,7 @@ class AreaController extends Controller
                 'data' => ['message' => 'no se encuentra la area solicitada']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area por dato especifico : $id",4,6,1);
             return response()->json([
                 'status' => true,
                 'data' => $area
@@ -75,6 +86,7 @@ class AreaController extends Controller
             }else{
                 $area->are_name = $request->are_name;
                 $area->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,6,1);
                 return response()->json([
                     'status' => True,
                     'message' => "la area ".$area->are_name." ha sido actualizado exitosamente."

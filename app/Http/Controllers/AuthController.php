@@ -33,6 +33,7 @@ class AuthController extends Controller
             }else{
             $user = DB::table('users')->where('email', '=', $request->email)->first();
             $user = User::find($user->id);
+            Controller::NewRegisterTrigger("Se logeo un usuario: $user->id",4,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "User login successfully",
@@ -61,6 +62,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->name",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "User created successfully",

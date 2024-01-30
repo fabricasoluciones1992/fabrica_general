@@ -13,11 +13,20 @@ class PositionController extends Controller
      
     public function index()
     {
-        $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
-        return response()->json([
-            'status' => true,
-            'data' => $positions
-        ],200);    
+        try {
+            $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,6,1);
+            return response()->json([
+                'status' => true,
+                'data' => $positions
+            ],200);  
+        } catch (\Throwable $th) {
+            return response()->json([ 
+               'status' => false,
+              'message' => "Error occurred while found elements"
+            ]);
+        }
+  
     }
     public function store(Request $request)
     {
@@ -34,6 +43,7 @@ class PositionController extends Controller
         }else{
             $position = new Position($request->input());
             $position->save();
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,6,1);
             return response()->json([
               'status' => True,
               'message' => "La posición ".$position->pos_name." ha sido creada exitosamente."
@@ -49,6 +59,7 @@ class PositionController extends Controller
                 'data' => ['message' => 'no se encuentra la posición solicitada']
             ],400);
         }else{
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,6,1);
             return response()->json([
                'status' => true,
                 'data' => $position
@@ -78,6 +89,7 @@ class PositionController extends Controller
                 $positons->pos_name = $request->pos_name;
                 $positons->are_id = $request->are_id;
                 $positons->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,6,1);
                 return response()->json([
                   'status' => True,
                   'message' => "La posición ".$positons->pos_name." ha sido actualizada exitosamente."
