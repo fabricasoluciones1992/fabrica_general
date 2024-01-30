@@ -57,7 +57,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('disaeses', DiseasesController::class)->names('disaeses');
     Route::resource('mails', MailsController::class)->names('mails');
     Route::resource('telephones', TelephonesController::class)->names('telephones');
-
+    Route::resource('medicalHistories', medicalHistories::class)->names('medicalHistories');
+ 
 });
 
 

@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
     public function login(Request $request){
         $rules = [
-            'use_mail'=> 'required|min:1|max:250|email|unique:users',
+            'use_mail'=> 'required|min:1|max:250|email',
             'use_password'=> 'required|min:1|max:150|string'
         ];
 
@@ -25,21 +25,15 @@ class AuthController extends Controller
                 'message' => $validator->errors()->all()
             ],400);
         }else{
-            if (!Auth::attempt($request->only('email', 'password'))) {
-                return response()->json([
-                    'status' => False,
-                    'message' => "Unauthenticated"
-                ],400);
-            }else{
-            $user = DB::table('users')->where('email', '=', $request->email)->first();
-            $user = User::find($user->id);
-            Controller::NewRegisterTrigger("Se logeo un usuario: $user->id",4,6,1);
+            $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
+            $user = User::find($user->use_id);
+            $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+            Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail",4,6,$user->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "User login successfully",
                 'token' => $user->createToken('API TOKEN')->plainTextToken
             ],200);
-        }
         }
     }
 
@@ -73,6 +67,7 @@ class AuthController extends Controller
                 'use_password' => Hash::make($request->use_password),
                 'use_status' => 1
             ]);
+            $user->save();
             $person = Person::create([
                 'per_name'=> $request->per_name,
                 'per_lastname'=> $request->per_lastname,
@@ -88,7 +83,8 @@ class AuthController extends Controller
                 'mul_id'=> $request->mul_id,
                 'use_id'=> $user->use_id,
             ]);
-            Controller::NewRegisterTrigger("Se Registro un usuario: $request->name",3,6,1);
+            $person->save();
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6,1);
             return response()->json([
                 'status' => True,
                 'message' => "User created successfully",
@@ -97,7 +93,11 @@ class AuthController extends Controller
         }
     }
 
-    public function logout() {
-        
+    public function logout(Request $id) {
+        $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $id->use_id)->delete();
+        return response()->json([
+            'status'=> true,
+            'message'=> "logout success."
+        ]);
     }
 }
