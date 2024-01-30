@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\ContactController;
@@ -30,24 +31,27 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function() {
+    Route::resource('access', AccessController::class)->names('access');
+    Route::resource('areas', AreaController::class)->names('areas');
+    Route::resource('contacts', ContactController::class)->names('contacts');
+    Route::resource('doctypes', DocTypesController::class)->names('doctypes');
+    Route::resource('eps', EpsController::class)->names('eps');
+    Route::resource('genders', GenderController::class)->names('genders');
+    Route::resource('localities', LocalityController::class)->names('localities');
+    Route::resource('news', NewsController::class)->names('news');
+    Route::resource('new_types', NewTypeController::class)->names('new_types');
+    Route::resource('persons', PersonController::class)->names('persons');
+    Route::resource('projects', ProjectController::class)->names('projects');
+    Route::resource('positions', PositionController::class)->names('positions');
+    Route::resource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
+    Route::resource('civilstates', CivilStatesController::class)->names('civilstates');
+    Route::resource('relationships', RelationshipsController::class)->names('relationships');
 });
-Route::apiResource('access', AccessController::class)->names('access');
-Route::apiResource('areas', AreaController::class)->names('areas');
-Route::apiResource('contacts', ContactController::class)->names('contacts');
-Route::apiResource('doctypes', DocTypesController::class)->names('doctypes');
-Route::apiResource('eps', EpsController::class)->names('eps');
-Route::apiResource('genders', GenderController::class)->names('genders');
-Route::apiResource('localities', LocalityController::class)->names('localities');
-Route::apiResource('news', NewsController::class)->names('news');
-Route::apiResource('new_types', NewTypeController::class)->names('new_types');
-Route::apiResource('persons', PersonController::class)->names('persons');
-Route::apiResource('projects', ProjectController::class)->names('projects');
-Route::apiResource('positions', PositionController::class)->names('positions');
-Route::apiResource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
-Route::apiResource('civilstates', CivilStatesController::class)->names('civilstates');
-Route::apiResource('relationships', RelationshipsController::class)->names('relationships');
+
 
 
