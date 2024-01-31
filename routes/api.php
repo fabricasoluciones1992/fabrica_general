@@ -11,6 +11,7 @@ use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\LocalityController;
 use App\Http\Controllers\MailsController;
+use App\Http\Controllers\MedicalhistoriesController;
 use App\Http\Controllers\MulticulturalismsController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewTypeController;
@@ -57,8 +58,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('disaeses', DiseasesController::class)->names('disaeses');
     Route::resource('mails', MailsController::class)->names('mails');
     Route::resource('telephones', TelephonesController::class)->names('telephones');
-    Route::resource('medicalHistories', medicalHistories::class)->names('medicalHistories');
- 
+    Route::resource('medicalHistories', MedicalhistoriesController::class)->names('medicalHistories');
 });
 
 

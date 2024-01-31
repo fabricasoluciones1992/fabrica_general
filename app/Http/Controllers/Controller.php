@@ -13,8 +13,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function NewRegisterTrigger($new_description,$new_typ_id, $proj_id, $use_id)
+    public function NewRegisterTrigger($new_description,$new_typ_id, $proj_id)
     {
-        DB::statement("CALL new_register('" . addslashes($new_description) . "', $new_typ_id, $proj_id, $use_id)");
+        $user = Auth::id();
+        DB::statement("CALL new_register('" . addslashes($new_description) . "', $new_typ_id, $proj_id, $user)");
     }
 }

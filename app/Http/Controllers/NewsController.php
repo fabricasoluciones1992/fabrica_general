@@ -19,7 +19,7 @@ class NewsController extends Controller
             INNER JOIN users ON news.use_id = users.use_id
             INNER JOIN persons ON users.use_id = persons.use_id;
             ");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,6,1);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,6);
             return response()->json([
                'status' => true,
                 'data' => $news
@@ -50,7 +50,7 @@ class NewsController extends Controller
         }else{
             $news = new News($request->input());
             $news->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla News : $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id ",3,6,1);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla News : $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id ",3,6);
             return response()->json([
              'status' => True,
              'message' => "The news: ".$news->new_date." success has been created."
@@ -71,7 +71,7 @@ class NewsController extends Controller
                 "data" => ['message' => 'The searched novelty was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News por dato especifico: $id",4,6,1);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News por dato especifico: $id",4,6);
             return response()->json([
                'status' => true,
                 'data' => $new
@@ -105,7 +105,7 @@ class NewsController extends Controller
                 $new->proj_id = $request->proj_id;
                 $new->use_id = $request->use_id;
                 $new->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla news del dato: $id con el dato: $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id",1,6,1);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla news del dato: $id con el dato: $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "The news $id has been updated."

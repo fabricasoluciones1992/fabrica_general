@@ -16,7 +16,7 @@ class AccessController extends Controller
             $access = DB::select("SELECT access.acc_id, access.acc_status,projects.proj_name ,areas.are_name FROM access
             INNER JOIN projects ON access.proj_id = projects.proj_id
             INNER JOIN areas ON access.are_id = areas.are_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,6,1);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,6);
             return response()->json([
               'status' => true,
                 'data' => $access
@@ -46,7 +46,7 @@ class AccessController extends Controller
         }else{
             $access = new Access($request->input());
             $access->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,6,1);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,6);
             return response()->json([
            'status' => True,
             'message' => "The access: ".$access->acc_status." has been created."
@@ -64,7 +64,7 @@ class AccessController extends Controller
                 "data" => ['message' => 'The searched access was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access por dato especifico : $id",4,6,1);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access por dato especifico : $id",4,6);
             return response()->json([
               'status' => true,
                 'data' => $access
@@ -98,7 +98,7 @@ class AccessController extends Controller
                 $acces->proj_id = $request->proj_id;
                 $acces->are_id = $request->are_id;
                 $acces->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,6,1);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,6);
                 return response()->json([
                  'status' => True,
                  'message' => "The access: ".$acces->acc_status." has been updated."

@@ -23,7 +23,7 @@ class TelephonesController extends Controller
        INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
        INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id
        ");
-        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6,1);
+        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6);
         return response()->json([
             'status' => true,
             'data' => $telephone
@@ -45,7 +45,7 @@ class TelephonesController extends Controller
         }else{
             $telephone = new telephone($request->input());
             $telephone->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,6,1);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,6);
             return response()->json([
               'status' => True,
               'message' => "The Telephone number ".$telephone->tel_number." has been added succesfully."
@@ -71,7 +71,7 @@ class TelephonesController extends Controller
                 'data' => ['message' => 'Could not find the telephone number you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6,1);
+            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6);
             return response()->json([
                'status' => true,
                 'data' => $telephone
@@ -103,7 +103,7 @@ class TelephonesController extends Controller
                 $telephone->tel_description = $request->tel_description;
                 $telephone->per_id = $request->per_id;
                 $telephone->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",3,6,1);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "The telephone ".$telephone->tel_number." has been updated succesfully."
@@ -114,7 +114,7 @@ class TelephonesController extends Controller
     }
     public function destroy()
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla telephones",2,6,1);
+        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla telephones",2,6);
         return response()->json([
             'status' => false,
             'message' => "You have no permission to delete this"

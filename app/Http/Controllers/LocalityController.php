@@ -12,7 +12,7 @@ class LocalityController extends Controller
     {
         try {
             $localities = Locality::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Locality",4,6,1);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Locality",4,6);
             return response()->json([
               'status' => true,
                 'data' => $localities
@@ -39,7 +39,7 @@ class LocalityController extends Controller
         }else{
             $localities = new Locality($request->input());
             $localities->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,6,1);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,6);
             return response()->json([
             'status' => true,
                'data' => "Localities saved successfully"
@@ -55,7 +55,7 @@ class LocalityController extends Controller
                 'data' => ['message' => 'No se encuentra la localidad buscada']
                 ],400);
             }else{
-                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla locality por dato especifico: $id",4,6,1);
+                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla locality por dato especifico: $id",4,6);
                 return response()->json([
                 'status' => true,
                    'data' => $localities
@@ -83,7 +83,7 @@ class LocalityController extends Controller
             }else{
                 $locality->loc_name = $request->loc_name;
                 $locality->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,6,1);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,6);
                 return response()->json([
                'status' => true,
                    'data' => "Localidad actualizada con exito"

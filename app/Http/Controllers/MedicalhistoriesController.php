@@ -24,7 +24,7 @@ class MedicalhistoriesController extends Controller
        INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
        INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id
        ");
-       Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla medical histories",4,5,1);
+       Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla medical histories",4,6);
           return response()->json([
             'status' => true,
             'data' => $medicalHistory
@@ -45,7 +45,7 @@ class MedicalhistoriesController extends Controller
         }else{
             $medicalHistory = new medicalhistories($request->input());
             $medicalHistory->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,5,1);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,6);
             return response()->json([
               'status' => True,
               'message' => "The medical history ". $medicalHistory -> per_name ." has been added succesfully."
@@ -72,7 +72,7 @@ class MedicalhistoriesController extends Controller
                 'data' => ['message' => 'Could not find the medical history you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla Medical Histories",4,5,1);
+            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla Medical Histories",4,6);
             return response()->json([
                'status' => true,
                 'data' => $medicalHistory
@@ -102,7 +102,7 @@ class MedicalhistoriesController extends Controller
                 $medicalHistory->per_id = $request->per_id;
                 $medicalHistory->dis_id = $request->dis_id;
                 $medicalHistory->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",3,5,1);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "The medical history".$medicalHistory->med_his_id." has been updated succesfully."
@@ -112,7 +112,7 @@ class MedicalhistoriesController extends Controller
     }
     public function destroy()
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla medical histories",2,5,1);
+        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla medical histories",2,6);
         return response()->json([
             'status' => false,
             'message' => "You have no permission to delete this"
