@@ -29,7 +29,7 @@ class AuthController extends Controller
             $user = User::find($user->use_id);
             $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
             Auth::login($user);
-            Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail",4,6);
+            Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail",4,$request->proj_id);
             return response()->json([
                 'status' => True,
                 'message' => "User login successfully",
