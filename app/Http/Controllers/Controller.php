@@ -25,9 +25,11 @@ class Controller extends BaseController
         if (isset($_SESSION['api_token'])) {
             $token = $_SESSION['api_token'];
             $use_id = $_SESSION['use_id'];
+            $proj_id = $_SESSION['proj_id'];
             return [
                 "token" => $token,
-                "use_id" => $use_id
+                "use_id" => $use_id,
+                "proj_id" => $proj_id
             ];
         } else {
             return  'Token not found in session';
