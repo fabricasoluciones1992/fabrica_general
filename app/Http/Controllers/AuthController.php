@@ -7,7 +7,6 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -17,26 +16,35 @@ class AuthController extends Controller
             'use_mail'=> 'required|min:1|max:250|email',
             'use_password'=> 'required|min:1|max:150|string'
         ];
-
+    
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
-            ],400);
-        }else{
+            ], 400);
+        } else {
             $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
-            $user = User::find($user->use_id);
-            $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
-            Auth::login($user);
-            Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail",4,$request->proj_id);
-            return response()->json([
-                'status' => True,
-                'message' => "User login successfully",
-                'token' => $user->createToken('API TOKEN')->plainTextToken
-            ],200);
+    
+            if ($user && password_verify($request->use_password, $user->use_password)) {
+                $user = User::find($user->use_id);
+                $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+                Auth::login($user);
+                Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4, $request->proj_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => "User login successfully",
+                    'token' => $user->createToken('API TOKEN')->plainTextToken
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => False,
+                    'message' => "Invalid email or password"
+                ], 401);
+            }
         }
     }
+    
 
     public function register(Request $request){
         $rules = [
@@ -65,7 +73,7 @@ class AuthController extends Controller
         }else{
             $user = User::create([
                 'use_mail' => $request->use_mail,
-                'use_password' => Hash::make($request->use_password),
+                'use_password' => $request->use_password,
                 'use_status' => 1
             ]);
             $user->save();
@@ -85,7 +93,7 @@ class AuthController extends Controller
                 'use_id'=> $user->use_id,
             ]);
             $person->save();
-            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6,1);
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6);
             return response()->json([
                 'status' => True,
                 'message' => "User created successfully",
