@@ -16,7 +16,21 @@ class Controller extends BaseController
     public function NewRegisterTrigger($new_description,$new_typ_id, $proj_id)
     {
         $project_id = ($proj_id === null) ? env('APP_ID'): $proj_id;
-        $user = Auth::id();
-        DB::statement("CALL new_register('" . addslashes($new_description) . "', $new_typ_id,$project_id, $user)");
+        $trigger = "CALL new_register('" . addslashes($new_description) . "', $new_typ_id,$project_id,1)";
+        DB::statement($trigger);
+    }
+
+    function auth(){
+        session_start();
+        if (isset($_SESSION['api_token'])) {
+            $token = $_SESSION['api_token'];
+            $use_id = $_SESSION['use_id'];
+            return [
+                "token" => $token,
+                "use_id" => $use_id
+            ];
+        } else {
+            return  'Token not found in session';
+        }
     }
 }

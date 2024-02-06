@@ -39,7 +39,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth:sanctum'])->group(function() {
+// Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access', AccessController::class)->names('access');
     Route::resource('areas', AreaController::class)->names('areas');
     Route::resource('contacts', ContactController::class)->names('contacts');
@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('mails', MailsController::class)->names('mails');
     Route::resource('telephones', TelephonesController::class)->names('telephones');
     Route::resource('medicalHistories', MedicalhistoriesController::class)->names('medicalHistories');
-});
+//  
 
 
 

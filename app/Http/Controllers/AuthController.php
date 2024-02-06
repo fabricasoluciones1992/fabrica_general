@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access;
 use App\Models\User;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -16,7 +18,6 @@ class AuthController extends Controller
             'use_mail'=> 'required|min:1|max:250|email',
             'use_password'=> 'required|min:1|max:150|string'
         ];
-    
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
@@ -25,27 +26,34 @@ class AuthController extends Controller
             ], 400);
         } else {
             $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
-    
             if ($user && password_verify($request->use_password, $user->use_password)) {
                 $user = User::find($user->use_id);
-                $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
-                Auth::login($user);
-                Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4, $request->proj_id);
-                return response()->json([
-                    'status' => True,
-                    'message' => "User login successfully",
-                    'token' => $user->createToken('API TOKEN')->plainTextToken
-                ], 200);
-            } else {
+                $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
+                $access = DB::select("SELECT access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
+                if ($access == null) {
+                    return response()->json([
+                     'status' => False,
+                     'message' => "The user: ".$user->use_mail." has no access."
+                    ],400);
+                }else{
+                    $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+                    Auth::login($user);
+                    $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
+                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id);
+                    return response()->json([
+                        'status' => True,
+                        'message' => "User login successfully",
+                        'token' => $user->createToken('API TOKEN')->plainTextToken
+                    ], 200);
+                }
+            }else {
                 return response()->json([
                     'status' => False,
                     'message' => "Invalid email or password"
-                ], 401);
+                ], 401);  
             }
         }
     }
-    
-
     public function register(Request $request){
         $rules = [
             'use_mail'=> 'required|min:1|max:250|email|unique:users',

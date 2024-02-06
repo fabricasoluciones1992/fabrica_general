@@ -16,8 +16,9 @@ class Access extends Model
 
     protected $fillable = [
         'acc_status',
+        'acc_adminitrator',
         'proj_id',
-        'are_id'
+        'use_id'
     ];
 
     public $timestamps = false;

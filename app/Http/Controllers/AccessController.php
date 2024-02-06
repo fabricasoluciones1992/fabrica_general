@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Access;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -13,10 +14,10 @@ class AccessController extends Controller
     public function index()
     {
         try {
-            $access = DB::select("SELECT access.acc_id, access.acc_status,projects.proj_name ,areas.are_name FROM access
-            INNER JOIN projects ON access.proj_id = projects.proj_id
-            INNER JOIN areas ON access.are_id = areas.are_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,6);
+            $token = Controller::auth();
+            $access = DB::select("SELECT access.acc_id,access.acc_administrator,access.acc_status,projects.proj_name FROM access
+            INNER JOIN projects ON access.proj_id = projects.proj_id;");
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,env('APP_ID'));
             return response()->json([
               'status' => true,
                 'data' => $access
