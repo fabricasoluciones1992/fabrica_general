@@ -30,7 +30,7 @@ class RelationshipsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-         'rel_name' =>'required|string|min:1|max:50',
+            'rel_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -74,8 +74,8 @@ class RelationshipsController extends Controller
             ]);
         }else{
             $rules = [
-                'rel_name' =>'required|string|min:1|max:50',
-               ];
+                'rel_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([

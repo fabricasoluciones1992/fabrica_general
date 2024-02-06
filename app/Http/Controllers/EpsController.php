@@ -33,7 +33,7 @@ class EpsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'eps_name' => 'required|string|min:1|max:255'
+            'eps_name' => 'required|string|min:1|max:255|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -79,7 +79,7 @@ class EpsController extends Controller
             ],400);
         }else{
             $rules = [
-                'eps_name' => 'required|string|min:1|max:50'
+                'eps_name' => 'required|string|min:1|max:255|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

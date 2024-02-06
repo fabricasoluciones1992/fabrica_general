@@ -28,7 +28,7 @@ class LocalityController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'loc_name' => 'required|string|min:1|max:50'
+            'loc_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if($validator->fails()){
@@ -72,7 +72,7 @@ class LocalityController extends Controller
              ],400);
         }else{
             $rules = [
-                'loc_name' =>'required|string|min:1|max:50'
+                'loc_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if($validator->fails()){

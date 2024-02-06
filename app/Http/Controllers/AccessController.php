@@ -34,9 +34,9 @@ class AccessController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'acc_status' =>'required|string',
+            'acc_administrator' =>'required|boolean',
             'proj_id' =>'required|integer',
-            'are_id' =>'required|integer'
+            'use_id' =>'required|integer'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -46,8 +46,9 @@ class AccessController extends Controller
             ]);
         }else{
             $access = new Access($request->input());
+            $access->acc_status = 1;
             $access->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,env('APP_ID'));
             return response()->json([
            'status' => True,
             'message' => "The access: ".$access->acc_status." has been created."
@@ -84,9 +85,9 @@ class AccessController extends Controller
             ],400);
         }else{
             $rules = [
-                'acc_status' =>'required|string',
+                'acc_administrator' =>'required|boolean',
                 'proj_id' =>'required|integer',
-                'are_id' =>'required|integer'
+                'use_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

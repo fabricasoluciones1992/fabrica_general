@@ -29,7 +29,7 @@ class CivilStatesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'civ_sta_name' =>'required|string|min:1|max:50'
+            'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -76,8 +76,7 @@ class CivilStatesController extends Controller
             ],400);
         }else{
             $rules = [
-            'civ_sta_name' =>'required|string|min:1|max:50'
-
+                'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
