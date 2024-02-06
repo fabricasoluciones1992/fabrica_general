@@ -22,7 +22,6 @@ class DiseasesController extends Controller
               'message' => $th
             ]); 
         }
-
     }
     public function store(Request $request)
     {
