@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class RelationshipsController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
         try {
+            $token = Controller::auth();
             $relationships = relationships::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $relationships
@@ -27,8 +28,9 @@ class RelationshipsController extends Controller
         }
 
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
         $rules = [
             'rel_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
@@ -41,15 +43,16 @@ class RelationshipsController extends Controller
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$proj_id, $token['use_id']);
             return response()->json([
              'status' => True,
              'message' => "La relación ".$relationship->rel_name." ha sido creada exitosamente."
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
@@ -57,15 +60,16 @@ class RelationshipsController extends Controller
                 'data' => ['message' => 'no se encuentra la relación solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $relationship
             ]);
         }
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
@@ -85,7 +89,7 @@ class RelationshipsController extends Controller
             }else{
                 $relationship->rel_name = $request->rel_name;
                 $relationship->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,$proj_id, $token['use_id']);
                 return response()->json([
                   'status' => True,
                   'message' => "La relación ".$relationship->rel_name." ha sido actualizada exitosamente."

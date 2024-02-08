@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Validator;
 
 class NewTypeController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
         try {
+            $token = Controller::auth();
             $newtypes = NewType::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $newtypes
@@ -25,8 +26,9 @@ class NewTypeController extends Controller
         }
 
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
         $rules = [
             'new_typ_type' => 'required|string|min:1|max:50'
         ];
@@ -40,15 +42,16 @@ class NewTypeController extends Controller
         }else{
             $newtype = new NewType($request->input());
             $newtype->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_type ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_type ",3,$proj_id, $token['use_id']);
             return response()->json([
              'status' => True,
              'message' => "El tipo de noticia ".$newtype->new_typ_type." ha sido creado exitosamente."
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
         $newType = NewType::find($id);
         if ($newType == null) {
             return response()->json([
@@ -56,15 +59,16 @@ class NewTypeController extends Controller
                 'data' => ['message' => 'no se encuentra el tipo de novedad solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType por dato especifico: $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType por dato especifico: $id",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $newType
             ]);
         }
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
         $newType = NewType::find($id);
         if ($newType == null) {
             return response()->json([
@@ -84,7 +88,7 @@ class NewTypeController extends Controller
             }else{
                 $newType->new_typ_type = $request->new_typ_type;
                 $newType->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_type ",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_type ",1,$proj_id, $token['use_id']);
                 return response()->json([
              'status' => True,
                    'data' => "El tipo de noticia ".$newType->new_typ_type." ha sido actualizado exitosamente."

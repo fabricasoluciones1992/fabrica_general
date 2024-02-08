@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\DB;
 class PositionController extends Controller
 {
      
-    public function index()
+    public function index($proj_id)
     {
         try {
+            $token = Controller::auth();
             $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $positions
@@ -28,8 +29,9 @@ class PositionController extends Controller
         }
   
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
         $rules = [
             'pos_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
             'are_id' =>'required|integer'
@@ -43,15 +45,16 @@ class PositionController extends Controller
         }else{
             $position = new Position($request->input());
             $position->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,$proj_id, $token['use_id']);
             return response()->json([
               'status' => True,
               'message' => "La posición ".$position->pos_name." ha sido creada exitosamente."
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
         $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id WHERE $id = positions.pos_id ;");
         if ($position == null) {
             return response()->json([
@@ -59,15 +62,16 @@ class PositionController extends Controller
                 'data' => ['message' => 'no se encuentra la posición solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,$proj_id, $token['use_id']);
             return response()->json([
                'status' => true,
                 'data' => $position
             ]);
         }
     }
-    public function update(Request $request, $id )
+    public function update($proj_id,Request $request, $id )
     {
+        $token = Controller::auth();
         $positons = Position::find($id);
         if ($positons == null) {
             return response()->json([
@@ -89,7 +93,7 @@ class PositionController extends Controller
                 $positons->pos_name = $request->pos_name;
                 $positons->are_id = $request->are_id;
                 $positons->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,$proj_id, $token['use_id']);
                 return response()->json([
                   'status' => True,
                   'message' => "La posición ".$positons->pos_name." ha sido actualizada exitosamente."

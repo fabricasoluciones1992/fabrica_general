@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 class DiseasesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
         try {
             $disease = Diseases::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Diseases",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Diseases",4,$proj_id, $token['use_id']);
             return response()->json([
                 'status' => true,
                 'data' => $disease,
@@ -23,32 +24,35 @@ class DiseasesController extends Controller
             ]); 
         }
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
         $disease = new Diseases();
         $disease->dis_name = $request->dis_name;
         $disease->save();
-        Controller::NewRegisterTrigger("Se creo un registro en la tabla Diseases: $request->dis_name",3,6);
+        Controller::NewRegisterTrigger("Se creo un registro en la tabla Diseases: $request->dis_name",3,$proj_id, $token['use_id']);
         return response()->json([
             'status' => true,
             'data' => $disease,
         ],200);
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
         $disease = Diseases::find($id);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla diseases por dato especifico: $id",4,6);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla diseases por dato especifico: $id",4,$proj_id, $token['use_id']);
         return response()->json([
             'status' => true,
             'data' => $disease,
         ],200);
     }
-    public function update(Request $request,$id)
+    public function update($proj_id,Request $request,$id)
     {
+        $token = Controller::auth();
         $disease = Diseases::find($id);
         $disease->dis_name = $request->dis_name;
         $disease->save();
-        Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Diseases del dato: id->$id->dis_id",1,6);
+        Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Diseases del dato: id->$id->dis_id",1,$proj_id, $token['use_id']);
         return response()->json([
             'status' => true,
             'data' => $disease,

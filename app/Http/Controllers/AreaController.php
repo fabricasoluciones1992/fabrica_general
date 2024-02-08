@@ -68,7 +68,7 @@ class AreaController extends Controller
         }
     }
 
-    public function update(Request $request, $id,$proj_id)
+    public function update($proj_id,Request $request,$id)
     {
         $token = Controller::auth();
         $area = Area::find($id);

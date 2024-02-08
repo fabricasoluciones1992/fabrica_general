@@ -56,7 +56,7 @@ Route::post('/logout'.URL, [AuthController::class, 'logout'])->name('logout');
     Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
     Route::resource('civilstates'.URL, CivilStatesController::class)->names('civilstates')->parameter('','civilstates');
     Route::resource('relationships'.URL, RelationshipsController::class)->names('relationships')->parameter('','relationships');
-    Route::resource('disaeses'.URL, DiseasesController::class)->names('disaeses')->parameter('','disaeses');
+    Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('','diseases');
     Route::resource('mails'.URL, MailsController::class)->names('mails')->parameter('','mails');
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medicalHistories'.URL, MedicalhistoriesController::class)->names('medicalHistories')->parameter('','medicalHistories');

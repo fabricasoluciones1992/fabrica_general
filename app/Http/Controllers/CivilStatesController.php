@@ -27,7 +27,7 @@ class CivilStatesController extends Controller
             ]);
         }
     }
-    public function store(Request $request,$proj_id)
+    public function store($proj_id,Request $request)
     {
         $token = Controller::auth();
         $rules = [
@@ -51,7 +51,7 @@ class CivilStatesController extends Controller
             ],200);
         }
     }
-    public function show($id,$proj_id)
+    public function show($proj_id,$id)
     {
         $token = Controller::auth();
         $civilState = civilStates::find($id);
@@ -68,7 +68,7 @@ class CivilStatesController extends Controller
             ]);
         }
     }
-    public function update(Request $request,$id,$proj_id)
+    public function update($proj_id,Request $request,$id)
     {
         $token = Controller::auth();
         $civilState = civilStates::find($id);

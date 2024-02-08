@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 
 class TelephonesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
         $telephone = DB::select("SELECT tl.tel_id, tl.tel_number, tl.tel_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
         p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
        FROM telephones tl
@@ -23,14 +24,15 @@ class TelephonesController extends Controller
        INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
        INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id
        ");
-        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6);
+        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id, $token['use_id']);
         return response()->json([
             'status' => true,
             'data' => $telephone
         ],200);    
     }
-    public function store(Request $request)
+    public function store($proj_id,Request $request)
     {
+        $token = Controller::auth();
         $rules = [
             'tel_number' =>['required', 'regex:^(3)(0|1|2|3|5)[0-9]\d{7}$'],
             'tel_description' =>'string|max:255',
@@ -45,15 +47,16 @@ class TelephonesController extends Controller
         }else{
             $telephone = new telephone($request->input());
             $telephone->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,6);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,$proj_id, $token['use_id']);
             return response()->json([
               'status' => True,
               'message' => "The Telephone number ".$telephone->tel_number." has been added succesfully."
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$id)
     {
+        $token = Controller::auth();
         $telephone = DB::select("SELECT tl.tel_id, tl.tel_number, tl.tel_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
         p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
        FROM telephones tl
@@ -71,15 +74,16 @@ class TelephonesController extends Controller
                 'data' => ['message' => 'Could not find the telephone number you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,6);
+            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id, $token['use_id']);
             return response()->json([
                'status' => true,
                 'data' => $telephone
             ],200);
         }
     }
-    public function update(Request $request, $id)
+    public function update($proj_id,Request $request, $id)
     {
+        $token = Controller::auth();
         $telephone = Telephone::find($id);
         if ($telephone == null) {
             return response()->json([
@@ -103,7 +107,7 @@ class TelephonesController extends Controller
                 $telephone->tel_description = $request->tel_description;
                 $telephone->per_id = $request->per_id;
                 $telephone->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,6);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,$proj_id, $token['use_id']);
                 return response()->json([
                   'status' => True,
                   'message' => "The telephone ".$telephone->tel_number." has been updated succesfully."
@@ -112,9 +116,10 @@ class TelephonesController extends Controller
         }
         
     }
-    public function destroy()
+    public function destroy($proj_id)
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla telephones",2,6);
+        $token = Controller::auth();
+        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla telephones",2,$proj_id, $token['use_id']);
         return response()->json([
             'status' => false,
             'message' => "You have no permission to delete this"
