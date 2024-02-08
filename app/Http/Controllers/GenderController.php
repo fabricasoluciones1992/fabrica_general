@@ -11,6 +11,8 @@ class GenderController extends Controller
     public function index()
     {
         try {
+            // $token = Controller::auth();
+            // return $token;
             $genders = Genders::all();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders",4,6);
             return response()->json([
