@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class CivilStatesController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
+        $token = Controller::auth();
         try {
             $civilStates = civilStates::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla CivilStates",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla CivilStates",4,$proj_id, $token['use_id']);
             return response()->json([
               'status' => true,
                 'data' => $civilStates
@@ -26,8 +27,9 @@ class CivilStatesController extends Controller
             ]);
         }
     }
-    public function store(Request $request)
+    public function store(Request $request,$proj_id)
     {
+        $token = Controller::auth();
         $rules = [
             'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
 
@@ -42,15 +44,16 @@ class CivilStatesController extends Controller
         }else{
             $civilStates = new civilStates($request->input());
             $civilStates->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$proj_id, $token['use_id']);
             return response()->json([
           'status' => True,
           'message' => "El estado civil ".$civilStates->civ_sta_name." ha sido creado exitosamente."
             ],200);
         }
     }
-    public function show($id)
+    public function show($id,$proj_id)
     {
+        $token = Controller::auth();
         $civilState = civilStates::find($id);
         if ($civilState == null) {
             return response()->json([
@@ -58,15 +61,16 @@ class CivilStatesController extends Controller
                 'data' => ['message' => 'no se encuentra el estado civil solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla civilStates por dato especifico: $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla civilStates por dato especifico: $id",4,$proj_id, $token['use_id']);
             return response()->json([
               'status' => true,
                 'data' => $civilState
             ]);
         }
     }
-    public function update(Request $request,$id)
+    public function update(Request $request,$id,$proj_id)
     {
+        $token = Controller::auth();
         $civilState = civilStates::find($id);
         $msg = $civilState->civ_sta_name;
         if($civilState == null) {
@@ -87,7 +91,7 @@ class CivilStatesController extends Controller
             }else{
                 $civilState->civ_sta_name = $request->civ_sta_name;
                 $civilState->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$proj_id, $token['use_id']);
                 return response()->json([
                'status' => True,
                'message' => "El estado civil ".$civilState->civ_sta_name." ha sido actualizado exitosamente."
