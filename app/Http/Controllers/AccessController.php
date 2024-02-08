@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class AccessController extends Controller
 {
-    public function index()
+    public function index($proj_id)
     {
         try {
             $token = Controller::auth();
             $access = DB::select("SELECT access.acc_id,access.acc_administrator,access.acc_status,projects.proj_name FROM access
             INNER JOIN projects ON access.proj_id = projects.proj_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,env('APP_ID'));
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,$proj_id, $token['use_id']);
             return response()->json([
               'status' => true,
                 'data' => $access
@@ -31,7 +31,7 @@ class AccessController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
             'acc_administrator' =>'required|boolean',
@@ -55,7 +55,7 @@ class AccessController extends Controller
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$use_id,$id)
     {
         $access = DB::select("SELECT access.acc_id, access.acc_status,projects.proj_name ,areas.are_name FROM access
         INNER JOIN projects ON access.proj_id = projects.proj_id
@@ -74,7 +74,7 @@ class AccessController extends Controller
         }
     }
 
-        public function update(Request $request,$id)
+        public function update($proj_id,$use_id, Request $request,$id)
     {
         $acces = Access::find($id);
         $msg = $acces->acc_id;
