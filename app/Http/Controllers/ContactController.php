@@ -27,7 +27,7 @@ class ContactController extends Controller
 
     }
 
-    public function store($proj_id,Request $request)
+    public function store(Request $request,$proj_id)
     {
         $token = Controller::auth();
         $rules = [
@@ -53,7 +53,7 @@ class ContactController extends Controller
         }
     }
 
-    public function show($proj_id,$id)
+    public function show($id,$proj_id)
     {
         $token = Controller::auth();
         $contact = Contact::find($id);
@@ -71,7 +71,7 @@ class ContactController extends Controller
         }
     }
 
-    public function update($proj_id,Request $request, $id)
+    public function update(Request $request, $id,$proj_id)
     {
         $token = Controller::auth();
         $contact = Contact::find($id);

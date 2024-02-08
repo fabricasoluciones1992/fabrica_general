@@ -8,12 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class DocTypesController extends Controller
 {
-    public function index($proj_id)
+    public function index()
     {
-        $token = Controller::auth();
         try {
             $doctypes = DocumentTypes::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla DocTypes ",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla DocTypes ",4,6);
             return response()->json([
               'status' => true,
                 'data' => $doctypes
@@ -26,9 +25,8 @@ class DocTypesController extends Controller
         }
 
     }
-    public function store($proj_id,Request $request)
+    public function store(Request $request)
     {
-        $token = Controller::auth();
         $rules = [
             'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
         ];
@@ -41,16 +39,15 @@ class DocTypesController extends Controller
         }else{
             $doctypes = new DocumentTypes($request->input());
             $doctypes->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,6);
             return response()->json([
                'status' => True,
                'message' => "El tipo de documento ".$doctypes->doc_typ_name." ha sido creado exitosamente."
             ],200);
         }
     }
-    public function show($proj_id,$id)
+    public function show($id)
     {
-        $token = Controller::auth();
         $docTypes = DocumentTypes::find($id);
         if($docTypes == null){
             return response()->json([
@@ -58,16 +55,15 @@ class DocTypesController extends Controller
                 'data' => ['message' => 'no se encuentra el tipo de documento solicitado'],
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id",4,6);
             return response()->json([
                 'status' => true,
                 'data' => $docTypes
             ]);
         }
     }
-    public function update($proj_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $token = Controller::auth();
         $docTypes = DocumentTypes::find($id);
         if($docTypes == null){
             return response()->json([
@@ -88,7 +84,7 @@ class DocTypesController extends Controller
             }else{
                 $docTypes->doc_typ_name = $request->doc_typ_name;
                 $docTypes->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "El tipo de documento ".$docTypes->doc_typ_name." ha sido actualizado exitosamente."

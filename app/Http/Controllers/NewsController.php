@@ -10,17 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
-    public function index($proj_id)
+    public function index()
     {
         try {
-            $token = Controller::auth();
             $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
             INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
             INNER JOIN projects ON news.proj_id = projects.proj_id
             INNER JOIN users ON news.use_id = users.use_id
             INNER JOIN persons ON users.use_id = persons.use_id;
             ");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,6);
             return response()->json([
                'status' => true,
                 'data' => $news
@@ -34,9 +33,8 @@ class NewsController extends Controller
 
     }
 
-    public function store($proj_id,Request $request)
+    public function store(Request $request)
     {
-        $token = Controller::auth();
         $rules = [
             'new_date' =>'required|date',
             'new_typ_id' =>'required|integer',
@@ -52,16 +50,15 @@ class NewsController extends Controller
         }else{
             $news = new News($request->input());
             $news->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla News : $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id ",3,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla News : $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id ",3,6);
             return response()->json([
              'status' => True,
              'message' => "The news: ".$news->new_date." success has been created."
             ],200);
         }
     }
-    public function show($proj_id,$id)
+    public function show($id)
     {
-        $token = Controller::auth();
         $new =  DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
         INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
         INNER JOIN projects ON news.proj_id = projects.proj_id
@@ -74,16 +71,15 @@ class NewsController extends Controller
                 "data" => ['message' => 'The searched novelty was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News por dato especifico: $id",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News por dato especifico: $id",4,6);
             return response()->json([
                'status' => true,
                 'data' => $new
             ]);
         }
     }
-    public function update($proj_id,Request $request,$id)
+    public function update(Request $request,$id)
     {
-        $token = Controller::auth();
         $new = News::find($id);
         if ($new == null) {
             return response()->json([
@@ -109,7 +105,7 @@ class NewsController extends Controller
                 $new->proj_id = $request->proj_id;
                 $new->use_id = $request->use_id;
                 $new->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla news del dato: $id con el dato: $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id",1,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla news del dato: $id con el dato: $request->new_date, $request->new_typ_id,$request->proj_id, $request->use_id",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "The news $id has been updated."

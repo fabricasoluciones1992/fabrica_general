@@ -9,6 +9,6 @@ class Diseases extends Model
 {
     use HasFactory;
     protected $primaryKey = 'dis_id';
-    protected $fillable = ['dis_disease'];
+    protected $fillable = ['dis_name'];
     public $timestamps = false;
 }
