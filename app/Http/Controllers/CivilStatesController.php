@@ -80,7 +80,7 @@ class CivilStatesController extends Controller
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
-                return response()->json()([
+                return response()->json([
                'status' => False,
                'message' => $validator->errors()->all()
                 ]);
@@ -88,10 +88,7 @@ class CivilStatesController extends Controller
                 $civilState->civ_sta_name = $request->civ_sta_name;
                 $civilState->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6);
-                return response()->json([
-               'status' => True,
-               'message' => "El estado civil ".$civilState->civ_sta_name." ha sido actualizado exitosamente."
-                ],200);
+                return $civilState;
             }
         }
     }
