@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Person;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
@@ -12,9 +13,22 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($proj_id)
     {
-        //
+        try {
+            $persons = DB::select("SELECT * FROM ViewPersons");
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType",4,$proj_id,1);
+            return response()->json([
+                'status' => true,
+                'data' => $persons
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
+
     }
 
     /**
@@ -44,9 +58,21 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function show(Person $person)
+    public function show($proj_id, $id)
     {
-        //
+        try {
+            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $id");
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType",4,$proj_id,1);
+            return response()->json([
+                'status' => true,
+                'data' => $persons
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
     }
 
     /**
