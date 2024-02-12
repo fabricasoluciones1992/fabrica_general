@@ -10,12 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class RelationshipsController extends Controller
 {
-    public function index($proj_id)
+    public function index()
     {
         try {
-            $token = Controller::auth();
             $relationships = relationships::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,6);
             return response()->json([
                 'status' => true,
                 'data' => $relationships
@@ -28,11 +27,10 @@ class RelationshipsController extends Controller
         }
 
     }
-    public function store($proj_id,Request $request)
+    public function store(Request $request)
     {
-        $token = Controller::auth();
         $rules = [
-            'rel_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            'rel_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -43,16 +41,15 @@ class RelationshipsController extends Controller
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,6);
             return response()->json([
              'status' => True,
              'message' => "La relación ".$relationship->rel_name." ha sido creada exitosamente."
             ],200);
         }
     }
-    public function show($proj_id,$id)
+    public function show($id)
     {
-        $token = Controller::auth();
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
@@ -60,16 +57,15 @@ class RelationshipsController extends Controller
                 'data' => ['message' => 'no se encuentra la relación solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,6);
             return response()->json([
                 'status' => true,
                 'data' => $relationship
             ]);
         }
     }
-    public function update($proj_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $token = Controller::auth();
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
@@ -78,7 +74,7 @@ class RelationshipsController extends Controller
             ]);
         }else{
             $rules = [
-                'rel_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'rel_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -89,7 +85,7 @@ class RelationshipsController extends Controller
             }else{
                 $relationship->rel_name = $request->rel_name;
                 $relationship->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,$proj_id, $token['use_id']);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,6);
                 return response()->json([
                   'status' => True,
                   'message' => "La relación ".$relationship->rel_name." ha sido actualizada exitosamente."

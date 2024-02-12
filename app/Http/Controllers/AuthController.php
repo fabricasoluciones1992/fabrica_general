@@ -37,17 +37,20 @@ class AuthController extends Controller
                     ],400);
                 }else{
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+                    Auth::login($user);
                     if ($proj_id == 6) {
                         session_start();
                         $_SESSION['api_token'] = $user->createToken('API TOKEN')->plainTextToken;
                         $_SESSION['use_id'] = $user->use_id;
+                        $_SESSION['acc_administrator'] = $access[0]->acc_administrator;
                     }
-                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$proj_id,$user->use_id);
+                    $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
+                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id);
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
-                        'acc_administrator' => $access[0]->acc_administrator
+                        'acc_administrator' =>$access[0]->acc_administrator
                     ], 200);
                 }
             }else {
@@ -58,7 +61,7 @@ class AuthController extends Controller
             }
         }
     }
-    public function register($proj_id,Request $request){
+    public function register(Request $request){
         $rules = [
             'use_mail'=> 'required|min:1|max:250|email|unique:users',
             'use_password'=> 'required|min:1|max:150|string',
@@ -75,7 +78,7 @@ class AuthController extends Controller
             'con_id'=> 'required|integer',
             'mul_id'=> 'required|integer',
         ];
-        $token = Controller::auth();
+
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
@@ -105,7 +108,7 @@ class AuthController extends Controller
                 'use_id'=> $user->use_id,
             ]);
             $person->save();
-            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,$proj_id, $token['use_id']);
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6);
             return response()->json([
                 'status' => True,
                 'message' => "User created successfully",

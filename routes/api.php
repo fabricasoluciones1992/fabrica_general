@@ -24,8 +24,8 @@ use App\Models\multiculturalisms;
 use App\Models\relationships;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-define("URL", "/{proj_id}/");
 
+define("URL", "/{proj_id}/");
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,30 +36,30 @@ define("URL", "/{proj_id}/");
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/register'.URL, [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login'.URL, [AuthController::class, 'login'])->name('login');
-Route::post('/logout'.URL, [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::middleware(['auth:sanctum'])->group(function() {
-    Route::resource('access'.URL, AccessController::class)->names('access')->parameter('','access');
-    Route::resource('areas'.URL, AreaController::class)->names('areas')->parameter('','areas');
-    Route::resource('contacts'.URL, ContactController::class)->names('contacts')->parameter('','contacts');
-    Route::resource('doctypes'.URL, DocTypesController::class)->names('doctypes')->parameter('','doctypes');
-    Route::resource('eps'.URL, EpsController::class)->names('eps')->parameter('','eps');
-    Route::resource('genders'.URL, GenderController::class)->names('genders')->parameter('','genders');
-    Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
-    Route::resource('news'.URL, NewsController::class)->names('news')->parameter('','news');
-    Route::resource('new_types'.URL, NewTypeController::class)->names('new_types')->parameter('','new_types');
-    Route::resource('persons'.URL, PersonController::class)->names('persons')->parameter('','persons');
-    Route::resource('projects'.URL, ProjectController::class)->names('projects')->parameter('','projects');
-    Route::resource('positions'.URL, PositionController::class)->names('positions')->parameter('','positions');
-    Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
-    Route::resource('civilstates'.URL, CivilStatesController::class)->names('civilstates')->parameter('','civilstates');
-    Route::resource('relationships'.URL, RelationshipsController::class)->names('relationships')->parameter('','relationships');
-    Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('','diseases');
-    Route::resource('mails'.URL, MailsController::class)->names('mails')->parameter('','mails');
-    Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
-    Route::resource('medicalHistories'.URL, MedicalhistoriesController::class)->names('medicalHistories')->parameter('','medicalHistories');
+    Route::resource('access', AccessController::class)->names('access');
+    Route::resource('areas', AreaController::class)->names('areas');
+    Route::resource('contacts', ContactController::class)->names('contacts');
+    Route::resource('doctypes', DocTypesController::class)->names('doctypes');
+    Route::resource('eps', EpsController::class)->names('eps');
+    Route::resource('genders', GenderController::class)->names('genders');
+    Route::resource('localities', LocalityController::class)->names('localities');
+    Route::resource('news', NewsController::class)->names('news');
+    Route::resource('new_types', NewTypeController::class)->names('new_types');
+    Route::resource('persons', PersonController::class)->names('persons');
+    Route::resource('projects', ProjectController::class)->names('projects');
+    Route::resource('positions', PositionController::class)->names('positions');
+    Route::resource('multiculturalisms', MulticulturalismsController::class)->names('multiculturalisms');
+    Route::resource('civilstates', CivilStatesController::class)->names('civilstates');
+    Route::resource('relationships', RelationshipsController::class)->names('relationships');
+    Route::resource('disaeses', DiseasesController::class)->names('disaeses');
+    Route::resource('mails', MailsController::class)->names('mails');
+    Route::resource('telephones', TelephonesController::class)->names('telephones');
+    Route::resource('medicalHistories', MedicalhistoriesController::class)->names('medicalHistories');
 //  
 
 
