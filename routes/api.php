@@ -25,6 +25,7 @@ use App\Models\relationships;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+define("URL", "/{proj_id}/");
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,7 +37,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login'.URL, [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::middleware(['auth:sanctum'])->group(function() {

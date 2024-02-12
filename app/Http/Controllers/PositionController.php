@@ -31,7 +31,7 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'pos_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            'pos_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
             'are_id' =>'required|integer'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -76,7 +76,7 @@ class PositionController extends Controller
             ],400);
         }else{
             $rules = [
-                'pos_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'pos_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
                 'are_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);

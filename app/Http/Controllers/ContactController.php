@@ -29,7 +29,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'con_name' => 'required|string|min:1|max:250|regex:/^[A-Z\s]+$/',
+            'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
             'con_relationship' => 'required|string|min:1|max:50',
             'con_mail' => 'required|string|email|min:1|max:250',
             'con_telephone' => 'required|numeric|min:10000|max:999999999999999'
@@ -78,7 +78,7 @@ class ContactController extends Controller
             ],400);
         }else{
             $rules = [
-                'con_name' => 'required|string|min:1|max:250|regex:/^[A-Z\s]+$/',
+                'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
                 'con_relationship' => 'required|string|min:1|max:50',
                 'con_mail' => 'required|string|email|min:1|max:250',
                 'con_telephone' => 'required|numeric|min:10000|max:999999999999999'

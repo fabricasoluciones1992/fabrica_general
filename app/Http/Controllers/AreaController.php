@@ -29,7 +29,7 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'are_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -75,7 +75,7 @@ class AreaController extends Controller
             ],400);
         }else{
             $rules = [
-                'are_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
 
             ];
             $validator = Validator::make($request->input(), $rules);

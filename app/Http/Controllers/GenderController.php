@@ -31,7 +31,7 @@ class GenderController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'gen_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            'gen_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -78,7 +78,7 @@ class GenderController extends Controller
             ],400);
         }else{
             $rules = [
-                'gen_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'gen_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

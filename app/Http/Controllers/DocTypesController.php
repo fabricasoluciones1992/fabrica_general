@@ -28,7 +28,7 @@ class DocTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+            'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -73,7 +73,7 @@ class DocTypesController extends Controller
             ],400);
         }else{
             $rules = [
-                'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-Z\s]+$/',
+                'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

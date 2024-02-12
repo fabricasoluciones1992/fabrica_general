@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request, $proj_id){
         $rules = [
             'use_mail'=> 'required|min:1|max:250|email',
             'use_password'=> 'required|min:1|max:150|string'
@@ -38,12 +38,19 @@ class AuthController extends Controller
                 }else{
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
                     Auth::login($user);
+                    if ($proj_id == 6) {
+                        session_start();
+                        $_SESSION['api_token'] = $user->createToken('API TOKEN')->plainTextToken;
+                        $_SESSION['use_id'] = $user->use_id;
+                        $_SESSION['acc_administrator'] = $access[0]->acc_administrator;
+                    }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id);
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
-                        'token' => $user->createToken('API TOKEN')->plainTextToken
+                        'token' => $user->createToken('API TOKEN')->plainTextToken,
+                        'acc_administrator' =>$access[0]->acc_administrator
                     ], 200);
                 }
             }else {
