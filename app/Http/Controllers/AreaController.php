@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AreaController extends Controller
 {
-    public function index()
+    public function index($proj_id,$use_id)
     {
         try {
             $areas = Area::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $areas
@@ -26,7 +26,7 @@ class AreaController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
             'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
@@ -40,7 +40,7 @@ class AreaController extends Controller
         }else{
             $area = new Area($request->input());
             $area->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
                 'message' => "La area ".$area->are_name." ha sido creado exitosamente."
@@ -48,7 +48,7 @@ class AreaController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($proj_id,$use_id,$id)
     {
         $area = Area::find($id);
         if ($area == null) {
@@ -57,7 +57,7 @@ class AreaController extends Controller
                 'data' => ['message' => 'no se encuentra la area solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area por dato especifico : $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area por dato especifico : $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $area
@@ -65,7 +65,7 @@ class AreaController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update($proj_id,$use_id,Request $request, $id)
     {
         $area = Area::find($id);
         if ($area == null) {
@@ -87,7 +87,7 @@ class AreaController extends Controller
             }else{
                 $area->are_name = $request->are_name;
                 $area->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "la area ".$area->are_name." ha sido actualizado exitosamente."

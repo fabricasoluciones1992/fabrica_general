@@ -13,10 +13,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function NewRegisterTrigger($new_description,$new_typ_id, $proj_id)
+    public function NewRegisterTrigger($new_description,$new_typ_id, $proj_id,$use_id)
     {
         $project_id = ($proj_id === null) ? env('APP_ID'): $proj_id;
-        $trigger = "CALL new_register('" . addslashes($new_description) . "', $new_typ_id,$project_id,1)";
+        $trigger = "CALL new_register('" . addslashes($new_description) . "', $new_typ_id,$project_id,$use_id)";
         DB::statement($trigger);
     }
 

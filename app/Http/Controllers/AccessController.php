@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class AccessController extends Controller
 {
-    public function index()
+    public function index($proj_id,$use_id)
     {
         try {
             $token = Controller::auth();
             $access = DB::select("SELECT access.acc_id,access.acc_administrator,access.acc_status,projects.proj_name FROM access
             INNER JOIN projects ON access.proj_id = projects.proj_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,env('APP_ID'));
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,$proj_id,$use_id);
             return response()->json([
               'status' => true,
                 'data' => $access
@@ -31,7 +31,7 @@ class AccessController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
             'acc_administrator' =>'required|boolean',
@@ -48,14 +48,14 @@ class AccessController extends Controller
             $access = new Access($request->input());
             $access->acc_status = 1;
             $access->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,env('APP_ID'));
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$proj_id,$use_id);
             return response()->json([
            'status' => True,
             'message' => "The access: ".$access->acc_status." has been created."
             ],200);
         }
     }
-    public function show($id)
+    public function show($proj_id,$use_id,$id)
     {
         $access = DB::select("SELECT access.acc_id, access.acc_status,projects.proj_name ,areas.are_name FROM access
         INNER JOIN projects ON access.proj_id = projects.proj_id
@@ -66,7 +66,7 @@ class AccessController extends Controller
                 "data" => ['message' => 'The searched access was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access por dato especifico : $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access por dato especifico : $id",4,$proj_id,$use_id);
             return response()->json([
               'status' => true,
                 'data' => $access
@@ -74,7 +74,7 @@ class AccessController extends Controller
         }
     }
 
-        public function update(Request $request,$id)
+        public function update($proj_id,$use_id,Request $request,$id)
     {
         $acces = Access::find($id);
         $msg = $acces->acc_id;
@@ -100,7 +100,7 @@ class AccessController extends Controller
                 $acces->proj_id = $request->proj_id;
                 $acces->are_id = $request->are_id;
                 $acces->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$proj_id,$use_id);
                 return response()->json([
                  'status' => True,
                  'message' => "The access: ".$acces->acc_status." has been updated."

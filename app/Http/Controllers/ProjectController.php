@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index($proj_id,$use_id)
     {
         try {
             $projects =DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $projects
@@ -28,7 +28,7 @@ class ProjectController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
             'proj_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
@@ -43,7 +43,7 @@ class ProjectController extends Controller
         }else{
             $project = new project($request->input());
             $project->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Project : $request->proj_name, $request->are_id ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Project : $request->proj_name, $request->are_id ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
                 'message' => "El proyecto ".$project->proj_name." ha sido creado exitosamente."
@@ -51,7 +51,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function show($id)
+    public function show0($proj_id,$use_id,$id)
     {
         $project = DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_idWHERE projects.proj_id = $id;");
         if ($project == null) {
@@ -60,7 +60,7 @@ class ProjectController extends Controller
                 'data' => ['message' => 'no se encuentra el proyecto solicitada']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project por dato especifico: $id",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $project
@@ -68,7 +68,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update($proj_id,$use_id,Request $request, $id)
     {
         $project = Project::find($id);
         if ($project == null) {
@@ -91,7 +91,7 @@ class ProjectController extends Controller
                 $project->proj_name = $request->proj_name;
                 $project->are_id = $request->are_id;
                 $project->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Project del dato: $id con los datos: $request->proj_name, $request->are_id ",4,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Project del dato: $id con los datos: $request->proj_name, $request->are_id ",4,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "El proyecto ".$project->proj_name." ha sido actualizado exitosamente."

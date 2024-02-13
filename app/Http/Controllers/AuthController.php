@@ -45,10 +45,11 @@ class AuthController extends Controller
                         $_SESSION['acc_administrator'] = $access[0]->acc_administrator;
                     }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
-                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id);
+                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
+                        'use_id' => $user->use_id,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
                         'acc_administrator' =>$access[0]->acc_administrator
                     ], 200);
@@ -75,7 +76,6 @@ class AuthController extends Controller
             'doc_typ_id'=> 'required|integer',
             'eps_id'=> 'required|integer',
             'gen_id'=> 'required|integer',
-            'con_id'=> 'required|integer',
             'mul_id'=> 'required|integer',
         ];
 
@@ -103,7 +103,6 @@ class AuthController extends Controller
                 'doc_typ_id'=> $request->doc_typ_id,
                 'eps_id'=> $request->eps_id,
                 'gen_id'=> $request->gen_id,
-                'con_id'=> $request->con_id,
                 'mul_id'=> $request->mul_id,
                 'use_id'=> $user->use_id,
             ]);

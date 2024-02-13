@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class GenderController extends Controller
 {
-    public function index()
+    public function index($proj_id,$use_id)
     {
         try {
-            // $token = Controller::auth();
-            // return $token;
             $genders = Genders::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $genders
@@ -28,7 +26,7 @@ class GenderController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
             'gen_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
@@ -42,7 +40,7 @@ class GenderController extends Controller
         }else{
             $gender = new Genders($request->input());
             $gender->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,6);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
                 'message' => "El genero ".$gender->gen_name." ha sido creado exitosamente."
@@ -50,7 +48,7 @@ class GenderController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($proj_id,$use_id,$id)
     {
         $gender = Genders::find($id);
         if ($gender == null) {
@@ -59,7 +57,7 @@ class GenderController extends Controller
                 'data' => ['message' => 'no se encuentra el genero solicitado']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders por usuario especifico",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders por usuario especifico",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $gender
@@ -67,7 +65,7 @@ class GenderController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update($proj_id,$use_id,Request $request, $id)
     {
         $gender = Genders::find($id);
         $msg = $gender->gen_name;
@@ -89,7 +87,7 @@ class GenderController extends Controller
             }else{
                 $gender->gen_name = $request->gen_name;
                 $gender->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$msg. con el dato: $request->gen_name",1,6);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$msg. con el dato: $request->gen_name",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "El genero ".$gender->gen_name." ha sido actualizado exitosamente."
