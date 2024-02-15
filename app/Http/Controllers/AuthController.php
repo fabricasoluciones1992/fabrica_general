@@ -62,7 +62,7 @@ class AuthController extends Controller
             }
         }
     }
-    public function register(Request $request){
+    public function register($use_id,Request $request){
         $rules = [
             'use_mail'=> 'required|min:1|max:250|email|unique:users',
             'use_password'=> 'required|min:1|max:150|string',
@@ -107,7 +107,7 @@ class AuthController extends Controller
                 'use_id'=> $user->use_id,
             ]);
             $person->save();
-            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6);
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6,$use_id);
             return response()->json([
                 'status' => True,
                 'message' => "User created successfully",

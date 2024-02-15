@@ -36,7 +36,7 @@ define("URL", "/{proj_id}/{use_id}/");
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register/{use_id}', [AuthController::class, 'register'])->name('register');
 Route::post('/login/{proj_id}', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
