@@ -11,18 +11,9 @@ class TelephonesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $telephone = DB::select("SELECT tl.tel_id, tl.tel_number, tl.tel_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
-        p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
-       FROM telephones tl
-       INNER JOIN persons p ON tl.per_id = p.per_id
-       INNER JOIN document_types dt ON dt.doc_typ_id = p.doc_typ_id
-       INNER JOIN eps e ON e.eps_id = p.eps_id
-       INNER JOIN genders g ON g.gen_id = p.gen_id
-       INNER JOIN contacts c ON c.con_id = p.con_id
-       INNER JOIN users u ON u.use_id = p.use_id
-       INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
-       INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id
-       ");
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name
+        FROM telephones
+        INNER JOIN persons ON telephones.per_id = persons.per_id ");
         Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
@@ -54,17 +45,9 @@ class TelephonesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $telephone = DB::select("SELECT tl.tel_id, tl.tel_number, tl.tel_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
-        p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
-       FROM telephones tl
-       INNER JOIN persons p ON tl.per_id = p.per_id
-       INNER JOIN document_types dt ON dt.doc_typ_id = p.doc_typ_id
-       INNER JOIN eps e ON e.eps_id = p.eps_id
-       INNER JOIN genders g ON g.gen_id = p.gen_id
-       INNER JOIN contacts c ON c.con_id = p.con_id
-       INNER JOIN users u ON u.use_id = p.use_id
-       INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
-       INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id WHERE $id = tl.tel_id");
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name
+        FROM telephones
+        INNER JOIN persons ON telephones.per_id = persons.per_id  WHERE $id = telephones.per_id");
         if ($telephone == null) {
             return response()->json([
                'status' => false,

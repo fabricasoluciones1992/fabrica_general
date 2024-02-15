@@ -11,17 +11,9 @@ class MailsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $mail = DB::select("SELECT ml.mai_id, ml.mai_mail, ml.mai_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
-        p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
-       FROM mails ml
-       INNER JOIN persons p ON ml.per_id = p.per_id
-       INNER JOIN document_types dt ON dt.doc_typ_id = p.doc_typ_id
-       INNER JOIN eps e ON e.eps_id = p.eps_id
-       INNER JOIN genders g ON g.gen_id = p.gen_id
-       INNER JOIN contacts c ON c.con_id = p.con_id
-       INNER JOIN users u ON u.use_id = p.use_id
-       INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
-       INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name
+        FROM mails
+        INNER JOIN persons ON mails.per_id = persons.per_id
        ");
        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla mails",4,$proj_id,$use_id);
           return response()->json([
@@ -54,17 +46,9 @@ class MailsController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $mail = DB::select("SELECT ml.mai_id, ml.mai_mail, ml.mai_description, p.per_id, p.per_name, p.per_lastname, p.per_birthdate, 
-        p.per_direction, cs.civ_sta_name, mc.muL_name, p.per_expedition, dt.doc_typ_id, dt.doc_typ_name, e.eps_name, g.gen_name, c.con_name, u.use_id
-       FROM mails ml
-       INNER JOIN persons p ON ml.per_id = p.per_id
-       INNER JOIN document_types dt ON dt.doc_typ_id = p.doc_typ_id
-       INNER JOIN eps e ON e.eps_id = p.eps_id
-       INNER JOIN genders g ON g.gen_id = p.gen_id
-       INNER JOIN contacts c ON c.con_id = p.con_id
-       INNER JOIN users u ON u.use_id = p.use_id
-       INNER JOIN civil_states cs ON cs.civ_sta_id = p.civ_sta_id
-       INNER JOIN multiculturalisms mc ON mc.mul_id = p.mul_id WHERE $id = ml.mai_id");
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name
+        FROM mails
+        INNER JOIN persons ON mails.per_id = persons.per_id WHERE $id = mails.per_id");
         if ($mail == null) {
             return response()->json([
                'status' => false,
