@@ -15,7 +15,7 @@ class PositionController extends Controller
     {
         try {
             $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,6);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $positions
