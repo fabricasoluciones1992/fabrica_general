@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
 
 class ContactController extends Controller
 {
     public function index($proj_id,$use_id)
     {
         try {
-            $contacts = Contact::all();
+            $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name
+            FROM contacts
+            INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
+            INNER JOIN persons ON contacts.per_id = persons.per_id");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla contact",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -54,8 +59,11 @@ class ContactController extends Controller
 
     public function show($proj_id,$use_id,$id)
     {
-        $contact = Contact::find($id);
-        if ($contact == null) {
+        $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name
+            FROM contacts
+            INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
+            INNER JOIN persons ON contacts.per_id = persons.per_id WHERE $id = contacts.con_id" );
+        if ($contacts == null) {
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'no se encuentra el contacto solicitado']
@@ -64,7 +72,7 @@ class ContactController extends Controller
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Contact por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
-                'data' => $contact
+                'data' => $contacts
             ]);
         }
     }
