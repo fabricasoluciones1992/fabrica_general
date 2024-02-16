@@ -42,7 +42,7 @@ class LocalityController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,$proj_id,$use_id);
             return response()->json([
             'status' => true,
-               'data' => "Localities saved successfully"
+            'message' => "Localities saved successfully"
             ],200);
         };
     }
