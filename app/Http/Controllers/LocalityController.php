@@ -86,7 +86,7 @@ class LocalityController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,$proj_id,$use_id);
                 return response()->json([
                'status' => true,
-                   'data' => "Localidad actualizada con exito"
+                   'message' => "Localidad actualizada con exito"
                 ],200);
             };  
         }
