@@ -20,7 +20,7 @@ class LocalityController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
              'status' => false,
-             'message' => "Error occurred while found elements"
+             'message' => $th
             ],500);
         }
 
@@ -42,7 +42,7 @@ class LocalityController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,$proj_id,$use_id);
             return response()->json([
             'status' => true,
-            'message' => "Localities saved successfully"
+            'message' => "La area ".$localities->loc_name." ha sido creado exitosamente."
             ],200);
         };
     }
