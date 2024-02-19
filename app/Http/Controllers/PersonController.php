@@ -69,7 +69,6 @@ class PersonController extends Controller
                 'eps_id'=> 'required|integer',
                 'gen_id'=> 'required|integer',
                 'mul_id'=> 'required|integer',
-                'use_id' => 'required|integer',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -89,7 +88,6 @@ class PersonController extends Controller
                 $person->eps_id = $request->eps_id;
                 $person->gen_id = $request->gen_id;
                 $person->mul_id = $request->mul_id;
-                $person->use_id = $request->use_id;
 
                 $person->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$proj_id,$use_id);
