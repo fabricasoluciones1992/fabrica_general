@@ -26,7 +26,7 @@ class AuthController extends Controller
             ], 400);
         } else {
             $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
-            if ($user && password_verify($request->use_password, $user->use_password)) {
+            if ($user->use_password == $request->use_password) {
                 $user = User::find($user->use_id);
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
                 $access = DB::select("SELECT access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
