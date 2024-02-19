@@ -97,7 +97,6 @@ class MedicalhistoriesController extends Controller
     }
     public function destroy()
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla medical histories",2,6);
         return response()->json([
             'status' => false,
             'message' => "You have no permission to delete this"

@@ -101,6 +101,10 @@ class PersonController extends Controller
     }
     public function destroy(Person $person)
     {
-        //
+        return response()->json([
+            'status' => false,
+            'message' => "Funcion no disponible"
+
+        ],400);
     }
 }

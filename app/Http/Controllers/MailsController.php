@@ -97,7 +97,6 @@ class MailsController extends Controller
     }
     public function destroy(Mail $mail)
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla mails",2,6);
         return response()->json([
             'status' => false,
             'message' => "You have no permission to delete this"
