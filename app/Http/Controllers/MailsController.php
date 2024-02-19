@@ -11,7 +11,7 @@ class MailsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name, mails.per_id
         FROM mails
         INNER JOIN persons ON mails.per_id = persons.per_id
        ");
