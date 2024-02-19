@@ -13,7 +13,7 @@ class ContactController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name
+            $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name,contacts.rel_id,contacts.per_id
             FROM contacts
             INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
             INNER JOIN persons ON contacts.per_id = persons.per_id");
@@ -59,7 +59,7 @@ class ContactController extends Controller
 
     public function show($proj_id,$use_id,$id)
     {
-        $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name
+        $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name, persons.per_name,contacts.rel_id,contacts.per_id
             FROM contacts
             INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
             INNER JOIN persons ON contacts.per_id = persons.per_id WHERE $id = contacts.con_id" );
