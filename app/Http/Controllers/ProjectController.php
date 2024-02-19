@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $projects =DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
+            $projects =DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name,projects.are_id FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -53,7 +53,7 @@ class ProjectController extends Controller
 
     public function show0($proj_id,$use_id,$id)
     {
-        $project = DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name FROM projects INNER JOIN areas ON projects.are_id = areas.are_idWHERE projects.proj_id = $id;");
+        $project = DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name,projects.are_id FROM projects INNER JOIN areas ON projects.are_id = areas.are_idWHERE projects.proj_id = $id;");
         if ($project == null) {
             return response()->json([
                 'status' => false,

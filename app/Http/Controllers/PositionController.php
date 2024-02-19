@@ -14,7 +14,7 @@ class PositionController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
+            $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name, positions.are_id FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -52,7 +52,7 @@ class PositionController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name FROM positions INNER JOIN areas ON positions.are_id = areas.are_id WHERE $id = positions.pos_id ;");
+        $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name,positions.are_id FROM positions INNER JOIN areas ON positions.are_id = areas.are_id WHERE $id = positions.pos_id ;");
         if ($position == null) {
             return response()->json([
                'status' => false,
