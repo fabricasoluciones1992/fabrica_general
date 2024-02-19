@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -99,12 +100,20 @@ class PersonController extends Controller
             }
         }
     }
-    public function destroy(Person $person)
-    {
-        return response()->json([
-            'status' => false,
-            'message' => "Funcion no disponible"
 
-        ],400);
+    public function update_password(Person $person)
+    {
+        //hacer esta funcionalidad
+    }
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $newStatus  = ($user->status == 1) ? 1 : 0;
+        $user->use_status = $newStatus;
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'user status updated successfully'
+        ]);
     }
 }
