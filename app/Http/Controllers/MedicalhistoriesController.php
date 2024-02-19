@@ -11,7 +11,7 @@ class MedicalhistoriesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $medicalHistory = DB::select("SELECT medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document, diseases.dis_disease
+        $medicalHistory = DB::select("SELECT medical_histories.med_his_id,medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document, diseases.dis_disease
         FROM medical_histories
         INNER JOIN persons ON medical_histories.per_id = persons.per_id
         INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id
