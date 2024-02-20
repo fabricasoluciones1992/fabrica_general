@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -68,7 +69,6 @@ class PersonController extends Controller
                 'eps_id'=> 'required|integer',
                 'gen_id'=> 'required|integer',
                 'mul_id'=> 'required|integer',
-                'use_id' => 'required|integer',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -88,7 +88,6 @@ class PersonController extends Controller
                 $person->eps_id = $request->eps_id;
                 $person->gen_id = $request->gen_id;
                 $person->mul_id = $request->mul_id;
-                $person->use_id = $request->use_id;
 
                 $person->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$proj_id,$use_id);
@@ -99,8 +98,20 @@ class PersonController extends Controller
             }
         }
     }
-    public function destroy(Person $person)
+
+    public function update_password(Person $person)
     {
-        //
+        //hacer esta funcionalidad
+    }
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $newStatus  = ($user->status == 1) ? 1 : 0;
+        $user->use_status = $newStatus;
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'user status updated successfully'
+        ]);
     }
 }

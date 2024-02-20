@@ -10,6 +10,7 @@ class medicalhistories extends Model
     use HasFactory;
     
     protected $primaryKey = 'med_his_id';
+    protected $table = "medical_histories";
     protected $fillable = [
         'per_id',
         'dis_id',
