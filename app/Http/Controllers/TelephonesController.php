@@ -71,7 +71,7 @@ class TelephonesController extends Controller
             ],400);
         }else{
             $rules = [
-                'tel_number' =>'required|string|max:25',
+                'tel_number' =>['required', 'regex:^(3)(0|1|2|3|5)[0-9]\d{7}$'],
                 'tel_description' =>'string|max:255',
                 'per_id' =>'required|integer'
             ];
