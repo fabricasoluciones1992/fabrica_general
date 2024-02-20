@@ -36,7 +36,7 @@ class ContactController extends Controller
         $rules = [
             'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
             'con_mail' => 'required|string|email|min:1|max:250',
-            'con_telephone' => ['required', 'regex:/^(3)(0[1235]|11|12)\d{7}$/'],
+            'con_telephone' => 'required|numeric|regex:/^([0-9\s\-\+\(\)]*)$/|min:7',
             'rel_id' => 'required|numeric|min:1|max:50',
             'per_id' => 'required|numeric|min:1|max:50',
         ];
@@ -79,6 +79,7 @@ class ContactController extends Controller
 
     public function update($proj_id,$use_id,Request $request, $id)
     {
+        // return $request;
         $contact = Contact::find($id);
         if ($contact == null) {
             return response()->json([
@@ -89,7 +90,7 @@ class ContactController extends Controller
             $rules = [
                 'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
                 'con_mail' => 'required|string|email|min:1|max:250',
-                'con_telephone' => ['required', 'regex:/^(3)(0[1235]|11|12)\d{7}$/'],
+                'con_telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7',
                 'rel_id' => 'required|numeric|min:1|max:50',
                 'per_id' => 'required|numeric|min:1|max:50'
             ];
