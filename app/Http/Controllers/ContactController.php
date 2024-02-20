@@ -36,7 +36,7 @@ class ContactController extends Controller
         $rules = [
             'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
             'con_mail' => 'required|string|email|min:1|max:250',
-            'con_telephone' => 'required|numeric|regex:/^([0-9\s\-\+\(\)]*)$/|min:7',
+            'con_telephone' => 'required|numeric|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15',
             'rel_id' => 'required|numeric|min:1|max:50',
             'per_id' => 'required|numeric|min:1|max:50',
         ];
@@ -90,7 +90,7 @@ class ContactController extends Controller
             $rules = [
                 'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
                 'con_mail' => 'required|string|email|min:1|max:250',
-                'con_telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7',
+                'con_telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15',
                 'rel_id' => 'required|numeric|min:1|max:50',
                 'per_id' => 'required|numeric|min:1|max:50'
             ];

@@ -23,7 +23,7 @@ class TelephonesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/|min:7'],
+            'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15'],
             'tel_description' =>'string|max:255',
             'per_id' =>'required|integer'
         ];
@@ -71,7 +71,7 @@ class TelephonesController extends Controller
             ],400);
         }else{
             $rules = [
-                'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/|min:7'],
+                'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15'],
                 'tel_description' =>'string|max:255',
                 'per_id' =>'required|integer'
             ];
