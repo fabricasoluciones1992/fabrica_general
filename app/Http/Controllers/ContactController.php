@@ -34,7 +34,7 @@ class ContactController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
+            'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'con_mail' => 'required|string|email|min:1|max:250',
             'con_telephone' => 'required|numeric|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15',
             'rel_id' => 'required|numeric|min:1|max:50',
@@ -88,7 +88,7 @@ class ContactController extends Controller
             ],400);
         }else{
             $rules = [
-                'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑ\s]+$/',
+                'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 'con_mail' => 'required|string|email|min:1|max:250',
                 'con_telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15',
                 'rel_id' => 'required|numeric|min:1|max:50',

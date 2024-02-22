@@ -31,7 +31,7 @@ class ProjectController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'proj_name' => 'required|string|min:1|max:50|unique:projects|regex:/^[A-ZÑ\s]+$/',
+            'proj_name' => 'required|string|min:1|max:50|unique:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'are_id' => 'required|numeric'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -78,7 +78,7 @@ class ProjectController extends Controller
             ],400);
         }else{
             $rules = [
-                'proj_name' => 'required|string|min:1|max:50|unique:projects|regex:/^[A-ZÑ\s]+$/',
+                'proj_name' => 'required|string|min:1|max:50|unique:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 'are_id' => 'required|numeric'
             ];
             $validator = Validator::make($request->input(), $rules);

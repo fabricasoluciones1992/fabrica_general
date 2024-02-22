@@ -27,7 +27,7 @@ class DiseasesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑ\s]+$/',
+            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -59,7 +59,7 @@ class DiseasesController extends Controller
     public function update($proj_id,$use_id,Request $request,$id)
     {
         $rules = [
-            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑ\s]+$/',
+            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
