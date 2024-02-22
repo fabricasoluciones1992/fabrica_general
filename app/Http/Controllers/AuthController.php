@@ -24,26 +24,16 @@ class AuthController extends Controller
                 'status' => False,
                 'message' => $validator->errors()->all()
             ], 400);
-        } else {
+        }else{
             $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
             if ($user->use_password == $request->use_password) {
                 $user = User::find($user->use_id);
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
                 $access = DB::select("SELECT access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
-                if ($access == null) {
-                    return response()->json([
-                     'status' => False,
-                     'message' => "The user: ".$user->use_mail." has no access."
-                    ],400);
-                }else{
+                $acceso = ($access == null) ? 0 : 1;
+                //Debe tener acceso si o si en el proyecto general
+                if ($access == null && $proj_id == 6) {return response()->json(['status'=> false, 'message' => 'Access denied']);}
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
-                    Auth::login($user);
-                    if ($proj_id == 6) {
-                        session_start();
-                        $_SESSION['api_token'] = $user->createToken('API TOKEN')->plainTextToken;
-                        $_SESSION['use_id'] = $user->use_id;
-                        $_SESSION['acc_administrator'] = $access[0]->acc_administrator;
-                    }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
                     return response()->json([
@@ -51,14 +41,13 @@ class AuthController extends Controller
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
-                        'acc_administrator' =>$access[0]->acc_administrator
+                        'acc_administrator' =>$acceso
                     ], 200);
-                }
             }else {
                 return response()->json([
                     'status' => False,
                     'message' => "Invalid email or password"
-                ], 401);  
+                ], 401);
             }
         }
     }

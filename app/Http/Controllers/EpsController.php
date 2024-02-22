@@ -33,7 +33,7 @@ class EpsController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'eps_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑ\s]+$/',
+            'eps_name' => 'required|string|min:1|unique:eps|max:255|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -79,7 +79,7 @@ class EpsController extends Controller
             ],400);
         }else{
             $rules = [
-                'eps_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑ\s]+$/',
+                'eps_name' => 'required|string|min:1|max:255|unique:eps|regex:/^[A-ZÑ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

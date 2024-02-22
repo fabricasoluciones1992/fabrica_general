@@ -29,7 +29,7 @@ class CivilStatesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+            'civ_sta_name' => 'required|string|min:1|max:50|unique:civil_states|regex:/^[A-ZÑ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -67,28 +67,41 @@ class CivilStatesController extends Controller
     }
     public function update($proj_id,$use_id,Request $request,$id)
     {
-        $civilState = civilStates::find($id);
-        $msg = $civilState->civ_sta_name;
-        if($civilState == null) {
-        return response()->json([
-              'status' => false,
-                'data' => ['message' => 'no se encuentra el estado civil solicitada']
-            ],400);
+        $rules = [
+            'civ_sta_name' => 'required|string|min:1|max:50|unique:civil_states|regex:/^[A-ZÑ\s]+$/',
+
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+
+          'status' => False,
+          'message' => $validator->errors()->all()
+            ]);
         }else{
-            $rules = [
-                'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
-            ];
-            $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-               'status' => False,
-               'message' => $validator->errors()->all()
-                ]);
+            $civilState = civilStates::find($id);
+            $msg = $civilState->civ_sta_name;
+            if($civilState == null) {
+            return response()->json([
+                'status' => false,
+                    'data' => ['message' => 'no se encuentra el estado civil solicitada']
+                ],400);
             }else{
-                $civilState->civ_sta_name = $request->civ_sta_name;
-                $civilState->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$proj_id,$use_id);
-                return $civilState;
+                $rules = [
+                    'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                ];
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                'status' => False,
+                'message' => $validator->errors()->all()
+                    ]);
+                }else{
+                    $civilState->civ_sta_name = $request->civ_sta_name;
+                    $civilState->save();
+                    Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$proj_id,$use_id);
+                    return $civilState;
+                }
             }
         }
     }

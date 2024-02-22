@@ -18,7 +18,7 @@ class AreaController extends Controller
                 'data' => $areas
             ],200);
         } catch (\Throwable $th) {
-            return response()->json([         
+            return response()->json([
                 'status' => false,
                 'message' => $th
             ]);
@@ -29,7 +29,7 @@ class AreaController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+            'are_name' => 'required|string|min:1|unique:areas|max:50|regex:/^[A-ZÑ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -75,7 +75,7 @@ class AreaController extends Controller
             ],400);
         }else{
             $rules = [
-                'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑ\s]+$/',
+                'are_name' => 'required|string|min:1|max:50|unique:areas|regex:/^[A-ZÑ\s]+$/',
 
             ];
             $validator = Validator::make($request->input(), $rules);
