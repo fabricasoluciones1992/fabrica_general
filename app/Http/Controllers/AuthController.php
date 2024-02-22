@@ -37,11 +37,6 @@ class AuthController extends Controller
                     ],400);
                 }else{
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
-                    if ($proj_id == 6) {
-                        session_start();
-                        $_SESSION['use_id'] = $user->use_id;
-                        $_SESSION['acc_administrator'] = $access[0]->acc_administrator;
-                    }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
                     return response()->json([
