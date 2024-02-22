@@ -99,10 +99,29 @@ class PersonController extends Controller
         }
     }
 
-    public function update_password(Person $person)
+    public function update_password(Request $request, $id)
     {
-        //hacer esta funcionalidad
+        $person = Person::find($id);
+        if ($request->password != $person->password) {
+            return response()->json([
+                'status' => False,
+                'message' => "Password does not match"
+            ],400);
+        }
+        if ($request->new_password != $request->password_confirmation) {
+            return response()->json([
+                'status' => False,
+                'message' => "Invalid password confirmation"
+            ],400);
+        }
+        $person->password = $request->password;
+        $person->save();
+        return response()->json([
+            'status' => True,
+            'message' => "Password was successfully changed"
+        ]);
     }
+
     public function destroy($id)
     {
         $user = User::find($id);
