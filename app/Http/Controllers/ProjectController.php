@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $projects =DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name,projects.are_id FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
+            $projects = DB::select("SELECT projects.proj_id, projects.proj_name, areas.are_name,projects.are_id FROM projects INNER JOIN areas ON projects.are_id = areas.are_id;");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -46,7 +46,7 @@ class ProjectController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Project : $request->proj_name, $request->are_id ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
-                'message' => "El proyecto ".$project->proj_name." ha sido creado exitosamente."
+                'message' => "The project: ".$project->proj_name." has been created."
             ],200);
         }
     }
@@ -57,7 +57,7 @@ class ProjectController extends Controller
         if ($project == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el proyecto solicitada']
+                'data' => ['message' => 'The Project requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project por dato especifico: $id",4,$proj_id,$use_id);
@@ -74,7 +74,7 @@ class ProjectController extends Controller
         if ($project == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el proyecto solicitada']
+                'data' => ['message' => 'The Project requested was not found']
             ],400);
         }else{
             $rules = [
@@ -96,7 +96,7 @@ class ProjectController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Project del dato: $id con los datos: $request->proj_name, $request->are_id ",4,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "El proyecto ".$project->proj_name." ha sido actualizado exitosamente."
+                    'message' => "The project: ".$project->proj_name." has been update successfully."
                 ],200);
             }
         }

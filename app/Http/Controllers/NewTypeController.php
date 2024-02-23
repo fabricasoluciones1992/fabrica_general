@@ -28,7 +28,7 @@ class NewTypeController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'new_typ_type' => 'required|string|min:1|max:50|unique:new_types'
+            'new_typ_name' => 'required|string|min:1|max:50|unique:new_types'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -40,10 +40,10 @@ class NewTypeController extends Controller
         }else{
             $newtype = new NewType($request->input());
             $newtype->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_type ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,$proj_id,$use_id);
             return response()->json([
              'status' => True,
-             'message' => "El tipo de noticia ".$newtype->new_typ_type." ha sido creado exitosamente."
+             'message' => "The newType: ".$newtype->new_typ_name." has been created."
             ],200);
         }
     }
@@ -53,7 +53,7 @@ class NewTypeController extends Controller
         if ($newType == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el tipo de novedad solicitada']
+                'data' => ['message' => 'The NewType requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType por dato especifico: $id",4,$proj_id,$use_id);
@@ -69,14 +69,14 @@ class NewTypeController extends Controller
         if ($newType == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el tipo de novedad solicitada']
+                'data' => ['message' => 'The NewType requested was not found']
             ],400);
         }else{
             $rules = [
-                'new_typ_type' => 'required|string|min:1|max:50'
+                'new_typ_name' => 'required|string|min:1|max:50'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->new_typ_type, 'new_types', 'new_typ_type', 'new_typ_id', $id);
+            $validate = Controller::validate_exists($request->new_typ_name, 'new_types', 'new_typ_name', 'new_typ_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
@@ -84,12 +84,12 @@ class NewTypeController extends Controller
                'message' => $msg
                 ]);
             }else{
-                $newType->new_typ_type = $request->new_typ_type;
+                $newType->new_typ_name = $request->new_typ_name;
                 $newType->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_type ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_name ",1,$proj_id,$use_id);
                 return response()->json([
              'status' => True,
-                   'data' => "El tipo de noticia ".$newType->new_typ_type." ha sido actualizado exitosamente."
+                   'data' => "The newType: ".$newType->new_typ_name." has been update successfully."
                 ],200);
             };
         }

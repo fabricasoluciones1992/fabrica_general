@@ -44,7 +44,7 @@ class RelationshipsController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$proj_id,$use_id);
             return response()->json([
              'status' => True,
-             'message' => "La relación ".$relationship->rel_name." ha sido creada exitosamente."
+             'message' => "The relationship: ".$relationship->rel_name." has been created."
             ],200);
         }
     }
@@ -54,7 +54,7 @@ class RelationshipsController extends Controller
         if ($relationship == null) {
             return response()->json([
              'status' => false,
-                'data' => ['message' => 'no se encuentra la relación solicitada']
+                'data' => ['message' => 'The Relationship requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,$proj_id,$use_id);
@@ -70,11 +70,11 @@ class RelationshipsController extends Controller
         if ($relationship == null) {
             return response()->json([
                'status' => false,
-                'data' => ['message' => 'no se encuentra la relación solicitada']
+                'data' => ['message' => 'The Relationship requested was not found']
             ]);
         }else{
             $rules = [
-                'rel_name' => 'required|string|min:1|max:50|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'rel_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->rel_name, 'relationships', 'rel_name', 'rel_id', $id);
@@ -90,7 +90,7 @@ class RelationshipsController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,$proj_id,$use_id);
                 return response()->json([
                   'status' => True,
-                  'message' => "La relación ".$relationship->rel_name." ha sido actualizada exitosamente."
+                  'message' => "The Relationship ".$relationship->rel_name." has been update successfully."
                 ],200);
             }
         }

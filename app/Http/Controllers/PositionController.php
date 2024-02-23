@@ -46,7 +46,7 @@ class PositionController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,$proj_id,$use_id);
             return response()->json([
               'status' => True,
-              'message' => "La posición ".$position->pos_name." ha sido creada exitosamente."
+              'message' => "The position: ".$position->pos_name." has been created."
             ],200);
         }
     }
@@ -56,7 +56,7 @@ class PositionController extends Controller
         if ($position == null) {
             return response()->json([
                'status' => false,
-                'data' => ['message' => 'no se encuentra la posición solicitada']
+                'data' => ['message' => 'The position requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,$proj_id,$use_id);
@@ -72,11 +72,11 @@ class PositionController extends Controller
         if ($positons == null) {
             return response()->json([
               'status' => false,
-                'data' => ['message' => 'no se encuentra la posición solicitada']
+                'data' => ['message' => 'The position requested was not found']
             ],400);
         }else{
             $rules = [
-                'pos_name' => 'required|string|min:1|max:50|unique:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'pos_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 'are_id' =>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -94,7 +94,7 @@ class PositionController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,$proj_id,$use_id);
                 return response()->json([
                   'status' => True,
-                  'message' => "La posición ".$positons->pos_name." ha sido actualizada exitosamente."
+                  'message' => "The position: ".$positons->pos_name." has been update successfully."
                 ],200);
             }
         }

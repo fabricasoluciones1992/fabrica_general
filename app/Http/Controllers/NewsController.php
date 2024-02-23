@@ -13,7 +13,7 @@ class NewsController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
+            $news = DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_name,projects.proj_name,users.use_mail,persons.per_name FROM news
             INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
             INNER JOIN projects ON news.proj_id = projects.proj_id
             INNER JOIN users ON news.use_id = users.use_id
@@ -59,7 +59,7 @@ class NewsController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $new =  DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_type,projects.proj_name,users.use_mail,persons.per_name FROM news
+        $new =  DB::select("SELECT news.new_id,news.new_date,new_types.new_typ_name,projects.proj_name,users.use_mail,persons.per_name FROM news
         INNER JOIN new_types ON news.new_typ_id = new_types.new_typ_id
         INNER JOIN projects ON news.proj_id = projects.proj_id
         INNER JOIN users ON news.use_id = users.use_id

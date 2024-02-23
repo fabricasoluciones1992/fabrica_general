@@ -12,7 +12,7 @@ class NewType extends Model
     protected $primaryKey = 'new_typ_id';
 
     protected $fillable = [
-        'new_typ_type',
+        'new_typ_name',
     ];
 
     public $timestamps = false;

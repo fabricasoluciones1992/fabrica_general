@@ -58,12 +58,12 @@ class PersonController extends Controller
             ],400);
         }else{
             $rules = [
-                'per_name'=> 'required|min:1|max:150|string',
-                'per_lastname'=> 'required|min:1|max:100|string',
+                'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑ\s]+$/',
+                'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑ\s]+$/',
                 'per_document'=> 'required|min:1000|max:999999999999999|integer',
                 'per_expedition'=> 'required|date',
                 'per_birthdate'=> 'required|date',
-                'per_direction'=> 'required|min:1|max:255|string',
+                'per_direction'=> 'required|min:1|max:255|regex:/^[a-zA-ZñÑ\s#\-]+$/u',
                 'civ_sta_id'=> 'required|integer',
                 'doc_typ_id'=> 'required|integer',
                 'eps_id'=> 'required|integer',
