@@ -72,7 +72,7 @@ class MailsController extends Controller
             ],400);
         }else{
             $rules = [
-                'mai_mail' =>'required|string|max:255|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@uniempresarial\.edu\.co$/',
+                'mai_mail' =>'required|string|max:255|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@.*$/',
                 'mai_description' =>'string|max:255',
                 'per_id' =>'required|integer'
             ];
