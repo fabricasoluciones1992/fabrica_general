@@ -98,7 +98,7 @@ class DocTypesController extends Controller
     {
         return response()->json([
             'status' => true,
-            'message' => "Funcion no disponible"
+            'message' => "FUNCTION NOT AVAILABLE"
         ],400);
     }
 }

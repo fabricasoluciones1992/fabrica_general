@@ -105,7 +105,7 @@ class EpsController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => "Funcion no disponible"
+            'message' => "FUNCTION NOT AVAILABLE"
         ],400);
     }
 }
