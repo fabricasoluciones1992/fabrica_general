@@ -112,6 +112,6 @@ class AccessController extends Controller
         return response()->json([ 
            'status' => false,
            'message' => "Funcion no disponible"
-         ],400);FUNCTION NOT AVAILABLE
+         ],400);
     }
 }
