@@ -77,10 +77,12 @@ class RelationshipsController extends Controller
                 'rel_name' => 'required|string|min:1|max:50|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->rel_name, 'relationships', 'rel_name', 'rel_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                   'status' => False,
-                  'message' => $validator->errors()->all()
+                  'message' => $msg
                 ]);
             }else{
                 $relationship->rel_name = $request->rel_name;

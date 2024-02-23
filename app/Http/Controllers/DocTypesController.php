@@ -76,10 +76,12 @@ class DocTypesController extends Controller
                 'doc_typ_name' => 'required|string|min:1|max:50|unique:document_types|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->doc_typ_name, 'document_types', 'doc_typ_name', 'doc_typ_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                   'status' => False,
-                  'message' => $validator->errors()->all()
+                  'message' => $msg
                 ]);
             }else{
                 $docTypes->doc_typ_name = $request->doc_typ_name;

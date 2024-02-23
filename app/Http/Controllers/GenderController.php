@@ -68,7 +68,7 @@ class GenderController extends Controller
     public function update($proj_id,$use_id,Request $request, $id)
     {
         $gender = Genders::find($id);
-        $msg = $gender->gen_name;
+        $gender_old = $gender->gen_name;
         if ($gender == null) {
             return response()->json([
                 'status' => false,
@@ -79,15 +79,17 @@ class GenderController extends Controller
                 'gen_name' => 'required|string|min:1|max:50|unique:genders|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->gen_name, 'genders', 'gen_name', 'gen_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                     'status' => False,
-                    'message' => $validator->errors()->all()
+                    'message' => $msg
                 ]);
             }else{
                 $gender->gen_name = $request->gen_name;
                 $gender->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$msg. con el dato: $request->gen_name",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$gender_old. con el dato: $request->gen_name",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "El genero ".$gender->gen_name." ha sido actualizado exitosamente."

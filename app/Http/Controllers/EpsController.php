@@ -82,10 +82,12 @@ class EpsController extends Controller
                 'eps_name' => 'required|string|min:1|max:255|unique:eps|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->eps_name, 'eps', 'eps_name', 'eps_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                     'status' => False,
-                    'message' => $validator->errors()->all()
+                    'message' => $msg
                 ]);
             }else{
                 $eps->eps_name = $request->eps_name;

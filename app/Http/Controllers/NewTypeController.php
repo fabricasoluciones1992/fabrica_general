@@ -76,10 +76,12 @@ class NewTypeController extends Controller
                 'new_typ_type' => 'required|string|min:1|max:50'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->new_typ_type, 'new_types', 'new_typ_type', 'new_typ_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                'status' => False,
-               'message' => $validator->errors()->all()
+               'message' => $msg
                 ]);
             }else{
                 $newType->new_typ_type = $request->new_typ_type;

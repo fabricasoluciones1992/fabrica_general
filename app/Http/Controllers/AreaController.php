@@ -77,8 +77,8 @@ class AreaController extends Controller
             $rules = [
                 'are_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
-            $validate = Controller::validate_exists($request->are_name, 'areas', 'are_name', 'are_id', $id);
             $validator = Validator::make($request->input(), $rules);
+            $validate = Controller::validate_exists($request->are_name, 'areas', 'are_name', 'are_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([

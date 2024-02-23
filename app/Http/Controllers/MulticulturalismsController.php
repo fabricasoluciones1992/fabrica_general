@@ -78,10 +78,12 @@ class MulticulturalismsController extends Controller
 
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->mul_name, 'multiculturalisms', 'mul_name', 'mul_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json()([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
                 $multiculturalism->mul_name = $request->mul_name;

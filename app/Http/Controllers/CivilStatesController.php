@@ -91,10 +91,12 @@ class CivilStatesController extends Controller
                     'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->civ_sta_name, 'civil_states', 'civ_sta_name', 'civ_sta_id', $id);
+                if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                     return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                     ]);
                 }else{
                     $civilState->civ_sta_name = $request->civ_sta_name;

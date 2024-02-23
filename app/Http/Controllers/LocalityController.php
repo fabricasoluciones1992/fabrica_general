@@ -75,10 +75,12 @@ class LocalityController extends Controller
                 'loc_name' => 'required|string|min:1|max:50|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if($validator->fails()){
+            $validate = Controller::validate_exists($request->loc_name, 'localities', 'loc_name', 'loc_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                  'status' => false,
-                 'message' => $validator->errors()->all()
+                 'message' => $msg
                 ],400);
             }else{
                 $locality->loc_name = $request->loc_name;
