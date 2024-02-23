@@ -20,7 +20,7 @@ class DocTypesController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
               'status' => false,
-              'message' => "Error en index, not found elements"
+              'message' => "Error in index, not found elements"
             ],500);
         }
 
@@ -42,7 +42,7 @@ class DocTypesController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,$proj_id,$use_id);
             return response()->json([
                'status' => True,
-               'message' => "El tipo de documento ".$doctypes->doc_typ_name." ha sido creado exitosamente."
+               'message' => "The type document: ".$doctypes->doc_typ_name." has been created."
             ],200);
         }
     }
@@ -52,7 +52,7 @@ class DocTypesController extends Controller
         if($docTypes == null){
             return response()->json([
                 'status' => False,
-                'data' => ['message' => 'no se encuentra el tipo de documento solicitado'],
+                'data' => ['message' => 'The document typ requested not found'],
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id",4,$proj_id,$use_id);
@@ -68,7 +68,7 @@ class DocTypesController extends Controller
         if($docTypes == null){
             return response()->json([
                'status' => False,
-                'data' => ['message' => 'no se encuentra el tipo de documento solicitado'],
+                'data' => ['message' => 'The document typ requested not found'],
 
             ],400);
         }else{
@@ -89,7 +89,7 @@ class DocTypesController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,$proj_id,$use_id);
                 return response()->json([
                   'status' => True,
-                  'message' => "El tipo de documento ".$docTypes->doc_typ_name." ha sido actualizado exitosamente."
+                  'message' => "The type document: ".$docTypes->doc_typ_name." has been update."
                 ],200);
             }
         }

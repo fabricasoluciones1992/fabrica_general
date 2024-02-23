@@ -25,7 +25,7 @@ class EpsController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                'status' => false,
-              'message' => "Error en index, not found elements"
+              'message' => "Error in index, not found elements"
             ],500);
         }
     }
@@ -47,7 +47,7 @@ class EpsController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla EPS : $request->eps_name ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
-                'message' => "la eps ".$eps->eps_name." ha sido creado exitosamente."
+                'message' => "The eps: ".$eps->eps_name." has been created."
             ],200);
         }
     }
@@ -58,7 +58,7 @@ class EpsController extends Controller
         if ($eps == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra la eps solicitado']
+                'data' => ['message' => 'The eps requested was not found.']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla EPS por dato especifico: $id",4,$proj_id,$use_id);
@@ -75,7 +75,7 @@ class EpsController extends Controller
         if ($eps == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el genero solicitado']
+                'data' => ['message' => 'The eps requested was not found']
             ],400);
         }else{
             $rules = [
@@ -95,7 +95,7 @@ class EpsController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla EPS del dato: $id con el dato: $request->eps_name",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "la eps ".$eps->eps_name." ha sido actualizada exitosamente."
+                    'message' => "The eps: ".$eps->eps_name." has been update."
                 ],200);
             }
         }

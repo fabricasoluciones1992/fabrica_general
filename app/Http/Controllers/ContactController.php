@@ -105,7 +105,6 @@ class ContactController extends Controller
                 $contact->con_telephone = $request->con_telephone;
                 $contact->rel_id = $request->rel_id;
                 $contact->per_id = $request->per_id;
-
                 $contact->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,$proj_id,$use_id);
                 return response()->json([

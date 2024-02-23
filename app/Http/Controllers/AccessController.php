@@ -14,7 +14,6 @@ class AccessController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $token = Controller::auth();
             $access = DB::select("SELECT access.acc_id,access.acc_administrator,access.acc_status,projects.proj_name FROM access
             INNER JOIN projects ON access.proj_id = projects.proj_id;");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,$proj_id,$use_id);

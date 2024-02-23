@@ -74,7 +74,7 @@ class MulticulturalismsController extends Controller
             ],400);
         }else{
             $rules = [
-                'mul_name' => 'required|string|min:1|max:50|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'mul_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -91,7 +91,7 @@ class MulticulturalismsController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,$proj_id,$use_id);
                 return response()->json([
                 'status' => True,
-                'message' => "El tipo de cultura ".$multiculturalism->mul_name." ha sido actualizado exitosamente."
+                'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been updated successfully."
                 ],200);
             }
         }

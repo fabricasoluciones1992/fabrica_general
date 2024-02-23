@@ -42,7 +42,7 @@ class LocalityController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,$proj_id,$use_id);
             return response()->json([
             'status' => true,
-            'message' => "La area ".$localities->loc_name." ha sido creado exitosamente."
+            'message' => "The locality: ".$localities->loc_name." has been created."
             ],200);
         };
     }
@@ -52,7 +52,7 @@ class LocalityController extends Controller
         if($localities == null){
             return response()->json([
               'status' => false,
-                'data' => ['message' => 'No se encuentra la localidad buscada']
+                'data' => ['message' => 'The Locality requested was not found']
                 ],400);
             }else{
                 Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla locality por dato especifico: $id",4,$proj_id,$use_id);
@@ -68,11 +68,11 @@ class LocalityController extends Controller
         if ($locality == null) {
              return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra la localidad solicitada']
+                'data' => ['message' => 'The Locality requested was not found']
              ],400);
         }else{
             $rules = [
-                'loc_name' => 'required|string|min:1|max:50|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'loc_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->loc_name, 'localities', 'loc_name', 'loc_id', $id);
@@ -88,7 +88,7 @@ class LocalityController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,$proj_id,$use_id);
                 return response()->json([
                'status' => true,
-                   'message' => "Localidad actualizada con exito"
+                   'message' => "The localiti: .$locality->loc_name. has been updated successfully"
                 ],200);
             };  
         }

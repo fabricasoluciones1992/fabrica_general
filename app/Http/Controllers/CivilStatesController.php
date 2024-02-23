@@ -45,7 +45,7 @@ class CivilStatesController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$proj_id,$use_id );
             return response()->json([
           'status' => True,
-          'message' => "The civil state: ".$civilStates->civ_sta_name." has been create."
+          'message' => "The civil state: ".$civilStates->civ_sta_name." has been created."
             ],200);
         }
     }
@@ -68,7 +68,7 @@ class CivilStatesController extends Controller
     public function update($proj_id,$use_id,Request $request,$id)
     {
         $rules = [
-            'civ_sta_name' => 'required|string|min:1|max:50|unique:civil_states|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);

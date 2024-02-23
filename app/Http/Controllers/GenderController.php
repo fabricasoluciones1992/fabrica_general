@@ -43,7 +43,7 @@ class GenderController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
-                'message' => "El genero ".$gender->gen_name." ha sido creado exitosamente."
+                'message' => "The gender: ".$gender->gen_name." has been created."
             ],200);
         }
     }
@@ -54,7 +54,7 @@ class GenderController extends Controller
         if ($gender == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el genero solicitado']
+                'data' => ['message' => 'The gender requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders por usuario especifico",4,$proj_id,$use_id);
@@ -72,11 +72,11 @@ class GenderController extends Controller
         if ($gender == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra el genero solicitado']
+                'data' => ['message' => 'The gender requested was not found']
             ],400);
         }else{
             $rules = [
-                'gen_name' => 'required|string|min:1|max:50|unique:genders|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'gen_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->gen_name, 'genders', 'gen_name', 'gen_id', $id);
@@ -92,7 +92,7 @@ class GenderController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$gender_old. con el dato: $request->gen_name",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "El genero ".$gender->gen_name." ha sido actualizado exitosamente."
+                    'message' => "The gender: ".$gender->gen_name." has been update."
                 ],200);
             }
         }

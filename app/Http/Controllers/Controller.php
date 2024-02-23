@@ -23,7 +23,6 @@ class Controller extends BaseController
     public function validate_exists($data, $table, $column, $PK, $pk){
         $values = DB::table($table)->get([$PK, $column]);
         foreach ($values as $value) {
-            // return $value->$column."==".$data." y ". $value->$PK. "!=".$pk;
             if ($value->$column == $data && $value->$PK != $pk) {
                 return 0;
             }
