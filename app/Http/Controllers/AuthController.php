@@ -58,7 +58,7 @@ class AuthController extends Controller
     }
     public function register($use_id,Request $request){
         $rules = [
-            'use_mail'=> 'required|min:1|max:250|email|unique:users',
+            'use_mail'=> 'required|min:1|max:250|email|unique:users|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@uniempresarial\.edu\.co$/',
             'use_password'=> 'required|min:1|max:150|string',
             'per_name'=> 'required|min:1|max:150|string',
             'per_lastname'=> 'required|min:1|max:100|string',

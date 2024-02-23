@@ -27,23 +27,22 @@ class DiseasesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'dis_name' => 'required|string|min:1|max:50|unique:diseases|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
-
-          'status' => False,
-          'message' => $validator->errors()->all()
+                'status' => False,
+                'message' => $validator->errors()->all()
             ]);
         }else{
             $disease = new Diseases();
-            $disease->dis_disease = $request->dis_disease;
+            $disease->dis_name = $request->dis_name;
             $disease->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Diseases: $request->dis_name",3,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
-                'data' => $disease,
+                'data' => "The Diseases: ".$disease->dis_name." has been created."
             ],200);
         }
     }
@@ -59,7 +58,7 @@ class DiseasesController extends Controller
     public function update($proj_id,$use_id,Request $request,$id)
     {
         $rules = [
-            'dis_disease' => 'required|string|min:1|max:50|unique:disease|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'dis_name' => 'required|string|min:1|max:50|unique:diseases|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -71,12 +70,12 @@ class DiseasesController extends Controller
             ]);
         }else{
             $disease = Diseases::find($id);
-            $disease->dis_disease = $request->dis_disease;
+            $disease->dis_name = $request->dis_name;
             $disease->save();
-            Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Diseases del dato: id->$id->dis_id",1,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Diseases del dato: id->$id",1,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
-                'data' => $disease,
+                'data' => "The Diseases: ".$disease->dis_name." has been update."
             ],200);
         }
     }

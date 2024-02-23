@@ -45,7 +45,7 @@ class CivilStatesController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$proj_id,$use_id );
             return response()->json([
           'status' => True,
-          'message' => "El estado civil ".$civilStates->civ_sta_name." ha sido creado exitosamente."
+          'message' => "The civil state: ".$civilStates->civ_sta_name." has been create."
             ],200);
         }
     }
@@ -55,7 +55,7 @@ class CivilStatesController extends Controller
         if ($civilState == null) {
             return response()->json([
                'status' => false,
-                'data' => ['message' => 'no se encuentra el estado civil solicitada']
+                'data' => ['message' => 'The requested civil state is not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla civilStates por dato especifico: $id",4,$proj_id,$use_id);
@@ -84,7 +84,7 @@ class CivilStatesController extends Controller
             if($civilState == null) {
             return response()->json([
                 'status' => false,
-                    'data' => ['message' => 'no se encuentra el estado civil solicitada']
+                    'data' => ['message' => 'The requested civil state is not found']
                 ],400);
             }else{
                 $rules = [
@@ -100,7 +100,10 @@ class CivilStatesController extends Controller
                     $civilState->civ_sta_name = $request->civ_sta_name;
                     $civilState->save();
                     Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$proj_id,$use_id);
-                    return $civilState;
+                    return response()->json([
+                        'status' => True,
+                        'message' => "The civil state: ".$civilState->civ_sta_name." has been update."
+                    ],200);                
                 }
             }
         }
