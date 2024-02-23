@@ -35,7 +35,7 @@ class PersonController extends Controller
     public function show($proj_id,$use_id, $id)
     {
         try {
-            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $id");
+            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,

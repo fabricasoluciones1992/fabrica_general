@@ -80,6 +80,15 @@ class AuthController extends Controller
                 'message' => $validator->errors()->all()
             ],400);
         }else{
+            $documents = DB::select("SELECT doc_typ_id, per_document FROM persons");
+            foreach ($documents as $document) {
+                if ($document->per_document == $request->per_document && $document->doc_typ_id == $request->doc_typ_id) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => "The document you are trying to register already exists"
+                    ]);
+                }
+            }
             $user = User::create([
                 'use_mail' => $request->use_mail,
                 'use_password' => $request->use_password,
