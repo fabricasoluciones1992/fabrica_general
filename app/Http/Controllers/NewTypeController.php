@@ -28,7 +28,7 @@ class NewTypeController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'new_typ_type' => 'required|string|min:1|max:50'
+            'new_typ_type' => 'required|string|min:1|max:50|unique:new_types'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {

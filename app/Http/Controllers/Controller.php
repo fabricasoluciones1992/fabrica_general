@@ -20,19 +20,14 @@ class Controller extends BaseController
         DB::statement($trigger);
     }
 
-    function auth(){
-        session_start();
-        if (isset($_SESSION['api_token'])) {
-            $token = $_SESSION['api_token'];
-            $use_id = $_SESSION['use_id'];
-            $proj_id = $_SESSION['proj_id'];
-            return [
-                "token" => $token,
-                "use_id" => $use_id,
-                "proj_id" => $proj_id
-            ];
-        } else {
-            return  'Token not found in session';
+    public function validate_exists($data, $table, $column, $PK, $pk){
+        $values = DB::table($table)->get([$PK, $column]);
+        foreach ($values as $value) {
+            // return $value->$column."==".$data." y ". $value->$PK. "!=".$pk;
+            if ($value->$column == $data && $value->$PK != $pk) {
+                return 0;
+            }
         }
+        return 1;
     }
 }

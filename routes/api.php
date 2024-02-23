@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\DocTypesController;
 use App\Http\Controllers\EpsController;
@@ -61,6 +62,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::post('update/password'.URL.'{id}', [PersonController::class, 'update_password'])->name('update.password');
+    Route::get('prueba/{data}/{table}/{column}/{PK}/{pk}', [Controller::class, 'validate_exists'])->name('prueba');
 //
 
 
