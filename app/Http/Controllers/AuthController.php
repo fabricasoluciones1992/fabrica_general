@@ -32,6 +32,7 @@ class AuthController extends Controller
                 $access = DB::select("SELECT access.acc_status, access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
                 $acceso = ($access == null) ? 0 : 1;
                 //Debe tener acceso si o si en el proyecto general
+                return $access;
                 if (($access == null && $proj_id == 6) || $access[0]->acc_status == 0) {
                     return response()->json([
                         'status' => False,
