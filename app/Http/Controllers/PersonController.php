@@ -109,7 +109,7 @@ class PersonController extends Controller
             ],400);
         }
         $rules = [
-            'new_password'=> 'required|min:8|max:15|string|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/'
+            'new_password'=> 'required'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
