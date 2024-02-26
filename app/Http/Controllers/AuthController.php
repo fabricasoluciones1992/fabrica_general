@@ -30,7 +30,7 @@ class AuthController extends Controller
                 $user = User::find($user->use_id);
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
                 $access = DB::select("SELECT access.acc_status, access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
-                $acceso = ($access == null) ? 0 : $access[0]->acc_administrator;
+                $acceso = ($access == null) ? 2 : 1;
                 //Debe tener acceso si o si en el proyecto general
                 if (($access == null && $proj_id == 6) || $acceso == 0) {
                     return response()->json([
@@ -38,6 +38,7 @@ class AuthController extends Controller
                         'message' => "The user: ".$user->use_mail." has no access."
                        ],400);
                 }
+                    $acceso = ($acceso == 2) ? 0 : $acceso;
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
