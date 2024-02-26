@@ -107,12 +107,13 @@ class AccessController extends Controller
             }
         }
     }
-    public function destroy($id)
+    public function destroy($proj_id,$use_id,$id)
     {
         $access = Access::find($id);
         $newStatus  = ($access->status == 1) ? 1 : 0;
         $access->use_status = $newStatus;
         $access->save();
+        Controller::NewRegisterTrigger("Se le cambio el acceso al usuario:".$id.", por $newStatus ",2,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'message' => 'user status updated successfully'

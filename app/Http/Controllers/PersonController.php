@@ -133,12 +133,13 @@ class PersonController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($proj_id,$use_id,$id)
     {
         $user = User::find($id);
-        $newStatus  = ($user->use_status == 1) ? 1 : 0;
+        $newStatus  = ($user->use_status == 1) ? 0 : 1;
         $user->use_status = $newStatus;
         $user->save();
+        Controller::NewRegisterTrigger("Se cambio el estado de un dato en la tabla  ",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'message' => 'user status updated successfully'
