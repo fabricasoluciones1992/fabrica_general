@@ -108,24 +108,35 @@ class PersonController extends Controller
                 'message' => "Password does not match"
             ],400);
         }
-        if ($request->new_password != $request->password_confirmation) {
+        $rules = [
+            'new_password'=> 'required|min:8|max:15|string|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/'
+        ];
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
             return response()->json([
-                'status' => False,
-                'message' => "Invalid password confirmation"
-            ],400);
+            'status' => False,
+            'message' => $validator->errors()->all()
+            ]);
+        }else{
+            if ($request->new_password != $request->password_confirmation) {
+                return response()->json([
+                    'status' => False,
+                    'message' => "Invalid password confirmation"
+                ],400);
+            }
+            $person->password = $request->new_password;
+            $person->save();
+            return response()->json([
+                'status' => True,
+                'message' => "Password was successfully changed"
+            ]);
         }
-        $person->password = $request->password;
-        $person->save();
-        return response()->json([
-            'status' => True,
-            'message' => "Password was successfully changed"
-        ]);
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
-        $newStatus  = ($user->status == 1) ? 1 : 0;
+        $newStatus  = ($user->use_status == 1) ? 1 : 0;
         $user->use_status = $newStatus;
         $user->save();
         return response()->json([

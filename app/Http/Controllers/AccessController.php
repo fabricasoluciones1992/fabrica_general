@@ -107,11 +107,15 @@ class AccessController extends Controller
             }
         }
     }
-    public function destroy(Access $access)
+    public function destroy($id)
     {
-        return response()->json([ 
-           'status' => false,
-           'message' => "Funcion no disponible"
-         ],400);
+        $access = Access::find($id);
+        $newStatus  = ($access->status == 1) ? 1 : 0;
+        $access->use_status = $newStatus;
+        $access->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'user status updated successfully'
+        ]);
     }
 }
