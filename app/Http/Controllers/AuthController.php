@@ -67,7 +67,7 @@ class AuthController extends Controller
             'per_expedition'=> 'required|date',
             'per_birthdate'=> 'required|date',
             'per_direction'=> 'required|min:1|max:255|string',
-            'per_rh' => 'required|min:1|max:255|string',
+            'per_rh' => 'required|min:1|max:3|string',
             'civ_sta_id'=> 'required|integer',
             'doc_typ_id'=> 'required|integer',
             'eps_id'=> 'required|integer',
