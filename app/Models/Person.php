@@ -27,6 +27,7 @@ class Person extends Model
         'con_id',
         'mul_id',
         'use_id',
+        'per_rh',
         'per_typ_id',
     ];
 
