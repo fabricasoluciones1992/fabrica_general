@@ -29,7 +29,7 @@ class PersonTypesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'per_typ_name' => 'required|string|min:1|max:50|unique:person_types'
+            'per_typ_name' => 'required|string|min:1|max:50|unique:person_types|regex:/^[A-ZÁÉÍÓÚÜÑ]+$/'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -84,7 +84,7 @@ class PersonTypesController extends Controller
             ],400);
         }else{
             $rules = [
-                'per_typ_name' => 'required|string|min:1|max:50'
+                'per_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÁÉÍÓÚÜÑ]+$/'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->per_typ_name, 'person_types', 'per_typ_name', 'per_typ_id', $id);
