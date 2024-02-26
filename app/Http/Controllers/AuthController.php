@@ -72,6 +72,7 @@ class AuthController extends Controller
             'eps_id'=> 'required|integer',
             'gen_id'=> 'required|integer',
             'mul_id'=> 'required|integer',
+            'per_typ_id'=> 'required|integer',
         ];
 
         $validator = Validator::make($request->input(), $rules);

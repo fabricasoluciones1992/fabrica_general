@@ -35,7 +35,7 @@ class LocalityController extends Controller
             return response()->json([
               'status' => false,
               'message' => $validator->errors()->all()
-            ],400);
+            ]);
         }else{
             $localities = new Locality($request->input());
             $localities->save();
