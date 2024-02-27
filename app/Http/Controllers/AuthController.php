@@ -81,7 +81,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
-            ],400);
+            ]);
         }else{
             $documents = DB::select("SELECT doc_typ_id, per_document FROM persons");
             foreach ($documents as $document) {
