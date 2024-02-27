@@ -11,7 +11,7 @@ class TelephonesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name, per_document
         FROM telephones
         INNER JOIN persons ON telephones.per_id = persons.per_id ");
         Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id,$use_id);
@@ -45,7 +45,7 @@ class TelephonesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name, per_document
         FROM telephones
         INNER JOIN persons ON telephones.per_id = persons.per_id  WHERE $id = telephones.per_id");
         if ($telephone == null) {
