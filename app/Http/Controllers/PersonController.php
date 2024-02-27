@@ -198,7 +198,7 @@ class PersonController extends Controller
                 </head>
             <body>
             <p>Estimado(a) Usuario:</p>
-            <p>Le confirmamos que ha cambiado de manera exitosa su contraseña. Puede dirigirse al siguiente enlace <a href='https://www.google.com/search?code=$code'>Restauracion de contraseña</a> e ingresar con su contraseña establecida</p>
+            <p>Le confirmamos que ha cambiado de manera exitosa su contraseña. Puede dirigirse al siguiente enlace <a href='http://localhost:3000/resetPassword'>Restauracion de contraseña</a> e ingresar con su contraseña establecida</p>
             <p>Este correo fue enviado automáticamente, agradecemos no responder este mensaje.</p>
             <p>Gracias por su atención.</p>
             </body>
