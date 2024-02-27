@@ -63,7 +63,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('mails'.URL, MailsController::class)->names('mails')->parameter('','mails');
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
-    Route::post('update/password'.URL.'{id}', [PersonController::class, 'update_password'])->name('update.password');
+    Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
+    Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
     Route::get('prueba/{data}/{table}/{column}/{PK}/{pk}', [Controller::class, 'validate_exists'])->name('prueba');
 //
 

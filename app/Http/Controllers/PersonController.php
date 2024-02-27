@@ -48,6 +48,23 @@ class PersonController extends Controller
             ],500);
         }
     }
+
+    public function profile($proj_id,$use_id)
+    {
+        try {
+            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $use_id");
+            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons[0]->per_name,4,$proj_id,$use_id);
+            return response()->json([
+                'status' => true,
+                'data' => $persons[0]
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
+    }
     public function update($proj_id,$use_id,Request $request, $id)
     {
         $person = Person::find($id);
@@ -99,9 +116,9 @@ class PersonController extends Controller
         }
     }
 
-    public function update_password(Request $request, $id)
+    public function update_password($proj_id,$use_id,Request $request)
     {
-        $person = User::find($id);
+        $person = User::find($use_id);
         if ($request->use_password != $person->use_password) {
             return response()->json([
                 'status' => False,
@@ -126,6 +143,7 @@ class PersonController extends Controller
             }
             $person->use_password = $request->new_password;
             $person->save();
+            Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
                 'message' => "Password was successfully changed"
