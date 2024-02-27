@@ -50,22 +50,23 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('eps'.URL, EpsController::class)->names('eps')->parameter('','eps');
     Route::resource('genders'.URL, GenderController::class)->names('genders')->parameter('','genders');
     Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
+    Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
     Route::resource('news'.URL, NewsController::class)->names('news')->parameter('','news');
     Route::resource('new/types'.URL, NewTypeController::class)->names('new.types')->parameter('','new_types');
     Route::resource('persons/types'.URL, PersonTypesController::class)->names('persons.types')->parameter('','persons_types');
     Route::resource('persons'.URL, PersonController::class)->names('persons')->parameter('','persons');
     Route::resource('projects'.URL, ProjectController::class)->names('projects')->parameter('','projects');
     Route::resource('positions'.URL, PositionController::class)->names('positions')->parameter('','positions');
-    Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
     Route::resource('civil/states'.URL, CivilStatesController::class)->names('civil.states')->parameter('','civil_states');
     Route::resource('relationships'.URL, RelationshipsController::class)->names('relationships')->parameter('','relationships');
     Route::resource('diseases'.URL, DiseasesController::class)->names('diseases')->parameter('','diseases');
     Route::resource('mails'.URL, MailsController::class)->names('mails')->parameter('','mails');
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
-    Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
     Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
-    Route::get('prueba/{data}/{table}/{column}/{PK}/{pk}', [Controller::class, 'validate_exists'])->name('prueba');
+    Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('prueba');
+    Route::post('reset/password/', [PersonController::class, 'reset_password'])->name('prueba');
+    Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
 //
 
 
