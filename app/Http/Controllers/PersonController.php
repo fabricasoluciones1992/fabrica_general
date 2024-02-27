@@ -71,7 +71,7 @@ class PersonController extends Controller
         if ($person == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra la persona solicitada']
+                'data' => ['message' => 'The person requested is not found']
             ],400);
         }else{
             $rules = [
@@ -110,7 +110,7 @@ class PersonController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "la persona: ".$person->per_name." ha sido actualizado exitosamente."
+                    'message' => "The person: ".$person->per_name." has been update successfully."
                 ],200);
             }
         }

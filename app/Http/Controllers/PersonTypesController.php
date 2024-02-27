@@ -44,7 +44,7 @@ class PersonTypesController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla person_types : $request->per_typ_name ",3,$proj_id,$use_id);
             return response()->json([
              'status' => True,
-             'message' => "El tipo de de persona; ".$personType->per_typ_name." ha sido creado exitosamente."
+             'message' => "The person type:".$personType->per_typ_name."has been created successfully."
             ],200);
         }
     }
@@ -100,7 +100,7 @@ class PersonTypesController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla person$personType del dato: $id con el dato: $request->per_typ_name ",1,$proj_id,$use_id);
                 return response()->json([
              'status' => True,
-                   'data' => "El tipo de noticia ".$personType->per_typ_name." ha sido actualizado exitosamente."
+                   'data' => "The personType:  ".$personType->per_typ_name." has been update successfully."
                 ],200);
             };
         }

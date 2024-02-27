@@ -40,7 +40,7 @@ class MailsController extends Controller
             Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla mails",3,$proj_id,$use_id);
             return response()->json([
               'status' => True,
-              'message' => "The mail ".$mail->mai_mail." has been added succesfully."
+              'message' => "The mail: ".$mail->mai_mail." has been added succesfully."
             ],200);
         }
     }

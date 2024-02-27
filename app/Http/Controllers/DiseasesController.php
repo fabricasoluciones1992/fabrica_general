@@ -51,7 +51,7 @@ class DiseasesController extends Controller
         if ($disease == null) {
             return response()->json([
                 'status' => False,
-                'data' => ['message' => 'The document typ requested not found'],
+                'data' => ['message' => 'The disease requested not found'],
             ], 400);
  
         } else {
@@ -68,7 +68,7 @@ class DiseasesController extends Controller
         if ($disease == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The document typ requested not found'],
+                'data' => ['message' => 'The disease requested not found'],
  
             ], 400);
         } else {

@@ -44,7 +44,7 @@ class MulticulturalismsController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,$proj_id,$use_id);
             return response()->json([
          'status' => True,
-         'message' => "El tipo de cultura ".$multiculturalism->mul_name." ha sido creado exitosamente."
+         'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been created successfully."
             ],200);
         }
     }
