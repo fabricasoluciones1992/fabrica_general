@@ -29,7 +29,7 @@ class AuthController extends Controller
             if ($user->use_password == $request->use_password) {
                 $user = User::find($user->use_id);
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
-                $access = DB::select("SELECT access.acc_status, access.acc_administrator FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
+                $access = DB::select("SELECT access.acc_status FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
                 $acceso = ($access == null) ? 2 : $access[0]->acc_status;
                 //Debe tener acceso si o si en el proyecto general
                 if (($access == null && $proj_id == 6) || $acceso == 0) {
@@ -47,7 +47,6 @@ class AuthController extends Controller
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
-                        'acc_administrator' =>$acceso
                     ], 200);
             }else {
                 return response()->json([

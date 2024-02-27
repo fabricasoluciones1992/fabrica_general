@@ -14,8 +14,10 @@ class AccessController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $access = DB::select("SELECT access.acc_id,access.acc_administrator,access.acc_status,projects.proj_name FROM access
-            INNER JOIN projects ON access.proj_id = projects.proj_id;");
+            $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id, persons.per_name FROM access
+            INNER JOIN projects ON access.proj_id = projects.proj_id
+            INNER JOIN users ON access.use_id = users.use_id
+            INNER JOIN persons ON users.use_id = persons.per_id");
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,$proj_id,$use_id);
             return response()->json([
               'status' => true,
@@ -33,7 +35,6 @@ class AccessController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'acc_administrator' =>'required|boolean',
             'proj_id' =>'required|integer',
             'use_id' =>'required|integer'
         ];
@@ -56,9 +57,10 @@ class AccessController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $access = DB::select("SELECT access.acc_id, access.acc_status,projects.proj_name ,areas.are_name FROM access
+        $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id, persons.per_name FROM access
         INNER JOIN projects ON access.proj_id = projects.proj_id
-        INNER JOIN areas ON access.are_id = areas.are_id WHERE $id = access.acc_id;"); 
+        INNER JOIN users ON access.use_id = users.use_id
+        INNER JOIN persons ON users.use_id = persons.per_id WHERE $id = access.acc_id;"); 
         if ($access == null) {
             return response()->json([
                'status' => false,
@@ -84,7 +86,6 @@ class AccessController extends Controller
             ],400);
         }else{
             $rules = [
-                'acc_administrator' =>'required|boolean',
                 'proj_id' =>'required|integer',
                 'use_id' =>'required|integer'
             ];

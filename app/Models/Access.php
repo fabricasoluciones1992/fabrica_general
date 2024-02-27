@@ -16,7 +16,6 @@ class Access extends Model
 
     protected $fillable = [
         'acc_status',
-        'acc_administrator',
         'proj_id',
         'use_id'
     ];
