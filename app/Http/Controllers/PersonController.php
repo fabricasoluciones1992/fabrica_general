@@ -199,6 +199,7 @@ class PersonController extends Controller
             <body>
             <p>Estimado(a) Usuario:</p>
             <p>Le confirmamos que ha cambiado de manera exitosa su contraseña. Puede dirigirse al siguiente enlace <a href='http://localhost:3000/resetPassword'>Restauracion de contraseña</a> e ingresar con su contraseña establecida</p>
+            <p>Tu codigo de seguridad es: {$code}</p>
             <p>Este correo fue enviado automáticamente, agradecemos no responder este mensaje.</p>
             <p>Gracias por su atención.</p>
             </body>
@@ -249,7 +250,8 @@ class PersonController extends Controller
             $person = User::find($code[0]->use_id);
             $person->use_password = $request->new_password;
             $person->save();
-            DB::table('reset_passwords')->where('res_pas_code', $request->res_pas_code)->delete();
+            $useId = $code[0]->use_id;
+            DB::select("DELETE FROM reset_passwords WHERE use_id = $useId");
             Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,6,$person->use_id);
             return response()->json([
                 'status' => True,
