@@ -52,7 +52,7 @@ class AccessController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$proj_id,$use_id);
             return response()->json([
            'status' => True,
-            'message' => "The access: ".$access->acc_status." has been created."
+            'message' => "The access: ".$access->use_id." has been created."
             ],200);
         }
     }
@@ -99,12 +99,12 @@ class AccessController extends Controller
             }else{
                 $acces->acc_status = $request->acc_status;
                 $acces->proj_id = $request->proj_id;
-                $acces->acc_status = 1;
+                $acces->use_id = $request->use_id;
                 $acces->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$proj_id,$use_id);
                 return response()->json([
                  'status' => True,
-                 'message' => "The access: ".$acces->acc_status." has been updated."
+                 'message' => "The access: ".$acces->use_id." has been updated."
                 ],200);
             }
         }
