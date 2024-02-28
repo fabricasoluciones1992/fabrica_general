@@ -221,9 +221,9 @@ class PersonController extends Controller
         }
     }
 
-    public function reset_password($proj_id,Request $request)
+    public function reset_password(Request $request)
     {
-        $code = DB::select("SELECT * FROM reset_password WHERE res_pas_code = $request->res_pas_code");
+        $code = DB::select("SELECT * FROM reset_passwords WHERE res_pas_code = $request->res_pas_code");
         if ($code == null) {
             return response()->json([
                 'status' => False,
@@ -249,7 +249,8 @@ class PersonController extends Controller
             $person = User::find($code[0]->use_id);
             $person->use_password = $request->new_password;
             $person->save();
-            Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,$proj_id,$person->use_id);
+            DB::table('reset_passwords')->where('res_pas_code', $request->res_pas_code)->delete();
+            Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,6,$person->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "Password was successfully changed"
