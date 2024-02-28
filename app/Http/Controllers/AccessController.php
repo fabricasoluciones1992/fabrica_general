@@ -47,6 +47,7 @@ class AccessController extends Controller
         }else{
             $access = new Access($request->input());
             $access->acc_status = 1;
+            $access->acc_administrator = $request->acc_administrator;
             $access->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$proj_id,$use_id);
             return response()->json([
@@ -98,7 +99,7 @@ class AccessController extends Controller
             }else{
                 $acces->acc_status = $request->acc_status;
                 $acces->proj_id = $request->proj_id;
-                $acces->are_id = $request->are_id;
+                $acces->acc_status = 1;
                 $acces->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$proj_id,$use_id);
                 return response()->json([
