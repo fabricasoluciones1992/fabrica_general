@@ -11,9 +11,10 @@ class MailsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name, mails.per_id
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
         FROM mails
         INNER JOIN persons ON mails.per_id = persons.per_id
+        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id
        ");
        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla mails",4,$proj_id,$use_id);
           return response()->json([
@@ -46,9 +47,10 @@ class MailsController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, persons.per_name
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
         FROM mails
-        INNER JOIN persons ON mails.per_id = persons.per_id WHERE $id = mails.per_id");
+        INNER JOIN persons ON mails.per_id = persons.per_id
+        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id WHERE $id = mails.per_id");
         if ($mail == null) {
             return response()->json([
                'status' => false,

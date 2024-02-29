@@ -65,7 +65,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
     Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('prueba');
-    Route::post('reset/password/', [PersonController::class, 'reset_password'])->name('prueba');
+    Route::post('reset/password', [PersonController::class, 'reset_password'])->name('prueba');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
 //
 

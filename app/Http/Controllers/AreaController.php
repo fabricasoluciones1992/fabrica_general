@@ -43,7 +43,7 @@ class AreaController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
-                'message' => "La area ".$area->are_name." ha sido creado exitosamente."
+                'message' => "The area: ".$area->are_name." has been created successfully."
             ],200);
         }
     }
@@ -54,7 +54,7 @@ class AreaController extends Controller
         if ($area == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra la area solicitada']
+                'data' => ['message' => 'the area requested was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area por dato especifico : $id",4,$proj_id,$use_id);
@@ -71,7 +71,7 @@ class AreaController extends Controller
         if ($area == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'no se encuentra la area solicitada']
+                'data' => ['message' => 'the area requested was not found']
             ],400);
         }else{
             $rules = [
@@ -84,14 +84,14 @@ class AreaController extends Controller
                 return response()->json([
                     'status' => False,
                     'message' => $msg
-                ],400);
+                ]);
             }else{
                 $area->are_name = $request->are_name;
                 $area->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "la area ".$area->are_name." ha sido actualizado exitosamente."
+                    'message' => "The area: ".$area->are_name." has been update successfully."
                 ],200);
             }
         }

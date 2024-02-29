@@ -47,6 +47,7 @@ class AuthController extends Controller
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
+                        'acc_administrator' =>$acceso
                     ], 200);
             }else {
                 return response()->json([

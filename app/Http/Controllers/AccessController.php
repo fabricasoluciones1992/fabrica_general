@@ -14,7 +14,7 @@ class AccessController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id, persons.per_name FROM access
+            $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id,users.use_mail,persons.per_id, persons.per_name,persons.per_document,projects.proj_id FROM access
             INNER JOIN projects ON access.proj_id = projects.proj_id
             INNER JOIN users ON access.use_id = users.use_id
             INNER JOIN persons ON users.use_id = persons.per_id");
@@ -58,13 +58,13 @@ class AccessController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$proj_id,$use_id);
             return response()->json([
            'status' => True,
-            'message' => "The access: ".$access->acc_status." has been created."
+            'message' => "The access: ".$access->use_id." has been created."
             ],200);
         }
     }
     public function show($proj_id,$use_id,$id)
     {
-        $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id, persons.per_name FROM access
+        $access = DB::select("SELECT access.acc_id,access.acc_status,projects.proj_name, access.use_id,users.use_mail,persons.per_id, persons.per_name,persons.per_document,projects.proj_id FROM access
         INNER JOIN projects ON access.proj_id = projects.proj_id
         INNER JOIN users ON access.use_id = users.use_id
         INNER JOIN persons ON users.use_id = persons.per_id WHERE $id = access.acc_id;"); 
@@ -105,12 +105,12 @@ class AccessController extends Controller
             }else{
                 $acces->acc_status = $request->acc_status;
                 $acces->proj_id = $request->proj_id;
-                $acces->are_id = $request->are_id;
+                $acces->use_id = $request->use_id;
                 $acces->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$proj_id,$use_id);
                 return response()->json([
                  'status' => True,
-                 'message' => "The access: ".$acces->acc_status." has been updated."
+                 'message' => "The access: ".$acces->use_id." has been updated."
                 ],200);
             }
         }

@@ -11,11 +11,11 @@ class MedicalhistoriesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $medicalHistory = DB::select("SELECT medical_histories.med_his_id,medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document, diseases.dis_name
+        $medicalHistory = DB::select("SELECT medical_histories.med_his_id,medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document,persons.doc_typ_id,document_types.doc_typ_name, diseases.dis_name
         FROM medical_histories
         INNER JOIN persons ON medical_histories.per_id = persons.per_id
         INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id
-       ");
+        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id");
        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla medical histories",4,$proj_id,$use_id);
           return response()->json([
             'status' => true,
@@ -46,10 +46,11 @@ class MedicalhistoriesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $medicalHistory = DB::select("SELECT medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document, diseases.dis_name
+        $medicalHistory = DB::select("SELECT medical_histories.med_his_id,medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document,persons.doc_typ_id,document_types.doc_typ_name, diseases.dis_name
         FROM medical_histories
         INNER JOIN persons ON medical_histories.per_id = persons.per_id
         INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id
+        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id
         WHERE $id = medical_histories.per_id");
         if ($medicalHistory == null) {
             return response()->json([
