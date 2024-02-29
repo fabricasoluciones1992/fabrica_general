@@ -141,7 +141,7 @@ class PersonController extends Controller
                 return response()->json([
                     'status' => False,
                     'message' => "Invalid password confirmation"
-                ],400);
+                ]);
             }
             $person->use_password = $request->new_password;
             $person->save();
