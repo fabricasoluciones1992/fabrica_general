@@ -79,7 +79,7 @@ class EpsController extends Controller
             ],400);
         }else{
             $rules = [
-                'eps_name' => 'required|string|min:1|max:255|unique:eps|regex:/^[A-ZÑÁÉÍÓÚÜ\s.]+$/',
+                'eps_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s.]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->eps_name, 'eps', 'eps_name', 'eps_id', $id);
