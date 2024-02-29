@@ -84,7 +84,7 @@ class AreaController extends Controller
                 return response()->json([
                     'status' => False,
                     'message' => $msg
-                ],400);
+                ]);
             }else{
                 $area->are_name = $request->are_name;
                 $area->save();
