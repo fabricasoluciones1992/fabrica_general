@@ -259,4 +259,31 @@ class PersonController extends Controller
             ]);
         }
     }
+
+    public function filtredfortypeperson($proj_id,$use_id,Request $request)
+    {
+        $typPerson = Person::orderBy('per_id', 'desc')->paginate(10)->where('per_typ_id',$request->per_typ_id);
+        return response()->json([
+            'status' => true,
+            'data' => $typPerson
+        ],200);
+
+    }
+
+    public function viewForDocument($proj_id,$use_id,Request $request){
+        $person = DB::select("SELECT ViewPersons.*, telephones.*, mails.*, contacts.*, medical_histories.*
+        FROM ViewPersons
+        INNER JOIN telephones ON ViewPersons.per_id = telephones.per_id
+        INNER JOIN mails ON ViewPersons.per_id = mails.per_id
+        INNER JOIN contacts ON ViewPersons.per_id = contacts.per_id
+        INNER JOIN medical_histories ON ViewPersons.per_id = medical_histories.per_id
+        WHERE per_document = $request->per_document AND doc_typ_id = $request->doc_typ_id");
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
+            return response()->json([
+                'status' => true,
+                'data' => $person
+            ],200);
+
+    }
+
 }

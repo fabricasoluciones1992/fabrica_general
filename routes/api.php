@@ -51,7 +51,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('genders'.URL, GenderController::class)->names('genders')->parameter('','genders');
     Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
     Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
-    Route::resource('news'.URL, NewsController::class)->names('news')->parameter('','news');
+    Route::get('news'.URL, [NewsController::class, 'index'])->name('news.index');
     Route::resource('new/types'.URL, NewTypeController::class)->names('new.types')->parameter('','new_types');
     Route::resource('persons/types'.URL, PersonTypesController::class)->names('persons.types')->parameter('','persons_types');
     Route::resource('persons'.URL, PersonController::class)->names('persons')->parameter('','persons');
@@ -67,6 +67,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('prueba');
     Route::post('reset/password', [PersonController::class, 'reset_password'])->name('prueba');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
+
+    Route::post('prueba'.URL, [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
+    Route::get('view/for/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
+
+    
 //
 
 
