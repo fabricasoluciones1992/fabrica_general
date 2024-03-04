@@ -41,11 +41,13 @@ class AuthController extends Controller
                     $acceso = ($acceso == 2) ? 0 : $acceso;
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
+                    $person = Person::find($user->use_id);
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
+                        'per_document' => $person->per_document,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
                         'acc_administrator' =>$acceso
                     ], 200);
