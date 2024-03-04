@@ -11,7 +11,7 @@ class MailsController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
         FROM mails
         INNER JOIN persons ON mails.per_id = persons.per_id
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id
@@ -47,7 +47,7 @@ class MailsController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
+        $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
         FROM mails
         INNER JOIN persons ON mails.per_id = persons.per_id
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id WHERE $id = mails.per_id");
