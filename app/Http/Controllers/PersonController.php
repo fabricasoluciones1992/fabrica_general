@@ -6,6 +6,7 @@ use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -17,6 +18,18 @@ class PersonController extends Controller
     {
         try {
             $persons = DB::select("SELECT * FROM ViewPersons");
+            foreach ($persons as $person) {
+                $mails = DB::table('mails')->where('per_id', '=', $person->per_id)->get();
+                $telephones = DB::table('telephones')->where('per_id', '=', $person->per_id)->get();
+                $contacts = DB::table('contacts')->where('per_id', '=', $person->per_id)->get();
+                $medical_histories = DB::table('medical_histories')->where('per_id', '=', $person->per_id)->get();
+                
+                $person->mails = $mails;
+                $person->telephones = $telephones;
+                $person->contacts = $contacts;
+                $person->medical_histories = $medical_histories;
+            }
+            
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -262,23 +275,38 @@ class PersonController extends Controller
 
     public function filtredfortypeperson($proj_id,$use_id,Request $request)
     {
-        $typPerson = Person::orderBy('per_id', 'desc')->paginate(10)->where('per_typ_id',$request->per_typ_id);
-        return response()->json([
-            'status' => true,
-            'data' => $typPerson
-        ],200);
+        if ($request->column == 'use_status') {
+            $user = User::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(10);
+            $useIds = $user->pluck('use_id')->toArray();
+            $personasVinculadas = Person::whereIn('use_id', $useIds)->take(10)->get();
+            return response()->json([
+                'status' => true,
+                'data' => $personasVinculadas
+            ],200);    
+        }else{
+            $user = Person::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(10);
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ],200); 
+        }
+        
+
 
     }
 
     public function viewForDocument($proj_id,$use_id,Request $request){
-        $person = DB::select("SELECT ViewPersons.*, telephones.*, mails.*, contacts.*, medical_histories.*
-        FROM ViewPersons
-        INNER JOIN telephones ON ViewPersons.per_id = telephones.per_id
-        INNER JOIN mails ON ViewPersons.per_id = mails.per_id
-        INNER JOIN contacts ON ViewPersons.per_id = contacts.per_id
-        INNER JOIN medical_histories ON ViewPersons.per_id = medical_histories.per_id
-        WHERE per_document = $request->per_document AND doc_typ_id = $request->doc_typ_id");
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
+        $person = DB::select("SELECT ViewPersons.* FROM ViewPersons
+        WHERE ViewPersons.per_document = $request->per_document AND ViewPersons.doc_typ_id = $request->doc_typ_id");
+        $mail = DB::table('mails')->where('per_id','=',$person[0]->per_id)->get();
+        $telephones = DB::table('telephones')->where('per_id','=',$person[0]->per_id)->get();
+        $contacts = DB::table('contacts')->where('per_id','=',$person[0]->per_id)->get();
+        $medical_histories = DB::table('medical_histories')->where('per_id','=',$person[0]->per_id)->get();
+        $person[0]->mails = $mail;
+        $person[0]->telephones = $telephones;
+        $person[0]->contacts = $contacts;
+        $person[0]->medical_histories = $medical_histories;
+                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $person

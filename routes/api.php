@@ -68,7 +68,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
 
     Route::post('prueba'.URL, [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
-    Route::get('view/for/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
+    Route::post('view/for/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
 
     
 //
