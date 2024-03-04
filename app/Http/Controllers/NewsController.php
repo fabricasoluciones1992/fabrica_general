@@ -13,7 +13,7 @@ class NewsController extends Controller
     public function index($proj_id,$use_id,$column,$data)
     {
         try {
-            $news = ($column == 'new_id') ? News::OrderBy($column, 'DESC')->paginate(100) : News::OrderBy($column, 'DESC')->where($column, '=', $data)->paginate(100);
+            $news = ($column == 'new_id') ? DB::table('ViewNews')->OrderBy($column, 'DESC')->paginate(100) : DB::table('ViewNews')->OrderBy($column, 'DESC')->where($column, '=', $data)->paginate(100);
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,$proj_id,$use_id);
             return response()->json([
                'status' => true,
