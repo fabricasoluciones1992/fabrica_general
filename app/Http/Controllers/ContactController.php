@@ -13,7 +13,7 @@ class ContactController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name,contacts.per_id, persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name,contacts.rel_id
+            $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name,contacts.per_id, persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name,contacts.rel_id
             FROM contacts
             INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
             INNER JOIN persons ON contacts.per_id = persons.per_id
@@ -60,7 +60,7 @@ class ContactController extends Controller
 
     public function show($proj_id,$use_id,$id)
     {
-        $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name,contacts.per_id, persons.per_name,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name,contacts.rel_id
+        $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name,contacts.per_id, persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name,contacts.rel_id
         FROM contacts
         INNER JOIN relationships ON contacts.rel_id = relationships.rel_id
         INNER JOIN persons ON contacts.per_id = persons.per_id
