@@ -42,7 +42,7 @@ Route::post('/register/{use_id}', [AuthController::class, 'register'])->name('re
 Route::post('/login/{proj_id}', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::middleware(['auth:sanctum'])->group(function() {
+Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access'.URL, AccessController::class)->names('access')->parameter('','access');
     Route::resource('areas'.URL, AreaController::class)->names('areas')->parameter('','areas');
     Route::resource('contacts'.URL, ContactController::class)->names('contacts')->parameter('','contacts');
@@ -66,12 +66,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('prueba');
     Route::post('reset/password', [PersonController::class, 'reset_password'])->name('prueba');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
-
     Route::post('persons/filtred'.URL, [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
 
-    
-//
-
-
-
+});
