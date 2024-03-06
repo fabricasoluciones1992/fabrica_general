@@ -41,6 +41,8 @@ define("URL", "/{proj_id}/{use_id}/");
 Route::post('/register/{use_id}', [AuthController::class, 'register'])->name('register');
 Route::post('/login/{proj_id}', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('reset/password', [PersonController::class, 'reset_password'])->name('reset.password');
+Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('send.email');
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access'.URL, AccessController::class)->names('access')->parameter('','access');
@@ -63,10 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
-    Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('prueba');
-    Route::post('reset/password', [PersonController::class, 'reset_password'])->name('prueba');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
     Route::post('persons/filtred'.URL, [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
-
 });
