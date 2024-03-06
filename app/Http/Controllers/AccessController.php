@@ -45,8 +45,8 @@ class AccessController extends Controller
             'message' => $validator->errors()->all()
             ]);
         }else{
-            $acces = DB::table("access")->where('proj_id','=', $request->proj_id)->where('use_id','=', $request->use_id)->get();
-            if ($acces != null) {
+            $acces = DB::table("access")->where('proj_id','=', $request->proj_id)->where('use_id','=', $request->use_id)->first();
+            if ($acces != []) {
                 return response()->json([
                     'status' => False,
                     'message' =>"This user already has access to this project"
