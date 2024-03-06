@@ -6,8 +6,6 @@ use App\Models\civilStates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
-
 class CivilStatesController extends Controller
 {
     public function index($proj_id,$use_id)
@@ -44,8 +42,8 @@ class CivilStatesController extends Controller
             $civilStates->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$proj_id,$use_id );
             return response()->json([
-          'status' => True,
-          'message' => "The civil state: ".$civilStates->civ_sta_name." has been created."
+                'status' => True,
+                'message' => "The civil state: ".$civilStates->civ_sta_name." has been created."
             ],200);
         }
     }
@@ -54,7 +52,7 @@ class CivilStatesController extends Controller
         $civilState = civilStates::find($id);
         if ($civilState == null) {
             return response()->json([
-               'status' => false,
+                'status' => false,
                 'data' => ['message' => 'The requested civil state is not found']
             ],400);
         }else{

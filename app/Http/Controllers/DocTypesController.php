@@ -14,7 +14,7 @@ class DocTypesController extends Controller
             $doctypes = DocumentTypes::all();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla DocTypes ",4,$proj_id,$use_id);
             return response()->json([
-              'status' => true,
+                'status' => true,
                 'data' => $doctypes
             ],200);
         } catch (\Throwable $th) {
@@ -23,7 +23,6 @@ class DocTypesController extends Controller
               'message' => "Error in index, not found elements"
             ],500);
         }
-
     }
     public function store($proj_id,$use_id,Request $request)
     {
@@ -67,9 +66,8 @@ class DocTypesController extends Controller
         $docTypes = DocumentTypes::find($id);
         if($docTypes == null){
             return response()->json([
-               'status' => False,
+                'status' => False,
                 'data' => ['message' => 'The document typ requested not found'],
-
             ],400);
         }else{
             $rules = [

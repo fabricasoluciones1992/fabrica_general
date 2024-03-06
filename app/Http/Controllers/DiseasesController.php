@@ -69,19 +69,16 @@ class DiseasesController extends Controller
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'The disease requested not found'],
- 
             ], 400);
         } else {
             $rules = [
                 'dis_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
- 
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->dis_name, 'diseases', 'dis_name', 'dis_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
- 
                     'status' => False,
                     'message' => $msg
                 ]);

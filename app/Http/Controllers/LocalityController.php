@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Locality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 class LocalityController extends Controller
 {
     public function index($proj_id,$use_id)
@@ -14,7 +13,7 @@ class LocalityController extends Controller
             $localities = Locality::all();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Locality",4,$proj_id,$use_id);
             return response()->json([
-              'status' => true,
+                'status' => true,
                 'data' => $localities
             ],200);
         } catch (\Throwable $th) {
@@ -23,7 +22,6 @@ class LocalityController extends Controller
              'message' => $th
             ],500);
         }
-
     }
     public function store($proj_id,$use_id,Request $request)
     {

@@ -17,19 +17,7 @@ class PersonController extends Controller
     public function index($proj_id,$use_id)
     {
         try {
-            $persons = DB::select("SELECT * FROM ViewPersons");
-            foreach ($persons as $person) {
-                $mails = DB::table('mails')->where('per_id', '=', $person->per_id)->get();
-                $telephones = DB::table('telephones')->where('per_id', '=', $person->per_id)->get();
-                $contacts = DB::table('contacts')->where('per_id', '=', $person->per_id)->get();
-                $medical_histories = DB::table('medical_histories')->where('per_id', '=', $person->per_id)->get();
-                
-                $person->mails = $mails;
-                $person->telephones = $telephones;
-                $person->contacts = $contacts;
-                $person->medical_histories = $medical_histories;
-            }
-            
+            $persons = Person::select();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -50,7 +38,7 @@ class PersonController extends Controller
     public function show($proj_id,$use_id, $id)
     {
         try {
-            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
+            $persons = Person::findByDocument($id);
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -63,11 +51,10 @@ class PersonController extends Controller
             ],500);
         }
     }
-
     public function profile($proj_id,$use_id)
     {
         try {
-            $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $use_id");
+            $persons = Person::findByper($use_id);
             Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons[0]->per_name,4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -120,7 +107,8 @@ class PersonController extends Controller
                 $person->eps_id = $request->eps_id;
                 $person->gen_id = $request->gen_id;
                 $person->mul_id = $request->mul_id;
-
+                $person->per_rh = $request->per_rh;
+                $person->per_typ_id = $request->per_typ_id; 
                 $person->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$proj_id,$use_id);
                 return response()->json([
@@ -130,7 +118,6 @@ class PersonController extends Controller
             }
         }
     }
-
     public function update_password($proj_id,$use_id,Request $request)
     {
         $person = User::find($use_id);
@@ -165,7 +152,6 @@ class PersonController extends Controller
             ]);
         }
     }
-
     public function destroy($proj_id,$use_id,$id)
     {
         $user = User::find($id);
@@ -184,7 +170,6 @@ class PersonController extends Controller
         $mail = new PHPMailer(true);
         $user = DB::table("users")->where('use_mail','=',$request->use_mail)->first();
         try {
-    
             /* Email SMTP Settings */
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
@@ -193,13 +178,10 @@ class PersonController extends Controller
             $mail->Username = env('MAIL_USERNAME');
             $mail->Password = env('MAIL_PASSWORD');
             $mail->SMTPSecure = env('MAIL_ENCRYPTION');
-            $mail->Port = env('MAIL_PORT');
-    
+            $mail->Port = env('MAIL_PORT');   
             $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-            $mail->addAddress($request->use_mail);
-    
+            $mail->addAddress($request->use_mail);   
             $mail->isHTML(true);
-    
             $mail->Subject = "Restauracion de Contraseña";
             $code = rand(100000,999999);
             DB::statement("INSERT INTO reset_passwords (`res_pas_code`, `use_id`) VALUES ($code, $user->use_id);");
@@ -218,7 +200,6 @@ class PersonController extends Controller
             </body>
             </html>";
             if( !$mail->send() ) {
-
                 return response()->json([
                     'status' => True,
                     'message' => "Email not sent.".$mail->ErrorInfo
@@ -237,7 +218,7 @@ class PersonController extends Controller
 
     public function reset_password(Request $request)
     {
-        $code = DB::select("SELECT * FROM reset_passwords WHERE res_pas_code = $request->res_pas_code");
+        $code = Person::reset_password($request);
         if ($code == null) {
             return response()->json([
                 'status' => False,
@@ -260,11 +241,10 @@ class PersonController extends Controller
                     'message' => "Invalid password confirmation"
                 ],400);
             }
-            $person = User::find($code[0]->use_id);
+            $person = User::find($code->use_id);
             $person->use_password = $request->new_password;
             $person->save();
-            $useId = $code[0]->use_id;
-            DB::select("DELETE FROM reset_passwords WHERE use_id = $useId");
+            Person::deleteCode($code);
             Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,6,$person->use_id);
             return response()->json([
                 'status' => True,
@@ -290,28 +270,13 @@ class PersonController extends Controller
                 'data' => $user
             ],200); 
         }
-        
-
-
     }
-
     public function viewForDocument($proj_id,$use_id,Request $request){
-        $person = DB::select("SELECT ViewPersons.* FROM ViewPersons
-        WHERE ViewPersons.per_document = $request->per_document AND ViewPersons.doc_typ_id = $request->doc_typ_id");
-        $mail = DB::table('mails')->where('per_id','=',$person[0]->per_id)->get();
-        $telephones = DB::table('telephones')->where('per_id','=',$person[0]->per_id)->get();
-        $contacts = DB::table('contacts')->where('per_id','=',$person[0]->per_id)->get();
-        $medical_histories = DB::table('medical_histories')->where('per_id','=',$person[0]->per_id)->get();
-        $person[0]->mails = $mail;
-        $person[0]->telephones = $telephones;
-        $person[0]->contacts = $contacts;
-        $person[0]->medical_histories = $medical_histories;
-                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
-            return response()->json([
-                'status' => true,
-                'data' => $person
-            ],200);
-
+        $person = Person::viewForDocument($request);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
+        return response()->json([
+            'status' => true,
+            'data' => $person
+        ],200);
     }
-
 }

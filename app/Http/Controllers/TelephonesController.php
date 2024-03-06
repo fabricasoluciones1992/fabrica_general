@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\telephone;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
 class TelephonesController extends Controller
 {
     public function index($proj_id,$use_id)
     {
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname ,persons.doc_typ_id, per_document
-        FROM telephones
-        INNER JOIN persons ON telephones.per_id = persons.per_id
-        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id ");
+        $telephone = telephone::select();
         Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
@@ -46,11 +41,8 @@ class TelephonesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname,persons.doc_typ_id, per_document
-        FROM telephones
-        INNER JOIN persons ON telephones.per_id = persons.per_id
-        INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id  WHERE $id = telephones.per_id");
-        if ($telephone == null) {
+        $telephone = telephone::find($id);
+        if ($telephone == null) {   
             return response()->json([
                'status' => false,
                 'data' => ['message' => 'Could not find the telephone number you are looking for']
@@ -94,8 +86,7 @@ class TelephonesController extends Controller
                   'message' => "The telephone ".$telephone->tel_number." has been updated succesfully."
                 ],200);
             }
-        }
-        
+        }   
     }
     public function destroy()
     {

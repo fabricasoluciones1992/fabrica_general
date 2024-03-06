@@ -17,7 +17,6 @@ class PersonTypesController extends Controller
             'data' => $personTypes
         ]);
     }
-
     public function create()
     {
         return response()->json([
@@ -34,17 +33,16 @@ class PersonTypesController extends Controller
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
-
-             'status' => False,
-             'message' => $validator->errors()->all()
+                'status' => False,
+                'message' => $validator->errors()->all()
             ]);
         }else{
             $personType = new PersonTypes($request->input());
             $personType->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla person_types : $request->per_typ_name ",3,$proj_id,$use_id);
             return response()->json([
-             'status' => True,
-             'message' => "The person type:".$personType->per_typ_name."has been created successfully."
+                'status' => True,
+                'message' => "The person type:".$personType->per_typ_name."has been created successfully."
             ],200);
         }
     }
@@ -91,21 +89,20 @@ class PersonTypesController extends Controller
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
-               'status' => False,
-               'message' => $msg
+                    'status' => False,
+                    'message' => $msg
                 ]);
             }else{
                 $personType->per_typ_name = $request->per_typ_name;
                 $personType->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla person$personType del dato: $id con el dato: $request->per_typ_name ",1,$proj_id,$use_id);
                 return response()->json([
-             'status' => True,
-                   'data' => "The personType:  ".$personType->per_typ_name." has been update successfully."
+                    'status' => True,
+                    'data' => "The personType:  ".$personType->per_typ_name." has been update successfully."
                 ],200);
             };
         }
     }
-
     public function destroy(PersonTypes $personTypes)
     {
         return response()->json([

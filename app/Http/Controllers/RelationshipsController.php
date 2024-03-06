@@ -21,11 +21,10 @@ class RelationshipsController extends Controller
             ],200);
         } catch (\Throwable $th) {
             return response()->json([ 
-              'status' => false,
-              'message' => "Error occurred while found elements"
+                'status' => false,
+                'message' => "Error occurred while found elements"
             ],500);
         }
-
     }
     public function store($proj_id,$use_id,Request $request)
     {
@@ -35,16 +34,16 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
-             'status' => False,
-             'message' => $validator->errors()->all()
+                'status' => False,
+                'message' => $validator->errors()->all()
             ]);
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$proj_id,$use_id);
             return response()->json([
-             'status' => True,
-             'message' => "The relationship: ".$relationship->rel_name." has been created."
+                'status' => True,
+                'message' => "The relationship: ".$relationship->rel_name." has been created."
             ],200);
         }
     }
@@ -53,7 +52,7 @@ class RelationshipsController extends Controller
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
-             'status' => false,
+                'status' => false,
                 'data' => ['message' => 'The Relationship requested was not found']
             ],400);
         }else{
@@ -69,7 +68,7 @@ class RelationshipsController extends Controller
         $relationship = relationships::find($id);
         if ($relationship == null) {
             return response()->json([
-               'status' => false,
+                'status' => false,
                 'data' => ['message' => 'The Relationship requested was not found']
             ]);
         }else{

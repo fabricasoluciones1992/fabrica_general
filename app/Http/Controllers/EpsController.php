@@ -5,14 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Eps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 class EpsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index($proj_id,$use_id)
     {
         try {
@@ -29,11 +23,10 @@ class EpsController extends Controller
             ],500);
         }
     }
-
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'eps_name' => 'required|string|min:1|unique:eps|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s.]+$/',
+            'eps_name' => 'required|string|min:1|unique:eps|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s.]+$/'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -51,7 +44,6 @@ class EpsController extends Controller
             ],200);
         }
     }
-
     public function show($proj_id,$use_id,$id)
     {
         $eps = Eps::find($id);
@@ -68,7 +60,6 @@ class EpsController extends Controller
             ]);
         }
     }
-
     public function update($proj_id,$use_id,Request $request, $id)
     {
         $eps = Eps::find($id);
@@ -100,7 +91,6 @@ class EpsController extends Controller
             }
         }
     }
-
     public function destroy()
     {
         return response()->json([

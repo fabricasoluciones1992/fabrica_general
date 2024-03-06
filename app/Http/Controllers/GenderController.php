@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Genders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 class GenderController extends Controller
 {
     public function index($proj_id,$use_id)
@@ -23,9 +22,7 @@ class GenderController extends Controller
              'message' => $th
             ],500);
         }
-
     }
-
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
@@ -47,7 +44,6 @@ class GenderController extends Controller
             ],200);
         }
     }
-
     public function show($proj_id,$use_id,$id)
     {
         $gender = Genders::find($id);

@@ -23,7 +23,6 @@ class NewTypeController extends Controller
               'message' => "Error occurred while found elements"
             ],500);
         }
-
     }
     public function store($proj_id,$use_id,Request $request)
     {
@@ -33,9 +32,8 @@ class NewTypeController extends Controller
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
-
-             'status' => False,
-             'message' => $validator->errors()->all()
+                'status' => False,
+                'message' => $validator->errors()->all()
             ]);
         }else{
             $newtype = new NewType($request->input());
@@ -80,16 +78,16 @@ class NewTypeController extends Controller
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
-               'status' => False,
-               'message' => $msg
+                    'status' => False,
+                    'message' => $msg
                 ]);
             }else{
                 $newType->new_typ_name = $request->new_typ_name;
                 $newType->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_name ",1,$proj_id,$use_id);
                 return response()->json([
-             'status' => True,
-                   'data' => "The newType: ".$newType->new_typ_name." has been update successfully."
+                    'status' => True,
+                    'data' => "The newType: ".$newType->new_typ_name." has been update successfully."
                 ],200);
             };
         }
@@ -99,7 +97,6 @@ class NewTypeController extends Controller
         return response()->json([
             'status' => false,
             'message' => "FUNCTION NOT AVAILABLE"
-
         ],400);
     }
 }

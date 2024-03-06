@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\multiculturalisms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-
 class MulticulturalismsController extends Controller
 {
     public function index($proj_id,$use_id)
@@ -15,7 +13,7 @@ class MulticulturalismsController extends Controller
             $multiculturalism = multiculturalisms::all();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism",4,$proj_id,$use_id);
             return response()->json([
-              'status' => true,
+                'status' => true,
                 'data' => $multiculturalism
             ],200);
         } catch (\Throwable $th) {
@@ -29,22 +27,20 @@ class MulticulturalismsController extends Controller
     {
         $rules = [
             'mul_name' => 'required|string|min:1|max:50|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
             return response()->json([
-
-         'status' => False,
-         'message' => $validator->errors()->all()
+                'status' => False,
+                'message' => $validator->errors()->all()
             ]);
         }else{
             $multiculturalism = new multiculturalisms($request->input());
             $multiculturalism->save();
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,$proj_id,$use_id);
             return response()->json([
-         'status' => True,
-         'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been created successfully."
+                'status' => True,
+                'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been created successfully."
             ],200);
         }
     }
@@ -53,13 +49,13 @@ class MulticulturalismsController extends Controller
         $multiculturalism = multiculturalisms::find($id);
         if ($multiculturalism == null) {
             return response()->json([
-              'status' => false,
-                "data" => ['message' => 'The searched culturalism was not found']
+                'status' => false,
+                'data' => ['message' => 'The searched culturalism was not found']
             ],400);
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
-              'status' => true,
+                'status' => true,
                 'data' => $multiculturalism
             ]);
         }
@@ -69,29 +65,28 @@ class MulticulturalismsController extends Controller
         $multiculturalism = multiculturalisms::find($id);
         if($multiculturalism == null) {
             return response()->json([
-             'status' => false,
+                'status' => false,
                 'data' => ['message' => 'The searched culturalism was not found']
             ],400);
         }else{
             $rules = [
                 'mul_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->mul_name, 'multiculturalisms', 'mul_name', 'mul_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
-                'status' => False,
-                'message' => $msg
+                    'status' => False,
+                    'message' => $msg
                 ]);
             }else{
                 $multiculturalism->mul_name = $request->mul_name;
                 $multiculturalism->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,$proj_id,$use_id);
                 return response()->json([
-                'status' => True,
-                'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been updated successfully."
+                    'status' => True,
+                    'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been updated successfully."
                 ],200);
             }
         }

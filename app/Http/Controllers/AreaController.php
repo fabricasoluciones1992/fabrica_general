@@ -23,9 +23,7 @@ class AreaController extends Controller
                 'message' => $th
             ]);
         }
-
     }
-
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
@@ -47,7 +45,6 @@ class AreaController extends Controller
             ],200);
         }
     }
-
     public function show($proj_id,$use_id,$id)
     {
         $area = Area::find($id);
@@ -64,7 +61,6 @@ class AreaController extends Controller
             ]);
         }
     }
-
     public function update($proj_id,$use_id,Request $request, $id)
     {
         $area = Area::find($id);
@@ -96,7 +92,6 @@ class AreaController extends Controller
             }
         }
     }
-
     public function destroy(Area $areas)
     {
         return response()->json([

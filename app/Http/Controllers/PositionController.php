@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 
 class PositionController extends Controller
-{
-     
+{    
     public function index($proj_id,$use_id)
     {
         try {
-            $positions = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name, positions.are_id FROM positions INNER JOIN areas ON positions.are_id = areas.are_id;");
+            $positions = Position::select();
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
@@ -26,7 +25,6 @@ class PositionController extends Controller
               'message' => "Error occurred while found elements"
             ]);
         }
-  
     }
     public function store($proj_id,$use_id,Request $request)
     {
@@ -52,7 +50,7 @@ class PositionController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name,positions.are_id FROM positions INNER JOIN areas ON positions.are_id = areas.are_id WHERE $id = positions.pos_id ;");
+        $position = Position::find($id);
         if ($position == null) {
             return response()->json([
                'status' => false,
@@ -61,7 +59,7 @@ class PositionController extends Controller
         }else{
             Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
-               'status' => true,
+                'status' => true,
                 'data' => $position
             ]);
         }
@@ -71,7 +69,7 @@ class PositionController extends Controller
         $positons = Position::find($id);
         if ($positons == null) {
             return response()->json([
-              'status' => false,
+                'status' => false,
                 'data' => ['message' => 'The position requested was not found']
             ],400);
         }else{
