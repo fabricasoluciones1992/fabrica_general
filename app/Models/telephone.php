@@ -25,7 +25,7 @@ class telephone extends Model
         return $telephone;
     }
 
-    public static function find($id){
+    public static function search($id){
         $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname,persons.doc_typ_id, per_document
         FROM telephones
         INNER JOIN persons ON telephones.per_id = persons.per_id

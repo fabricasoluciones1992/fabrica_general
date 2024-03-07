@@ -59,7 +59,7 @@ class AccessController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $access = Access::find($id);
+        $access = Access::search($id);
         if ($access == null) {
             return response()->json([
                 'status' => false,

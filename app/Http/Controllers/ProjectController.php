@@ -50,7 +50,7 @@ class ProjectController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $project = Project::find($id);
+        $project = Project::search($id);
         if ($project == null) {
             return response()->json([
                 'status' => false,

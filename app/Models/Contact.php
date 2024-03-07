@@ -26,7 +26,7 @@ class Contact extends Model
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id");
         return $contacts;
     }
-    public static function find($id){
+    public static function search($id){
         $contacts = DB::select("SELECT contacts.con_id, contacts.con_name, contacts.con_mail, contacts.con_telephone, relationships.rel_name,contacts.per_id, persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name,contacts.rel_id
         FROM contacts
         INNER JOIN relationships ON contacts.rel_id = relationships.rel_id

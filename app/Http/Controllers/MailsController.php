@@ -43,7 +43,7 @@ class MailsController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $mail = mail::find($id);
+        $mail = mail::search($id);
         if ($mail == null) {
             return response()->json([
                'status' => false,

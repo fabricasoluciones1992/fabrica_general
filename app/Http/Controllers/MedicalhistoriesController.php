@@ -39,7 +39,7 @@ class MedicalhistoriesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $medicalHistory = medicalhistories::find($id);
+        $medicalHistory = medicalhistories::search($id);
         if ($medicalHistory == null) {
             return response()->json([
                'status' => false,

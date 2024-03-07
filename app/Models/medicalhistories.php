@@ -25,13 +25,13 @@ class medicalhistories extends Model
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id");
         return $medicalHistory;
     }
-    public static function find($id){
+    public static function search($id){
         $medicalHistory = DB::select("SELECT medical_histories.med_his_id,medical_histories.per_id, medical_histories.dis_id, persons.per_name, persons.per_lastname, persons.per_document,persons.doc_typ_id,document_types.doc_typ_name, diseases.dis_name
         FROM medical_histories
         INNER JOIN persons ON medical_histories.per_id = persons.per_id
         INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id
-        WHERE $id = medical_histories.per_id");
+        WHERE $id = medical_histories.med_his_id");
         return $medicalHistory[0];
     }
 }
