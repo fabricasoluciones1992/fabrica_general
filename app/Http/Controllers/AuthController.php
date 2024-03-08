@@ -31,8 +31,9 @@ class AuthController extends Controller
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
                 $access = DB::select("SELECT access.acc_status FROM access WHERE use_id = $user->use_id AND proj_id = $project_id");
                 $acceso = ($access == null) ? 2 : $access[0]->acc_status;
+                $use_status = $user->use_status;
                 //Debe tener acceso si o si en el proyecto general
-                if (($access == null && $proj_id == 6) || $acceso == 0) {
+                if (($access == null && $proj_id == 6) || $acceso == 0 || $use_status == 0) {
                     return response()->json([
                         'status' => False,
                         'message' => "The user: ".$user->use_mail." has no access."
