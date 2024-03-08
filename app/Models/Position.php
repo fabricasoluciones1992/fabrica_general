@@ -22,7 +22,7 @@ class Position extends Model
         INNER JOIN areas ON positions.are_id = areas.are_id");
         return $positions;
     }
-    public static function find($id){
+    public static function search($id){
         $position = DB::select("SELECT positions.pos_name, positions.pos_id, areas.are_name,positions.are_id FROM positions 
         INNER JOIN areas ON positions.are_id = areas.are_id 
         WHERE $id = positions.pos_id ");

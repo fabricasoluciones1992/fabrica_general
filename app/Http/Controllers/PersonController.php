@@ -55,10 +55,10 @@ class PersonController extends Controller
     {
         try {
             $persons = Person::findByper($use_id);
-            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons[0]->per_name,4,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
-                'data' => $persons[0]
+                'data' => $persons  
             ],200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -88,6 +88,8 @@ class PersonController extends Controller
                 'eps_id'=> 'required|integer',
                 'gen_id'=> 'required|integer',
                 'mul_id'=> 'required|integer',
+                'per_rh' => 'required|integer',
+                'per_typ_id' => 'required|integer',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

@@ -56,7 +56,7 @@ class ContactController extends Controller
 
     public function show($proj_id,$use_id,$id)
     {
-        $contacts = Contact::find($id);
+        $contacts = Contact::search($id);
         if ($contacts == null) {
             return response()->json([
                 'status' => false,

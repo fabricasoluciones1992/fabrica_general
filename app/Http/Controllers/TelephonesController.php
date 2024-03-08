@@ -41,7 +41,7 @@ class TelephonesController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $telephone = telephone::find($id);
+        $telephone = telephone::search($id);
         if ($telephone == null) {   
             return response()->json([
                'status' => false,

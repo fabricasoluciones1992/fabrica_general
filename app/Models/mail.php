@@ -24,7 +24,7 @@ class mail extends Model
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id");
         return $mail;
     }
-    public static function find($id){
+    public static function search($id){
         $mail = DB::select("SELECT mails.mai_id, mails.mai_mail, mails.mai_description, mails.per_id,persons.per_name,persons.per_lastname,persons.per_document,persons.doc_typ_id,document_types.doc_typ_name
         FROM mails
         INNER JOIN persons ON mails.per_id = persons.per_id

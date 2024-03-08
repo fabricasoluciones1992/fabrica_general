@@ -50,7 +50,7 @@ class PositionController extends Controller
     }
     public function show($proj_id,$use_id,$id)
     {
-        $position = Position::find($id);
+        $position = Position::search($id);
         if ($position == null) {
             return response()->json([
                'status' => false,
