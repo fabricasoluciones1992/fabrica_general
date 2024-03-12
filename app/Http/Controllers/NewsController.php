@@ -10,22 +10,33 @@ use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
-    public function index($proj_id,$use_id,$column,$data)
-    {
+    public function index(){
         try {
-            
-            $news = ($column == 'new_date') ? DB::table('ViewNews')->OrderBy($column, 'DESC')->where($column, 'like', '%'.$data.'%')->take(100)->get() : DB::table('ViewNews')->OrderBy($column, 'DESC')->where($column, '=', $data)->take(100)->get();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla News",4,$proj_id,$use_id);
+            $news = News::all();
             return response()->json([
-               'status' => true,
+                'status' => true,
                 'data' => $news
-            ],200);
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
               'status' => false,
               'message' => "Error occurred while found elements"
             ],500);
         }
+    }
 
+    public function show($amount){
+        try {
+            $news = Db::table('ViewNews')->OrderBy('new_id', 'DESC')->take($amount)->get();
+            return response()->json([
+                'status' => true,
+                'data' => $news
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => false,
+              'message' => "Error occurred while found elements"
+            ],500);
+        }
     }
 }
