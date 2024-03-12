@@ -49,7 +49,8 @@ class ContactController extends Controller
             Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,$proj_id,$use_id);
             return response()->json([
                 'status' => True,
-                'message' => "The contact: ".$contact->con_name." has been crated successfully."
+                'message' => "The contact: ".$contact->con_name." has been crated successfully.",
+                'data' => $contact->con_id
             ],200);
         }
     }
