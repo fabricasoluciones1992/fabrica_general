@@ -35,7 +35,8 @@ class TelephonesController extends Controller
             Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,$proj_id,$use_id );
             return response()->json([
               'status' => True,
-              'message' => "The Telephone number ".$telephone->tel_number." has been added succesfully."
+              'message' => "The Telephone number ".$telephone->tel_number." has been added succesfully.",
+              'data' => $telephone->tel_id
             ],200);
         }
     }

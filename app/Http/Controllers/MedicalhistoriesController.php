@@ -33,7 +33,8 @@ class MedicalhistoriesController extends Controller
             Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,$proj_id,$use_id);
             return response()->json([
               'status' => True,
-              'message' => "The medical history ". $medicalHistory -> per_name ." has been added succesfully."
+              'message' => "The medical history ". $medicalHistory -> per_name ." has been added succesfully.",
+              'data' => $medicalHistory->med_his_id
             ],200);
         }
     }
