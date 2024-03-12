@@ -13,9 +13,10 @@ class Contact extends Model
     protected $primaryKey = 'con_id';
     protected $fillable = [
         'con_name',
-        'con_relationship',
         'con_mail',
         'con_telephone',
+        'rel_id',
+        'per_id'
     ];
     public $timestamps = false;
     public static function select(){
