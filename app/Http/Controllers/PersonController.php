@@ -88,7 +88,7 @@ class PersonController extends Controller
                 'eps_id'=> 'required|integer',
                 'gen_id'=> 'required|integer',
                 'mul_id'=> 'required|integer',
-                'per_rh' => 'required|integer',
+                'per_rh' => 'required',
                 'per_typ_id' => 'required|integer',
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -258,15 +258,15 @@ class PersonController extends Controller
     public function filtredfortypeperson($proj_id,$use_id,Request $request)
     {
         if ($request->column == 'use_status') {
-            $user = User::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(10);
+            $user = User::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(50);
             $useIds = $user->pluck('use_id')->toArray();
-            $personasVinculadas = Person::whereIn('use_id', $useIds)->take(10)->get();
+            $personasVinculadas = Person::whereIn('use_id', $useIds)->take(50)->get();
             return response()->json([
                 'status' => true,
                 'data' => $personasVinculadas
             ],200);    
         }else{
-            $user = Person::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(10);
+            $user = Person::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(50);
             return response()->json([
                 'status' => true,
                 'data' => $user
