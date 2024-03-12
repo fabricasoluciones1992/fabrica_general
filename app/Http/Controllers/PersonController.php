@@ -127,7 +127,7 @@ class PersonController extends Controller
             return response()->json([
                 'status' => False,
                 'message' => "Password does not match"
-            ],400);
+            ]);
         }
         $rules = [
             'new_password'=> 'required'
