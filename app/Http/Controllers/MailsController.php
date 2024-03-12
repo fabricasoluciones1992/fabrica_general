@@ -21,7 +21,7 @@ class MailsController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'mai_mail' => ['required','regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@uniempresarial\.edu\.co$/'],
+            'mai_mail' => ['required','regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]/'],
             'mai_description' =>'string | max:255',
             'per_id' =>'required|integer'
         ];
@@ -30,7 +30,7 @@ class MailsController extends Controller
             return response()->json([
               'status' => False,
               'message' => $validator->errors()->all()
-            ],400);
+            ]);
         }else{
             $mail = new Mail($request->input());
             $mail->save();
@@ -38,7 +38,7 @@ class MailsController extends Controller
             return response()->json([
               'status' => True,
               'message' => "The mail: ".$mail->mai_mail." has been added succesfully.",
-              'data' => $mail->mai->id
+              'data' => $mail->mai_id
             ],200);
         }
     }
