@@ -67,6 +67,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
-    Route::post('persons/filtred'.URL, [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
+    Route::get('persons/filtred'.URL.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
 });

@@ -255,10 +255,10 @@ class PersonController extends Controller
         }
     }
 
-    public function filtredfortypeperson($proj_id,$use_id,Request $request)
+    public function filtredfortypeperson($proj_id,$use_id,$column,$data)
     {
-        if ($request->column == 'use_status') {
-            $user = User::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(50);
+        if ($column == 'use_status') {
+            $user = User::orderBy($column, 'DESC')->where($column,$data)->paginate(50);
             $useIds = $user->pluck('use_id')->toArray();
             $personasVinculadas = Person::whereIn('use_id', $useIds)->take(50)->get();
             return response()->json([
@@ -266,7 +266,7 @@ class PersonController extends Controller
                 'data' => $personasVinculadas
             ],200);    
         }else{
-            $user = Person::orderBy($request->column, 'DESC')->where($request->column,$request->data)->paginate(50);
+            $user = Person::orderBy($column, 'DESC')->where($column,$data)->paginate(50);
             return response()->json([
                 'status' => true,
                 'data' => $user
