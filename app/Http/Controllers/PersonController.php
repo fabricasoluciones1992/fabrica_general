@@ -258,19 +258,22 @@ class PersonController extends Controller
     public function filtredfortypeperson($proj_id,$use_id,$column,$data)
     {
         if ($column == 'use_status') {
-            $user = User::orderBy($column, 'DESC')->where($column,$data)->paginate(50);
-            $useIds = $user->pluck('use_id')->toArray();
-            $personasVinculadas = Person::whereIn('use_id', $useIds)->take(50)->get();
+            $personasVinculadas = User::filtredfortypeperson($column,$data);
             return response()->json([
                 'status' => true,
                 'data' => $personasVinculadas
             ],200);    
-        }else{
-            $user = Person::orderBy($column, 'DESC')->where($column,$data)->paginate(50);
+        }elseif($column == "per_typ_id"){
+            $user = User::filtredfortypeperson($column,$data);
             return response()->json([
                 'status' => true,
                 'data' => $user
             ],200); 
+        }else{
+            return response()->json([
+               'status' => False,
+              'message' => "Invalid column"
+            ],400);
         }
     }
     public function viewForDocument($proj_id,$use_id,Request $request){
