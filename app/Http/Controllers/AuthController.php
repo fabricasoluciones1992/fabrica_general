@@ -68,7 +68,7 @@ class AuthController extends Controller
             'use_password'=> 'required|min:1|max:150|string',
             'per_name'=> 'required|min:1|max:150|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/',
             'per_lastname'=> 'required|min:1|max:100|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/',
-            'per_document'=> 'required|min:1000|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
+            'per_document'=> 'required|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
             'per_expedition'=> 'required|date',
             'per_birthdate'=> 'required|date',
             'per_direction'=> 'required|min:1|max:255|string',
