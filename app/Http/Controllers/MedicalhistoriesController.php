@@ -29,6 +29,7 @@ class MedicalhistoriesController extends Controller
             ],400);
         }else{
             $medicalHistory = new medicalhistories($request->input());
+            $medicalHistory->med_his_status = 1;
             $medicalHistory->save();
             Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,$proj_id,$use_id);
             return response()->json([
@@ -66,6 +67,7 @@ class MedicalhistoriesController extends Controller
             $rules = [
                 'per_id' =>'required|integer',
                 'dis_id' =>'required|integer',
+                'med_his_status' =>'required|integer',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -76,11 +78,12 @@ class MedicalhistoriesController extends Controller
             }else{
                 $medicalHistory->per_id = $request->per_id;
                 $medicalHistory->dis_id = $request->dis_id;
+                $medicalHistory->med_his_status = $request->med_his_status;
                 $medicalHistory->save();
                 Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,$proj_id,$use_id);
                 return response()->json([
                   'status' => True,
-                  'message' => "The medical history".$medicalHistory->med_his_id." has been updated succesfully."
+                  'message' => "The medical history: ".$medicalHistory->med_his_id." has been updated succesfully."
                 ],200);
             }
         }

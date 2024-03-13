@@ -34,8 +34,8 @@ class ContactController extends Controller
             'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'con_mail' => 'required|string|email|min:1|max:250|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@.*$/',
             'con_telephone' => 'required|numeric|regex:/^[0-9\s\-\+\(\)]*$/|digits_between:7,15',
-            'rel_id' => 'required|numeric|min:1|max:50',
-            'per_id' => 'required|numeric|min:1|max:50',
+            'rel_id' => 'required|integer',
+            'per_id' => 'required|integer',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -84,8 +84,8 @@ class ContactController extends Controller
                 'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 'con_mail' => 'required|string|email|min:1|max:250|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@.*$/',
                 'con_telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:15',
-                'rel_id' => 'required|numeric|min:1|max:50',
-                'per_id' => 'required|numeric|min:1|max:50'
+                'rel_id' => 'required|integer',
+                'per_id' => 'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -103,7 +103,7 @@ class ContactController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,$proj_id,$use_id);
                 return response()->json([
                     'status' => True,
-                    'message' => "The contact:  ".$contact->con_name." has been updated successfully."
+                    'message' => "The contact: ".$contact->con_name." has been updated successfully."
                 ],200);
             }
         }
