@@ -68,8 +68,8 @@ class Person extends Model
             WHERE ViewPersons.per_document = $request->per_document AND ViewPersons.doc_typ_id = $request->doc_typ_id");
             $mail = DB::table('mails')->where('per_id','=',$person[0]->per_id)->get();
             $telephones = DB::table('telephones')->where('per_id','=',$person[0]->per_id)->get();
-            $contacts = DB::table('contacts')->where('per_id','=',$person[0]->per_id)->get();
-            $medical_histories = DB::table('medical_histories')->where('per_id','=',$person[0]->per_id)->get();
+            $contacts = DB::select("SELECT contacts.*, relationships.rel_name FROM contacts INNER JOIN relationships ON contacts.rel_id = relationships.rel_id WHERE per_id = ?", [$person[0]->per_id]);
+            $medical_histories = DB::select("SELECT medical_histories.*, diseases.dis_name FROM medical_histories INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id WHERE per_id = ?", [$person[0]->per_id]);
             $person[0]->mails = $mail;
             $person[0]->telephones = $telephones;
             $person[0]->contacts = $contacts;
