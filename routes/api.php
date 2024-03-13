@@ -21,6 +21,7 @@ use App\Http\Controllers\PersonTypesController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RelationshipsController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TelephonesController;
 use App\Models\multiculturalisms;
 use App\Models\relationships;
@@ -66,6 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('mails'.URL, MailsController::class)->names('mails')->parameter('','mails');
     Route::resource('telephones'.URL, TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories'.URL, MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
+    Route::resource('student'.URL, StudentController::class)->names('student')->parameter('','student');
     Route::get('profile'.URL, [PersonController::class, 'profile'])->name('profile');
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.URL.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');

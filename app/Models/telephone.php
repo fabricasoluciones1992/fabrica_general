@@ -18,7 +18,7 @@ class telephone extends Model
     public $timestamps = false;
 
     public static function select(){
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname ,persons.doc_typ_id, per_document
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname ,persons.doc_typ_id,document_types.doc_typ_name, per_document
         FROM telephones
         INNER JOIN persons ON telephones.per_id = persons.per_id
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id ");
@@ -26,7 +26,7 @@ class telephone extends Model
     }
 
     public static function search($id){
-        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname,persons.doc_typ_id, per_document
+        $telephone = DB::select("SELECT telephones.tel_id, telephones.tel_number, telephones.tel_description, telephones.per_id, persons.per_name,persons.per_lastname,persons.doc_typ_id,document_types.doc_typ_name, per_document
         FROM telephones
         INNER JOIN persons ON telephones.per_id = persons.per_id
         INNER JOIN document_types ON persons.doc_typ_id = document_types.doc_typ_id  WHERE $id = telephones.per_id");

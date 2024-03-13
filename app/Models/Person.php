@@ -38,7 +38,7 @@ class Person extends Model
     }
     public static function findByDocument($id){
         $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id");
-        return $persons[0];
+        return $persons;
     }
     public static function findByper($use_id){
         $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $use_id");
