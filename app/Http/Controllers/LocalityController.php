@@ -79,7 +79,7 @@ class LocalityController extends Controller
                 return response()->json([
                  'status' => false,
                  'message' => $msg
-                ],400);
+                ]);
             }else{
                 $locality->loc_name = $request->loc_name;
                 $locality->save();
