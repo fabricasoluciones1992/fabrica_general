@@ -27,7 +27,7 @@ class CivilStatesController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'civ_sta_name' => 'required|string|min:1|max:50|unique:civil_states|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'civ_sta_name' => 'required|string|min:1|max:255|unique:civil_states|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -66,7 +66,7 @@ class CivilStatesController extends Controller
     public function update($proj_id,$use_id,Request $request,$id)
     {
         $rules = [
-            'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'civ_sta_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -86,7 +86,7 @@ class CivilStatesController extends Controller
                 ],400);
             }else{
                 $rules = [
-                    'civ_sta_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                    'civ_sta_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 $validate = Controller::validate_exists($request->civ_sta_name, 'civil_states', 'civ_sta_name', 'civ_sta_id', $id);

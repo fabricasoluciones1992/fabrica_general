@@ -26,7 +26,7 @@ class MulticulturalismsController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'mul_name' => 'required|string|min:1|max:50|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'mul_name' => 'required|string|min:1|max:255|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -70,7 +70,7 @@ class MulticulturalismsController extends Controller
             ],400);
         }else{
             $rules = [
-                'mul_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'mul_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->mul_name, 'multiculturalisms', 'mul_name', 'mul_id', $id);

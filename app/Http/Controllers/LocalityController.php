@@ -26,7 +26,7 @@ class LocalityController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'loc_name' => 'required|string|min:1|max:50|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'loc_name' => 'required|string|min:1|max:255|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if($validator->fails()){
@@ -70,7 +70,7 @@ class LocalityController extends Controller
              ],400);
         }else{
             $rules = [
-                'loc_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'loc_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->loc_name, 'localities', 'loc_name', 'loc_id', $id);

@@ -27,7 +27,7 @@ class RelationshipsController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'rel_name' => 'required|string|min:1|max:50|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'rel_name' => 'required|string|min:1|max:255|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -71,7 +71,7 @@ class RelationshipsController extends Controller
             ]);
         }else{
             $rules = [
-                'rel_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'rel_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->rel_name, 'relationships', 'rel_name', 'rel_id', $id);

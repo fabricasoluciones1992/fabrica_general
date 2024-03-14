@@ -71,7 +71,7 @@ class AuthController extends Controller
             'per_document'=> 'required|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
             'per_expedition'=> 'required|date',
             'per_birthdate'=> 'required|date',
-            'per_direction'=> 'required|min:1|max:255|string',
+            'per_direction'=> 'required|min:1|max:255|string|regex:/^(?=.*[a-zA-Z0-9])[\w\s\-#\.]+$/',
             'per_rh' => 'required|min:1|max:3|string',
             'civ_sta_id'=> 'required|integer',
             'doc_typ_id'=> 'required|integer',
