@@ -65,7 +65,7 @@ class Person extends Model
     public static function viewForDocument($request){
         try {
             $person = DB::select("SELECT ViewPersons.* FROM ViewPersons
-            WHERE ViewPersons.per_document = $request->per_document AND ViewPersons.doc_typ_id = $request->doc_typ_id");
+            WHERE ViewPersons.per_document = ? AND ViewPersons.doc_typ_id = ?", [$request->per_document, $request->doc_typ_id]);
             $mail = DB::table('mails')->where('per_id','=',$person[0]->per_id)->get();
             $telephones = DB::table('telephones')->where('per_id','=',$person[0]->per_id)->get();
             $contacts = DB::select("SELECT contacts.*, relationships.rel_name FROM contacts INNER JOIN relationships ON contacts.rel_id = relationships.rel_id WHERE per_id = ?", [$person[0]->per_id]);
