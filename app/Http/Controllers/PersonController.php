@@ -77,8 +77,8 @@ class PersonController extends Controller
             ],400);
         }else{
             $rules = [
-                'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑ\s]+$/',
-                'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑ\s]+$/',
+                'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+                'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
                 'per_document'=> 'required|min:1|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
                 'per_expedition'=> 'required|date',
                 'per_birthdate'=> 'required|date',
@@ -130,7 +130,7 @@ class PersonController extends Controller
             ]);
         }
         $rules = [
-            'new_password'=> 'required'
+            'new_password'=> 'required|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -139,19 +139,26 @@ class PersonController extends Controller
             'message' => $validator->errors()->all()
             ]);
         }else{
-            if ($request->new_password != $request->password_confirmation) {
+            if ($request->new_password == $person->use_password) {
                 return response()->json([
-                    'status' => False,
-                    'message' => "Invalid password confirmation"
+                   'status' => False,
+                   'message' => "New password cannot be the same as the old password"
+                ]);
+            }else{
+                if ($request->new_password != $request->password_confirmation) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => "Invalid password confirmation"
+                    ]);
+                }
+                $person->use_password = $request->new_password;
+                $person->save();
+                Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,$proj_id,$use_id);
+                return response()->json([
+                    'status' => True,
+                    'message' => "Password was successfully changed"
                 ]);
             }
-            $person->use_password = $request->new_password;
-            $person->save();
-            Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,$proj_id,$use_id);
-            return response()->json([
-                'status' => True,
-                'message' => "Password was successfully changed"
-            ]);
         }
     }
     public function destroy($proj_id,$use_id,$id)

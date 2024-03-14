@@ -66,8 +66,8 @@ class AuthController extends Controller
         $rules = [
             'use_mail'=> 'required|min:1|max:250|email|unique:users|regex:/^[a-zñA-ZÑ]+[a-zñA-ZÑ._-]*@uniempresarial\.edu\.co$/',
             'use_password'=> 'required|min:1|max:150|string',
-            'per_name'=> 'required|min:1|max:150|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/',
-            'per_lastname'=> 'required|min:1|max:100|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/',
+            'per_name'=> 'required|min:1|max:150|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+            'per_lastname'=> 'required|min:1|max:100|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
             'per_document'=> 'required|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
             'per_expedition'=> 'required|date',
             'per_birthdate'=> 'required|date',
