@@ -71,7 +71,7 @@ class DocTypesController extends Controller
             ],400);
         }else{
             $rules = [
-                'doc_typ_name' => 'required|string|min:1|max:50|unique:document_types|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'doc_typ_name' => 'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->doc_typ_name, 'document_types', 'doc_typ_name', 'doc_typ_id', $id);
