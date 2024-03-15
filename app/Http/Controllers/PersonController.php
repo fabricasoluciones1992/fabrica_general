@@ -126,11 +126,11 @@ class PersonController extends Controller
         if ($request->use_password != $person->use_password) {
             return response()->json([
                 'status' => False,
-                'message' => "Password does not match"
+                'message' => "The old password does not match"
             ]);
         }
         $rules = [
-            'new_password'=> 'required|regex:/^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[_$@$!%?&+[\].-])[A-Za-z\d _$@$!%?&+[\].-]{8,}$/'
+            'new_password'=> 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[._*])[A-Za-z\d._*]{8,}$/'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
