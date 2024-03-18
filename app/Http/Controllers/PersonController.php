@@ -76,9 +76,9 @@ class PersonController extends Controller
                 'data' => ['message' => 'The person requested is not found']
             ],400);
         }else{
-            $documents = DB::select("SELECT doc_typ_id, per_document FROM persons");
+            $documents = DB::select("SELECT doc_typ_id, per_document, per_id FROM persons");
             foreach ($documents as $document) {
-                if ($document->per_document == $request->per_document && $document->doc_typ_id == $request->doc_typ_id) {
+                if ($document->per_document == $request->per_document && $document->doc_typ_id == $request->doc_typ_id && $document->per_id != $id) {
                     return response()->json([
                         'status' => False,
                         'message' => "The document you are trying to register already exists"
@@ -89,8 +89,8 @@ class PersonController extends Controller
                 'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
                 'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
                 'per_document'=> 'required|min:1|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
-                'per_expedition'=> 'required|date',
-                'per_birthdate'=> 'required|date',
+                'per_expedition'=> 'required|date|after_or_equal:per_birthdate|before_or_equal:now',
+                'per_birthdate'=> 'required|date|before_or_equal:now',
                 'per_direction'=> 'required|min:1|max:255|regex:/^(?=.*[a-zA-Z0-9])[\w\s\-\#\.]+$/',
                 'civ_sta_id'=> 'required|integer',
                 'doc_typ_id'=> 'required|integer',
@@ -100,6 +100,7 @@ class PersonController extends Controller
                 'per_rh' => 'required',
                 'per_typ_id' => 'required|integer',
             ];
+            
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([
