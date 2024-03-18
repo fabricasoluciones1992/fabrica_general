@@ -100,6 +100,7 @@ class AuthController extends Controller
             $user = User::create([
                 'use_mail' => $request->use_mail,
                 'use_password' => $request->use_password,
+                'use_photo' => 'https://upload.wikimedia.org/wikipedia/commons/1/12/Logo-main-uniempresarial.png',
                 'use_status' => 1
             ]);
             $user->save();

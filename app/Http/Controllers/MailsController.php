@@ -21,7 +21,7 @@ class MailsController extends Controller
     public function store($proj_id,$use_id,Request $request)
     {
         $rules = [
-            'mai_mail' => ['required','regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/'],
+            'mai_mail' => ['required','min:4','regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/'],
             'mai_description' =>'string | max:255',
             'per_id' =>'required|integer'
         ];
