@@ -76,6 +76,15 @@ class PersonController extends Controller
                 'data' => ['message' => 'The person requested is not found']
             ],400);
         }else{
+            $documents = DB::select("SELECT doc_typ_id, per_document FROM persons");
+            foreach ($documents as $document) {
+                if ($document->per_document == $request->per_document && $document->doc_typ_id == $request->doc_typ_id) {
+                    return response()->json([
+                        'status' => False,
+                        'message' => "The document you are trying to register already exists"
+                    ]);
+                }
+            }
             $rules = [
                 'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
                 'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
