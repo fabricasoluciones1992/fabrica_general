@@ -83,4 +83,10 @@ class Person extends Model
         }
 
     }
+
+    public static function PasswordEmergency($request){
+        $person = DB::table('users')->where('use_mail','=',$request->use_mail)->first();
+        $person = User::find($person->use_id);
+        return $person;
+    }
 }

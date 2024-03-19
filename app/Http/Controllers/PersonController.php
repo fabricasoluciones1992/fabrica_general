@@ -301,4 +301,13 @@ class PersonController extends Controller
             'data' => $person
         ],200);
     }
+    public function passwordEmergency($proj_id,$use_id,Request $request){
+        $person = Person::PasswordEmergency($request);
+        $person->use_password = $request->use_password;
+        $person->save();
+        return response()->json([
+            'status' => true,
+            'data' => "The emergency password has been changed successfully."
+        ]);
+    }
 }

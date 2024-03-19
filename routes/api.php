@@ -44,6 +44,7 @@ Route::post('/login/{proj_id}', [AuthController::class, 'login'])->name('login')
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('reset/password', [PersonController::class, 'reset_password'])->name('reset.password');
 Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('send.email');
+Route::post('password/emergency'.URL, [PersonController::class, 'passwordEmergency'])->name('password.emergency');
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access'.URL, AccessController::class)->names('access')->parameter('','access');
