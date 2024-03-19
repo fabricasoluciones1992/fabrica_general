@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
     Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
     Route::get('news', [NewsController::class, 'index'])->name('news.index');
-    Route::get('news/{amount}', [NewsController::class, 'show'])->name('news.show');
+    Route::get('news/{date}', [NewsController::class, 'show'])->name('news.show');
     Route::resource('new/types'.URL, NewTypeController::class)->names('new.types')->parameter('','new_types');
     Route::resource('persons/types'.URL, PersonTypesController::class)->names('persons.types')->parameter('','persons_types');
     Route::resource('persons'.URL, PersonController::class)->names('persons')->parameter('','persons');

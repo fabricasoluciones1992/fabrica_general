@@ -25,9 +25,9 @@ class NewsController extends Controller
         }
     }
 
-    public function show($amount){
+    public function show($date){
         try {
-            $news = Db::table('ViewNews')->OrderBy('new_id', 'DESC')->take($amount)->get();
+            $news = Db::table('ViewNews')->where('new_date', 'like',"%$date%")->get();
             return response()->json([
                 'status' => true,
                 'data' => $news
