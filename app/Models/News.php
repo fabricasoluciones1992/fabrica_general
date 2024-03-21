@@ -22,7 +22,7 @@ class News extends Model
     public $timestamps = false;
 
     public static function select(){
-        $news = DB::table('ViewNews')->select(['new_id','new_date','new_description','new_typ_id','proj_id','use_id','use_mail','per_name'])->get();
+        $news = DB::table('ViewNews')->select(['new_id','new_date','new_description','new_typ_id','new_typ_name','proj_id','proj_name','use_id','use_mail','per_name'])->get();
         return $news;
     }
 }
