@@ -310,4 +310,19 @@ class PersonController extends Controller
             'data' => "The emergency password has been changed successfully."
         ]);
     }
+    public function lastPersons($proj_id,$use_id){
+        try {
+            $person = Person::lastPersons();
+            return response()->json([
+               'status' => true,
+                'data' => $person
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'status' => False,
+              'message' => $th
+            ],400);
+        }
+
+    }
 }

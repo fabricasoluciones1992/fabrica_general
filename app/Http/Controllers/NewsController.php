@@ -25,10 +25,14 @@ class NewsController extends Controller
         }
     }
 
-    public function show($date){
+    public function show($type,$proj_id,$date){
         try {
-            $news = Db::table('ViewNews')->where('new_date', 'like',"%$date%")->get();
-            return response()->json([
+            $news = DB::table('ViewNews')
+            ->whereDate('new_date', $date)
+            ->where('new_typ_id', $type)
+            ->where('proj_id', $proj_id)
+            ->get();        
+                    return response()->json([
                 'status' => true,
                 'data' => $news
             ]);

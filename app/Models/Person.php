@@ -84,6 +84,11 @@ class Person extends Model
 
     }
 
+    public static function lastPersons(){
+        $persons = DB::select("SELECT * FROM ViewPersons ORDER BY per_id DESC LIMIT 50");
+        return $persons;
+    }
+
     public static function PasswordEmergency($request){
         $person = DB::table('users')->where('use_mail','=',$request->use_mail)->first();
         $person = User::find($person->use_id);

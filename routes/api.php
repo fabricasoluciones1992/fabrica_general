@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
     Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
     Route::get('news', [NewsController::class, 'index'])->name('news.index');
-    Route::get('news/{date}', [NewsController::class, 'show'])->name('news.show');
+    Route::get('news/{type}/{proj_id}/{date}', [NewsController::class, 'show'])->name('news.show');
     Route::resource('new/types'.URL, NewTypeController::class)->names('new.types')->parameter('','new_types');
     Route::resource('persons/types'.URL, PersonTypesController::class)->names('persons.types')->parameter('','persons_types');
     Route::resource('persons'.URL, PersonController::class)->names('persons')->parameter('','persons');
@@ -73,4 +73,5 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('update/password'.URL, [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.URL.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document'.URL, [PersonController::class, 'viewForDocument'])->name('view.for.document');
+    Route::get('last/persons'.URL, [PersonController::class, 'lastPersons'])->name('last.persons');
 });
