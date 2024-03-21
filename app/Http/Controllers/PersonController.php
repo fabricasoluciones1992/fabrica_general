@@ -197,6 +197,7 @@ class PersonController extends Controller
             $mail->Username = env('MAIL_USERNAME');
             $mail->Password = env('MAIL_PASSWORD');
             $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+            $mail->SMTPDebug = 2;
             $mail->Port = env('MAIL_PORT');   
             $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
             $mail->addAddress($request->use_mail);   
