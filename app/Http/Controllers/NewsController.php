@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\DB;
 class NewsController extends Controller
 {
     public function index(){
-        try {
-            $news = News::all();
+        // try {
+            $news = News::select();
             return response()->json([
                 'status' => true,
                 'data' => $news
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-              'status' => false,
-              'message' => "Error occurred while found elements"
-            ],500);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //       'status' => false,
+        //       'message' => "Error occurred while found elements"
+        //     ],500);
+        // }
     }
 
     public function show($type,$proj_id,$date){

@@ -277,12 +277,14 @@ class PersonController extends Controller
     {
         if ($column == 'use_status') {
             $personasVinculadas = User::filtredfortypeperson($column,$data);
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons epecifica por columna y tipo de persona : ".$column.$data,4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $personasVinculadas
             ],200);    
         }elseif($column == "per_typ_id"){
-            $user = User::filtredfortypeperson($column,$data);
+            $user = User::filtredfortypeperson($column,$data);     
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons epecifica por columna y tipo de persona : ".$column.$data,4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $user
@@ -296,7 +298,7 @@ class PersonController extends Controller
     }
     public function viewForDocument($proj_id,$use_id,Request $request){
         $person = Person::viewForDocument($request);
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons",4,$proj_id,$use_id);
+        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons especifica por documento",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'data' => $person
@@ -314,6 +316,7 @@ class PersonController extends Controller
     public function lastPersons($proj_id,$use_id){
         try {
             $person = Person::lastPersons();
+            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla persons especifica para los ultimos 50 usuarios.",4,$proj_id,$use_id);
             return response()->json([
                'status' => true,
                 'data' => $person
