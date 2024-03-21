@@ -197,10 +197,10 @@ class PersonController extends Controller
             $mail->Username = env('MAIL_USERNAME');
             $mail->Password = env('MAIL_PASSWORD');
             $mail->SMTPSecure = env('MAIL_ENCRYPTION');
-            $mail->SMTPDebug = 2;
-            $mail->Port = env('MAIL_PORT');   
+            // $mail->SMTPDebug = 2;
+            $mail->Port = env('MAIL_PORT');
             $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-            $mail->addAddress($request->use_mail);   
+            $mail->addAddress($request->use_mail);
             $mail->isHTML(true);
             $mail->Subject = "Restauracion de Contraseña";
             $code = rand(100000,999999);
@@ -222,7 +222,7 @@ class PersonController extends Controller
             if( !$mail->send() ) {
                 return response()->json([
                     'status' => True,
-                    'message' => "Email not sent.".$mail->ErrorInfo
+                    'message' => "Email not sent."
                 ]);
             }
             else {
