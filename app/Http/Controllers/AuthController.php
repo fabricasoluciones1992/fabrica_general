@@ -43,7 +43,7 @@ class AuthController extends Controller
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     $person = Person::find($user->use_id);
-                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
+                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 5,$request->proj_id,$user->use_id);
                     $projects = DB::table('access')->where('use_id','=',$user->use_id)->pluck('proj_id');
                     return response()->json([
                         'status' => True,
