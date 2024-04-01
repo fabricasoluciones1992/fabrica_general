@@ -9,7 +9,7 @@ class StudentController extends Controller
 {
     public function index($proj_id, $use_id)
     {
-        $students = DB::table('ViewStudent')->get();
+        $students = DB::table('ViewStudents')->get();
         Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla students",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
@@ -37,7 +37,7 @@ class StudentController extends Controller
         }else{
         $students = new Student($request->input());
         $students->save();
-        $person = DB::table('persons')->where($students->per_id, "=", "per_id")->first();
+        $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
         Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,$proj_id,$use_id);
         return response()->json([
             'status' => true,
@@ -47,7 +47,7 @@ class StudentController extends Controller
    }
     public function show($proj_id, $use_id, $student)
     {
-        $students = DB::table('ViewStudent')->where('stu_id', $student)->first();
+        $students = DB::table('ViewStudents')->where('stu_id', $student)->first();
         if(!$students){
             return response()->json([
                 'status' => false,
@@ -90,7 +90,7 @@ class StudentController extends Controller
         $students->loc_id = $request->loc_id;
         $students->mon_sta_id = $request->mon_sta_id;
         $students->save();
-        $person = DB::table('persons')->where($students->per_id, "=", "per_id")->first();
+        $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
         Controller::NewRegisterTrigger("Se realizo una edición en la tabla students",1,$proj_id,$use_id);
         return response()->json([
             'status' => true,
