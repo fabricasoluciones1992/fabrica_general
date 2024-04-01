@@ -47,7 +47,7 @@ class StudentController extends Controller
    }
     public function show($proj_id, $use_id, $student)
     {
-        $students = DB::table('ViewStudents')->where('stu_id', $student)->first();
+        $students = DB::table('ViewStudents')->where('stu_id','=', $student)->first();
         if(!$students){
             return response()->json([
                 'status' => false,
