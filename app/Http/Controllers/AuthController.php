@@ -47,7 +47,7 @@ class AuthController extends Controller
                 }
                     $acceso = ($acceso == 2) ? 0 : $acceso;
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->get();
-                    if ($tokens != null) {
+                    if ($tokens != "[]") {
                         return response()->json([
                             'status' => false,
                             'message' => "This user already has an active session"
