@@ -30,7 +30,7 @@ class AuthController extends Controller
                 return response()->json([
                     "status"=>false,
                     "message"=>"The user who is trying to login does not exist"
-                ]);
+                ],401);
             }
             if ($user->use_password == $request->use_password) {
                 $user = User::find($user->use_id);
@@ -43,7 +43,7 @@ class AuthController extends Controller
                     return response()->json([
                         'status' => False,
                         'message' => "The user: ".$user->use_mail." has no access."
-                       ],400);
+                       ],401);
                 }
                     $acceso = ($acceso == 2) ? 0 : $acceso;
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->get();
@@ -51,7 +51,7 @@ class AuthController extends Controller
                         return response()->json([
                             'status' => false,
                             'message' => "This user already has an active session"
-                        ]);
+                        ],401);
                     }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     $person = Person::find($user->use_id);
