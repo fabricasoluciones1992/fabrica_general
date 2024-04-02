@@ -26,6 +26,12 @@ class AuthController extends Controller
             ], 400);
         } else {
             $user = DB::table('users')->where('use_mail', '=', $request->use_mail)->first();
+            if ($user == null) {
+                return response()->json([
+                    "status"=>false,
+                    "message"=>"The user who is trying to login does not exist"
+                ],401);
+            }
             if ($user->use_password == $request->use_password) {
                 $user = User::find($user->use_id);
                 $project_id = ($request->proj_id === null) ? env('APP_ID'): $request->proj_id;
@@ -37,10 +43,16 @@ class AuthController extends Controller
                     return response()->json([
                         'status' => False,
                         'message' => "The user: ".$user->use_mail." has no access."
-                       ],400);
+                       ],401);
                 }
                     $acceso = ($acceso == 2) ? 0 : $acceso;
-                    $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->delete();
+                    $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->get();
+                    if ($tokens != "[]") {
+                        return response()->json([
+                            'status' => false,
+                            'message' => "This user already has an active session"
+                        ],401);
+                    }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     $person = Person::find($user->use_id);
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 5,$request->proj_id,$user->use_id);
