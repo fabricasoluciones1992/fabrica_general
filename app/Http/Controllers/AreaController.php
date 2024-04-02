@@ -12,7 +12,6 @@ class AreaController extends Controller
     {
         try {
             $areas = Area::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $areas
@@ -54,7 +53,6 @@ class AreaController extends Controller
                 'data' => ['message' => 'the area requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Area por dato especifico : $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $area

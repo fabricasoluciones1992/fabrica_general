@@ -15,7 +15,6 @@ class AccessController extends Controller
     {
         try {
             $access = Access::select();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $access
@@ -66,7 +65,6 @@ class AccessController extends Controller
                 'data' => ['message' => 'The searched access was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Access por dato especifico : $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $access

@@ -14,7 +14,6 @@ class ContactController extends Controller
     {
         try {
             $contacts = Contact::select();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla contact",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $contacts
@@ -64,7 +63,6 @@ class ContactController extends Controller
                 'data' => ['message' => 'the contact requested not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Contact por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $contacts

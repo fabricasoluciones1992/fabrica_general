@@ -11,7 +11,6 @@ class EpsController extends Controller
     {
         try {
             $eps = Eps::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Eps",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $eps
@@ -53,7 +52,6 @@ class EpsController extends Controller
                 'data' => ['message' => 'The eps requested was not found.']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla EPS por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $eps

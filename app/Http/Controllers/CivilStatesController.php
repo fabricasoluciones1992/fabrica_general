@@ -12,7 +12,6 @@ class CivilStatesController extends Controller
     {
         try {
             $civilStates = civilStates::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla CivilStates",4,$proj_id,$use_id);
             return response()->json([
               'status' => true,
                 'data' => $civilStates
@@ -56,7 +55,6 @@ class CivilStatesController extends Controller
                 'data' => ['message' => 'The requested civil state is not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla civilStates por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
               'status' => true,
                 'data' => $civilState

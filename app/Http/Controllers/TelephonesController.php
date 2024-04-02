@@ -10,7 +10,6 @@ class TelephonesController extends Controller
     public function index($proj_id,$use_id)
     {
         $telephone = telephone::select();
-        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'data' => $telephone
@@ -49,7 +48,6 @@ class TelephonesController extends Controller
                 'data' => ['message' => 'Could not find the telephone number you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla telephones",4,$proj_id,$use_id);
             return response()->json([
                'status' => true,
                 'data' => $telephone

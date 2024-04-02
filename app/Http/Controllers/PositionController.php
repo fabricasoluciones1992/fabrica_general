@@ -14,7 +14,6 @@ class PositionController extends Controller
     {
         try {
             $positions = Position::select();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $positions
@@ -57,7 +56,6 @@ class PositionController extends Controller
                 'data' => ['message' => 'The position requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Position por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $position

@@ -14,7 +14,6 @@ class ProjectController extends Controller
     {
         try {
             $projects = Project::select();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $projects
@@ -57,7 +56,6 @@ class ProjectController extends Controller
                 'data' => ['message' => 'The Project requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Project por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $project

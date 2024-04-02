@@ -10,7 +10,6 @@ class StudentController extends Controller
     public function index($proj_id, $use_id)
     {
         $students = DB::table('ViewStudents')->get();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla students",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'data' => $students,
@@ -54,7 +53,6 @@ class StudentController extends Controller
                 'data' => ['message'=>'Could not find the students you are looking for'],
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda de un dato especifico en la tabla students",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $students,

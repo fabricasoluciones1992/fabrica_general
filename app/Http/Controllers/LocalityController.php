@@ -11,7 +11,6 @@ class LocalityController extends Controller
     {
         try {
             $localities = Locality::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Locality",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $localities
@@ -53,7 +52,6 @@ class LocalityController extends Controller
                 'data' => ['message' => 'The Locality requested was not found']
                 ],400);
             }else{
-                Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla locality por dato especifico: $id",4,$proj_id,$use_id);
                 return response()->json([
                 'status' => true,
                    'data' => $localities

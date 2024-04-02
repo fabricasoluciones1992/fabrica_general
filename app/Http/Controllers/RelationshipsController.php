@@ -12,7 +12,6 @@ class RelationshipsController extends Controller
     {
         try {
             $relationships = relationships::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $relationships
@@ -54,7 +53,6 @@ class RelationshipsController extends Controller
                 'data' => ['message' => 'The Relationship requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Relationships por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $relationship

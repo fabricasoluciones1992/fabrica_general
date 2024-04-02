@@ -12,7 +12,6 @@ class NewTypeController extends Controller
     {
         try {
             $newtypes = NewType::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $newtypes
@@ -54,7 +53,6 @@ class NewTypeController extends Controller
                 'data' => ['message' => 'The NewType requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla NewType por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $newType

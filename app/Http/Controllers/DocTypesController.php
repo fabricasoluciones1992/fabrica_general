@@ -12,7 +12,6 @@ class DocTypesController extends Controller
     {
         try {
             $doctypes = DocumentTypes::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla DocTypes ",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $doctypes
@@ -54,7 +53,6 @@ class DocTypesController extends Controller
                 'data' => ['message' => 'The document typ requested not found'],
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Doctypes por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $docTypes

@@ -11,7 +11,6 @@ class PersonTypesController extends Controller
     public function index($proj_id,$use_id)
     {
         $personTypes = PersonTypes::all();
-        Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla person_types",4,$proj_id,$use_id);
         return response()->json([
             'status' =>True,
             'data' => $personTypes
@@ -56,7 +55,6 @@ class PersonTypesController extends Controller
                 'data' => ['message' => 'not found person type']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla person_types por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $personType

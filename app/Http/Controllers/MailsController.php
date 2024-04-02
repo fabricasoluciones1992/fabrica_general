@@ -12,7 +12,6 @@ class MailsController extends Controller
     public function index($proj_id,$use_id)
     {
         $mail = mail::select();
-        Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla mails",4,$proj_id,$use_id);
         return response()->json([
             'status' => true,
             'data' => $mail
@@ -51,7 +50,6 @@ class MailsController extends Controller
                 'data' => ['message' => 'Could not find mail you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla mails",4,$proj_id,$use_id);
             return response()->json([
                'status' => true,
                 'data' => $mail

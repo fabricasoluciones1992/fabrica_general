@@ -11,7 +11,6 @@ class MulticulturalismsController extends Controller
     {
         try {
             $multiculturalism = multiculturalisms::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $multiculturalism
@@ -53,7 +52,6 @@ class MulticulturalismsController extends Controller
                 'data' => ['message' => 'The searched culturalism was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla Multiculturalism por dato especifico: $id",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $multiculturalism

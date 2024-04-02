@@ -11,7 +11,6 @@ class GenderController extends Controller
     {
         try {
             $genders = Genders::all();
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $genders
@@ -53,7 +52,6 @@ class GenderController extends Controller
                 'data' => ['message' => 'The gender requested was not found']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una busqueda en la tabla genders por usuario especifico",4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $gender

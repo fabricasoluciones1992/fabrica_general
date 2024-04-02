@@ -9,7 +9,6 @@ class MedicalhistoriesController extends Controller
     public function index($proj_id,$use_id)
     {
         $medicalHistory = Medicalhistories::select();
-       Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla medical histories",4,$proj_id,$use_id);
           return response()->json([
             'status' => true,
             'data' => $medicalHistory
@@ -48,7 +47,6 @@ class MedicalhistoriesController extends Controller
                 'data' => ['message' => 'Could not find the medical history you are looking for']
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda en la tabla Medical Histories",4,$proj_id,$use_id);
             return response()->json([
                'status' => true,
                 'data' => $medicalHistory
