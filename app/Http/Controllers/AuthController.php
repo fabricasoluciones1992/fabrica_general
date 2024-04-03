@@ -62,7 +62,7 @@ class AuthController extends Controller
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
                         'per_document' => $person->per_document,
-                        'projects'=>$projects,
+                        // 'projects'=>$projects,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
                         'acc_administrator' =>$acceso
                     ], 200);
