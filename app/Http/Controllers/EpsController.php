@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class EpsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $eps = Eps::all();
@@ -43,7 +43,7 @@ class EpsController extends Controller
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $eps = Eps::find($id);
         if ($eps == null) {
@@ -58,7 +58,7 @@ class EpsController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $eps = Eps::find($id);
         if ($eps == null) {
