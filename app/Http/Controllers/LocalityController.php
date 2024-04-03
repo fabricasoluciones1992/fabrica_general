@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class LocalityController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $localities = Locality::all();
@@ -22,7 +22,7 @@ class LocalityController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'loc_name' => 'required|string|min:1|max:255|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -36,14 +36,14 @@ class LocalityController extends Controller
         }else{
             $localities = new Locality($request->input());
             $localities->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,6,$request->use_id);
             return response()->json([
             'status' => true,
             'message' => "The locality: ".$localities->loc_name." has been created."
             ],200);
         };
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $localities = Locality::find($id);
         if($localities == null){
@@ -58,7 +58,7 @@ class LocalityController extends Controller
                 ],200);
             }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $locality = Locality::find($id);
         if ($locality == null) {
@@ -81,7 +81,7 @@ class LocalityController extends Controller
             }else{
                 $locality->loc_name = $request->loc_name;
                 $locality->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,6,$request->use_id);
                 return response()->json([
                'status' => true,
                    'message' => "The locality: .$locality->loc_name. has been updated successfully"

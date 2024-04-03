@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class MulticulturalismsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $multiculturalism = multiculturalisms::all();
@@ -22,7 +22,7 @@ class MulticulturalismsController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'mul_name' => 'required|string|min:1|max:255|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -36,14 +36,14 @@ class MulticulturalismsController extends Controller
         }else{
             $multiculturalism = new multiculturalisms($request->input());
             $multiculturalism->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,6,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been created successfully."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $multiculturalism = multiculturalisms::find($id);
         if ($multiculturalism == null) {
@@ -58,7 +58,7 @@ class MulticulturalismsController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request,$id)
+    public function update(Request $request,$id)
     {
         $multiculturalism = multiculturalisms::find($id);
         if($multiculturalism == null) {
@@ -81,7 +81,7 @@ class MulticulturalismsController extends Controller
             }else{
                 $multiculturalism->mul_name = $request->mul_name;
                 $multiculturalism->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been updated successfully."
