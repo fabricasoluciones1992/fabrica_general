@@ -1,0 +1,15 @@
+<?php
+ 
+namespace App\Models;
+ 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+ 
+class Phase extends Model
+{
+    use HasFactory;
+    protected $table = 'phases';
+    protected $primaryKey = 'pha_id';
+    protected $fillable = ['pha_phase'];
+    public $timestamps = false;
+}
