@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('areas'.URL, AreaController::class)->names('areas')->parameter('','areas');
     Route::resource('contacts'.URL, ContactController::class)->names('contacts')->parameter('','contacts');
     Route::resource('doc/types'.URL, DocTypesController::class)->names('doc.types')->parameter('','doc_types');
-    Route::resource('eps'.URL, EpsController::class)->names('eps')->parameter('','eps');
+    Route::resource('eps', EpsController::class)->names('eps')->parameter('','eps');
     Route::resource('genders'.URL, GenderController::class)->names('genders')->parameter('','genders');
     Route::resource('localities'.URL, LocalityController::class)->names('localities')->parameter('','localities');
     Route::resource('multiculturalisms'.URL, MulticulturalismsController::class)->names('multiculturalisms')->parameter('','multiculturalisms');
