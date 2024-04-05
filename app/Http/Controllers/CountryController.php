@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class CountryController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $countries = Country::all();
         return response()->json([
@@ -13,7 +13,7 @@ class CountryController extends Controller
             'data' => $countries,
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -28,13 +28,13 @@ class CountryController extends Controller
                 $countries = new Country();
                 $countries->cou_name = $request->cou_name;
                 $countries->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla countries",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla countries",3,6,$request->use_id);
                 return response()->json([
                 'status' => true,
                 'message' => "The country '". $countries->cou_name ."' has been added succesfully."
             ],200);}
     }
-    public function show($proj_id, $use_id,$country)
+    public function show($country)
     {
         $countries = Country::find($country);
         if(!$countries){
@@ -49,7 +49,7 @@ class CountryController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $country)
+    public function update(Request $request, $country)
     {
             $rules = [
                 'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -64,7 +64,7 @@ class CountryController extends Controller
                 $countries = Country::find($country);
                 $countries->cou_name = $request->cou_name;
                 $countries->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla countries",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla countries",1,6,$request->use_id);
                 return response()->json([
                 'status' => true,
                 'data' => "The country with ID: ". $countries -> cou_id." has been updated to '" . $countries->cou_name ."' succesfully.",

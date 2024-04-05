@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class MailsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $mail = mail::select();
         return response()->json([
@@ -17,7 +17,7 @@ class MailsController extends Controller
             'data' => $mail
         ],200);    
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'mai_mail' => ['required','min:4','regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/'],
@@ -33,7 +33,7 @@ class MailsController extends Controller
         }else{
             $mail = new Mail($request->input());
             $mail->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla mails",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla mails",3,6,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The mail: ".$mail->mai_mail." has been added succesfully.",
@@ -41,7 +41,7 @@ class MailsController extends Controller
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $mail = mail::search($id);
         if ($mail == null) {
@@ -56,7 +56,7 @@ class MailsController extends Controller
             ],200);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $mail = Mail::find($id);
         if ($mail == null) {
@@ -81,7 +81,7 @@ class MailsController extends Controller
                 $mail->mai_description = $request->mai_description;
                 $mail->per_id = $request->per_id;
                 $mail->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla mails",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla mails",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The mail ".$mail->mai_mail." has been updated succesfully."

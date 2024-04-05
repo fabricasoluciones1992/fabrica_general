@@ -14,7 +14,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class PersonController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $persons = Person::select();
@@ -34,7 +34,7 @@ class PersonController extends Controller
     {
         //
     }
-    public function show($proj_id,$use_id, $id)
+    public function show( $id)
     {
         try {
             $persons = Person::findByDocument($id);
@@ -49,11 +49,11 @@ class PersonController extends Controller
             ],500);
         }
     }
-    public function profile($proj_id,$use_id)
+    public function profile()
     {
         try {
             $persons = Person::findByper($use_id);
-            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,6,$request->use_id);
             return response()->json([
                 'status' => true,
                 'data' => $persons  
@@ -65,7 +65,7 @@ class PersonController extends Controller
             ],500);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $person = Person::find($id);
         if ($person == null) {
@@ -120,7 +120,7 @@ class PersonController extends Controller
                 $person->per_rh = $request->per_rh;
                 $person->per_typ_id = $request->per_typ_id; 
                 $person->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The person: ".$person->per_name." has been update successfully."
@@ -128,7 +128,7 @@ class PersonController extends Controller
             }
         }
     }
-    public function update_password($proj_id,$use_id,Request $request)
+    public function update_password(Request $request)
     {
         $person = User::find($use_id);
         if ($request->use_password != $person->use_password) {
@@ -161,7 +161,7 @@ class PersonController extends Controller
                 }
                 $person->use_password = $request->new_password;
                 $person->save();
-                Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "Password was successfully changed"
@@ -175,7 +175,7 @@ class PersonController extends Controller
         $newStatus  = ($user->use_status == 1) ? 0 : 1;
         $user->use_status = $newStatus;
         $user->save();
-        Controller::NewRegisterTrigger("Se cambio el estado de un dato en la tabla  ",4,$proj_id,$use_id);
+        Controller::NewRegisterTrigger("Se cambio el estado de un dato en la tabla  ",4,6,$request->use_id);
         return response()->json([
             'status' => true,
             'message' => 'user status updated successfully'
@@ -217,7 +217,7 @@ class PersonController extends Controller
             <p>Gracias por su atención.</p>
             </body>
             </html>";
-            if( !$mail->send() ) {
+            if(!$mail->send() ) {
                 return response()->json([
                     'status' => True,
                     'message' => "Email not sent."
@@ -292,14 +292,14 @@ class PersonController extends Controller
             ],400);
         }
     }
-    public function viewForDocument($proj_id,$use_id,Request $request){
+    public function viewForDocument(Request $request){
         $person = Person::viewForDocument($request);
         return response()->json([
             'status' => true,
             'data' => $person
         ],200);
     }
-    public function passwordEmergency($proj_id,$use_id,Request $request){
+    public function passwordEmergency(Request $request){
         $person = Person::PasswordEmergency($request);
         $person->use_password = $request->use_password;
         $person->save();
@@ -308,7 +308,7 @@ class PersonController extends Controller
             'data' => "The emergency password has been changed successfully."
         ]);
     }
-    public function lastPersons($proj_id,$use_id){
+    public function lastPersons(){
         try {
             $person = Person::lastPersons();
             return response()->json([

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
  
 class ContactCompaniesTypesController extends Controller
 {
-    public function index( $proj_id, $use_id)
+    public function index()
     {
         $contact_companies_types = Contact_Companies_Types::all();
         return response()->json([
@@ -14,7 +14,7 @@ class ContactCompaniesTypesController extends Controller
         'data' => $contact_companies_types,
         ], 200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'con_com_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -28,14 +28,14 @@ class ContactCompaniesTypesController extends Controller
             }else{
                 $contact_companies_types = new Contact_Companies_Types($request->input());
                 $contact_companies_types->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contact companies types",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contact companies types",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The process '". $contact_companies_types->con_com_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show( $proj_id, $use_id, $contact_Companies_Types)
+    public function show($contact_Companies_Types)
     {
         $contact_companies_type = Contact_Companies_Types::find($contact_Companies_Types);
         if(!$contact_companies_type){
@@ -50,7 +50,7 @@ class ContactCompaniesTypesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,  $proj_id, $use_id, $contact_Companies_Types)
+    public function update(Request $request, $contact_Companies_Types)
     {
             $rules = [
                 'con_com_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -65,7 +65,7 @@ class ContactCompaniesTypesController extends Controller
                 $contact_companies_type = Contact_Companies_Types::find($contact_Companies_Types);
                 $contact_companies_type->con_com_typ_name = $request-> con_com_typ_name;
                 $contact_companies_type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contact companies types",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contact companies types",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The contact companies types with ID: ". $contact_companies_type->pro_typ_id." has been updated to '".$contact_companies_type->con_com_typ_name."' succesfully.",

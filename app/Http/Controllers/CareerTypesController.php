@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class CareerTypesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $career_types = Career_Types::all();
         return response()->json([
@@ -13,7 +13,7 @@ class CareerTypesController extends Controller
             'data' => $career_types,
         ],200);
     }
-    public function store(Request $request,$proj_id,$use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -28,14 +28,14 @@ class CareerTypesController extends Controller
                 $career_types = new Career_Types();
                 $career_types->car_typ_name = $request->car_typ_name;
                 $career_types->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla career types",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla career types",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The career type '". $career_types->car_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id,$use_id,$career_Types)
+    public function show($career_Types)
     {
         $careers_types_types = Career_Types::find($career_Types);
         if(!$careers_types_types){
@@ -50,7 +50,7 @@ class CareerTypesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,$proj_id,$use_id,$career_Types)
+    public function update(Request $request,$career_Types)
     {
             $rules = [
                 'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -65,7 +65,7 @@ class CareerTypesController extends Controller
                 $careers_types = Career_Types::find($career_Types);
                 $careers_types->car_typ_name = $request->car_typ_name;
                 $careers_types->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers_types",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers_types",1,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The career type with ID: ". $careers_types->car_typ_id." has been updated to '" . $careers_types->car_typ_name ."' succesfully.",

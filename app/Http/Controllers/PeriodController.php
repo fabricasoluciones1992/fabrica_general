@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 class PeriodController extends Controller
 {
  
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $periods = Period::select();
           return response()->json([
@@ -15,7 +15,7 @@ class PeriodController extends Controller
             'data' => $periods
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
                 $rules = [
                     'peri_name' =>'required|string|max:15',
@@ -32,14 +32,14 @@ class PeriodController extends Controller
                 }else{
                     $periods = new Period($request->input());
                     $periods->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla Periods",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla Periods",3,6,$request->use_id);
                     return response()->json([
                       'status' => True,
                       'message' => "The period ".$periods->peri_name." has been added succesfully."
                     ],200);
                 }
         }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
     {
         $periods = Period::search($id);
         if ($periods == null) {
@@ -55,7 +55,7 @@ class PeriodController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $id)
+    public function update(Request $request, $id)
     {
                 $periods =  Period::find($id);
                 if ($periods == null) {
@@ -82,7 +82,7 @@ class PeriodController extends Controller
                         $periods->peri_end = $request->peri_end;
                         $periods->pha_id = $request->pha_id;
                         $periods->save();
-                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla Periods",1,$proj_id,$use_id);
+                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla Periods",1,6,$request->use_id);
                         return response()->json([
                           'status' => True,
                           'message' => "The period ".$periods->peri_name." has been updated succesfully."

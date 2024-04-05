@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
  
 class IndustryController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $industries = Industry::all();
         return response()->json([
@@ -16,7 +16,7 @@ class IndustryController extends Controller
             'data' => $industries,
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
                 $rules = [
                     'ind_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -31,13 +31,13 @@ class IndustryController extends Controller
                     $industries = new Industry();
                     $industries->ind_name = $request->ind_name;
                     $industries->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla industries",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla industries",3,6,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'message' => "The indrustry'". $industries->ind_name ."' has been added succesfully."
                 ],200);}
     }
-    public function show($proj_id, $use_id,$industry)
+    public function show($industry)
     {
         $industries = Industry::find($industry);
         if(!$industries){
@@ -52,7 +52,7 @@ class IndustryController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $industry)
+    public function update(Request $request, $industry)
     {
                 $rules = [
                     'ind_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -67,7 +67,7 @@ class IndustryController extends Controller
                     $industries = Industry::find($industry);
                     $industries->ind_name = $request->ind_name;
                     $industries->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla industries",1,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla industries",1,6,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'data' => "The industry with ID: ". $industries -> ind_id." has been updated to '" . $industries->ind_name ."' succesfully.",

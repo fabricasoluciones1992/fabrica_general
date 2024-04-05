@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $contacts = Contact::select();
@@ -27,7 +27,7 @@ class ContactController extends Controller
 
     }
 
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -45,7 +45,7 @@ class ContactController extends Controller
         }else{
             $contact = new Contact($request->input());
             $contact->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,6,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The contact: ".$contact->con_name." has been crated successfully.",
@@ -54,7 +54,7 @@ class ContactController extends Controller
         }
     }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $contacts = Contact::search($id);
         if ($contacts == null) {
@@ -69,7 +69,7 @@ class ContactController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $contact = Contact::find($id);
         if ($contact == null) {
@@ -98,7 +98,7 @@ class ContactController extends Controller
                 $contact->rel_id = $request->rel_id;
                 $contact->per_id = $request->per_id;
                 $contact->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The contact: ".$contact->con_name." has been updated successfully."

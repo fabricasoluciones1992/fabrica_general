@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $students = DB::table('ViewStudents')->get();
         return response()->json([
@@ -15,7 +15,7 @@ class StudentController extends Controller
             'data' => $students,
         ],200);
     }
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
         $rules = [
         'stu_stratum' => 'required',
@@ -37,14 +37,14 @@ class StudentController extends Controller
         $students = new Student($request->input());
         $students->save();
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
-        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,$proj_id,$use_id);
+        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,6,$request->use_id);
         return response()->json([
             'status' => true,
             'message' => "The student '". $person->per_name ."' has been added succesfully."
         ],200);}
 
    }
-    public function show($proj_id, $use_id, $student)
+    public function show($student)
     {
         $students = DB::table('ViewStudents')->where('stu_id','=', $student)->first();
         if(!$students){
@@ -59,7 +59,7 @@ class StudentController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $student)
+    public function update(Request $request, $student)
     {
         $rules = [
         'stu_stratum' => 'required',
@@ -89,7 +89,7 @@ class StudentController extends Controller
         $students->mon_sta_id = $request->mon_sta_id;
         $students->save();
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
-        Controller::NewRegisterTrigger("Se realizo una edición en la tabla students",1,$proj_id,$use_id);
+        Controller::NewRegisterTrigger("Se realizo una edición en la tabla students",1,6,$request->use_id);
         return response()->json([
             'status' => true,
             'data' => "The student with ID: ". $students->stu_id." has been updated to '" . $person->per_name ."' succesfully.",

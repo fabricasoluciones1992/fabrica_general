@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 class TelephonesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $telephone = telephone::select();
         return response()->json([
@@ -15,7 +15,7 @@ class TelephonesController extends Controller
             'data' => $telephone
         ],200);    
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:15'],
@@ -39,7 +39,7 @@ class TelephonesController extends Controller
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $telephone = telephone::search($id);
         if ($telephone == null) {   
@@ -54,7 +54,7 @@ class TelephonesController extends Controller
             ],200);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $telephone = Telephone::find($id);
         if ($telephone == null) {
@@ -79,7 +79,7 @@ class TelephonesController extends Controller
                 $telephone->tel_description = $request->tel_description;
                 $telephone->per_id = $request->per_id;
                 $telephone->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The telephone ".$telephone->tel_number." has been updated succesfully."

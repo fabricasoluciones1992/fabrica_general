@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PersonTypesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $personTypes = PersonTypes::all();
         return response()->json([
@@ -24,7 +24,7 @@ class PersonTypesController extends Controller
          ],400);
     }
 
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'per_typ_name' => 'required|string|min:1|max:255|unique:person_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
@@ -38,7 +38,7 @@ class PersonTypesController extends Controller
         }else{
             $personType = new PersonTypes($request->input());
             $personType->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla person_types : $request->per_typ_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla person_types : $request->per_typ_name ",3,6,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The person type:".$personType->per_typ_name."has been created successfully."
@@ -46,7 +46,7 @@ class PersonTypesController extends Controller
         }
     }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $personType = PersonTypes::find($id);
         if ($personType == null) {
@@ -70,7 +70,7 @@ class PersonTypesController extends Controller
          ],400);
     }
 
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $personType = PersonTypes::find($id);
         if ($personType == null) {
@@ -93,7 +93,7 @@ class PersonTypesController extends Controller
             }else{
                 $personType->per_typ_name = $request->per_typ_name;
                 $personType->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla person$personType del dato: $id con el dato: $request->per_typ_name ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla person$personType del dato: $id con el dato: $request->per_typ_name ",1,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'data' => "The personType:  ".$personType->per_typ_name." has been update successfully."

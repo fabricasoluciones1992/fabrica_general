@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class DocTypesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $doctypes = DocumentTypes::all();
@@ -23,7 +23,7 @@ class DocTypesController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'doc_typ_name' => 'required|string|min:1|max:255|unique:document_types|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -37,14 +37,14 @@ class DocTypesController extends Controller
         }else{
             $doctypes = new DocumentTypes($request->input());
             $doctypes->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,6,$request->use_id);
             return response()->json([
                'status' => True,
                'message' => "The type document: ".$doctypes->doc_typ_name." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $docTypes = DocumentTypes::find($id);
         if($docTypes == null){
@@ -59,7 +59,7 @@ class DocTypesController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $docTypes = DocumentTypes::find($id);
         if($docTypes == null){
@@ -82,7 +82,7 @@ class DocTypesController extends Controller
             }else{
                 $docTypes->doc_typ_name = $request->doc_typ_name;
                 $docTypes->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The type document: ".$docTypes->doc_typ_name." has been update."

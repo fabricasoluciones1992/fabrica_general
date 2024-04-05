@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 class CivilStatesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $civilStates = civilStates::all();
@@ -23,7 +23,7 @@ class CivilStatesController extends Controller
             ]);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'civ_sta_name' => 'required|string|min:1|max:255|unique:civil_states|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -39,14 +39,14 @@ class CivilStatesController extends Controller
         }else{
             $civilStates = new civilStates($request->input());
             $civilStates->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$proj_id,$use_id );
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,6,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The civil state: ".$civilStates->civ_sta_name." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $civilState = civilStates::find($id);
         if ($civilState == null) {
@@ -61,7 +61,7 @@ class CivilStatesController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request,$id)
+    public function update(Request $request,$id)
     {
         $rules = [
             'civ_sta_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -97,7 +97,7 @@ class CivilStatesController extends Controller
                 }else{
                     $civilState->civ_sta_name = $request->civ_sta_name;
                     $civilState->save();
-                    Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6,$request->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "The civil state: ".$civilState->civ_sta_name." has been update."

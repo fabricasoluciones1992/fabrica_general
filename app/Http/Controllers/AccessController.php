@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccessController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $access = Access::select();
@@ -26,7 +26,7 @@ class AccessController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'proj_id' =>'required|integer',
@@ -49,14 +49,14 @@ class AccessController extends Controller
             $access = new Access($request->input());
             $access->acc_status = 1;
             $access->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The access: ".$access->use_id." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $access = Access::search($id);
         if ($access == null) {
@@ -72,7 +72,7 @@ class AccessController extends Controller
         }
     }
 
-        public function update($proj_id,$use_id,Request $request,$id)
+        public function update(Request $request,$id)
     {
         $acces = Access::find($id);
         $msg = $acces->acc_id;
@@ -97,7 +97,7 @@ class AccessController extends Controller
                 $acces->proj_id = $request->proj_id;
                 $acces->use_id = $request->use_id;
                 $acces->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Access del dato: id->$msg",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The access: ".$acces->use_id." has been updated."
@@ -105,13 +105,13 @@ class AccessController extends Controller
             }
         }
     }
-    public function destroy($proj_id,$use_id,$id)
+    public function destroy($id, Request $request)
     {
         $access = Access::find($id);
-        $newStatus  = ($access->status == 1) ? 1 : 0;
-        $access->use_status = $newStatus;
+        $newStatus  = ($access->acc_status == 1) ? 0 : 1;
+        $access->acc_status = $newStatus;
         $access->save();
-        Controller::NewRegisterTrigger("Se le cambio el acceso al usuario:".$id.", por $newStatus ",2,$proj_id,$use_id);
+        Controller::NewRegisterTrigger("Se le cambio el acceso al usuario:".$id.", por $newStatus ",2,$request->use_id);
         return response()->json([
             'status' => true,
             'message' => 'user status updated successfully'

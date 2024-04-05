@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class ContractTypeController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $contract_Type = Contract_types::all();
         return response()->json([
@@ -13,7 +13,7 @@ class ContractTypeController extends Controller
             'data' => $contract_Type,
         ],200);
     }
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -28,14 +28,14 @@ class ContractTypeController extends Controller
                 $contract_Type = new Contract_types();
                 $contract_Type->con_typ_name = $request->con_typ_name;
                 $contract_Type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contract types",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contract types",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The contract type '". $contract_Type->con_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id, $use_id, $contract_Types)
+    public function show($contract_Types)
     {
         $contract_Type = Contract_types::find($contract_Types);
         if(!$contract_Type){
@@ -50,7 +50,7 @@ class ContractTypeController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,$proj_id, $use_id, $contract_Types)
+    public function update(Request $request, $contract_Types)
     {
             $rules = [
                 'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -65,7 +65,7 @@ class ContractTypeController extends Controller
                 $contract_Type = Contract_types::find($contract_Types);
                 $contract_Type->con_typ_name = $request->con_typ_name;
                 $contract_Type->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla contract types",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla contract types",1,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The contract type with ID: ". $contract_Type -> con_typ_id." has been updated to '" . $contract_Type->con_typ_name ."' succesfully.",

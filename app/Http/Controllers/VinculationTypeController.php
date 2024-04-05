@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class VinculationTypeController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $vinculation_types = Vinculation_Type::all();
         return response()->json([
@@ -13,7 +13,7 @@ class VinculationTypeController extends Controller
             'data' => $vinculation_types,
         ],200);
     }
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'vin_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -27,14 +27,14 @@ class VinculationTypeController extends Controller
             }else{
                 $vinculation_type = new Vinculation_Type($request->input());
                 $vinculation_type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla vinculation type",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla vinculation type",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The vinculation type '". $vinculation_type->vin_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id, $use_id, $vinculation_Type)
+    public function show($vinculation_Type)
     {
         $vinculation_types = Vinculation_Type::find($vinculation_Type);
         if(!$vinculation_types){
@@ -49,7 +49,7 @@ class VinculationTypeController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $vinculation_Type)
+    public function update(Request $request, $vinculation_Type)
     {
             $rules = [
                 'vin_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -64,7 +64,7 @@ class VinculationTypeController extends Controller
                 $vinculation_type = Vinculation_Type::find($vinculation_Type);
                 $vinculation_type->vin_typ_name = $request-> vin_typ_name;
                 $vinculation_type->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla vinculation type",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla vinculation type",1,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The vinculation type with ID: ". $vinculation_type->vin_typ_id." has been updated to '".$vinculation_type->vin_typ_name."' succesfully.",

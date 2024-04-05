@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class PayTimesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $paytimes = Pay_Times::all();
         return response()->json([
@@ -14,7 +14,7 @@ class PayTimesController extends Controller
             'data' => $paytimes,
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
  
                  $rules = [
@@ -29,14 +29,14 @@ class PayTimesController extends Controller
                 }else{
                     $paytimes = new Pay_Times($request->input());
                     $paytimes->save();
-                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Times",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Times",3,6,$request->use_id);
                     return response()->json([
                       'status' => True,
                       'message' => "The pay type '". $paytimes->pay_tim_name ."' has been added succesfully."
                     ],200);
                 }
         }
-    public function show($proj_id, $use_id,$id)
+    public function show($id)
     {
         $paytimes = Pay_Times::find($id);
         if ($paytimes == null) {
@@ -51,7 +51,7 @@ class PayTimesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $id)
+    public function update(Request $request, $id)
     {
                 $paytimes = Pay_Times::find($id);
                 if ($paytimes == null) {
@@ -72,7 +72,7 @@ class PayTimesController extends Controller
                     }else{
                         $paytimes->pay_tim_name = $request->pay_tim_name;
                         $paytimes->save();
-                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay times",3,$proj_id,$use_id);
+                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay times",3,6,$request->use_id);
                         return response()->json([
                           'status' => True,
                           'message' => "The pay time with ID: ". $paytimes -> pay_tim_id." has been updated to '" . $paytimes->pay_tim_name ."' succesfully."

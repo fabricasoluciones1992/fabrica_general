@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class HistoryPromotionController extends Controller
 {
  
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $history_promotions = History_Promotion::select();
         return response()->json([
@@ -19,7 +19,7 @@ class HistoryPromotionController extends Controller
             'data' => $history_promotions,
         ],200);
     }
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
                 $rules = [
                     'pro_id' =>'required|integer',
@@ -43,14 +43,14 @@ class HistoryPromotionController extends Controller
                         'message' => $validator->errors()->all()
                         ]);
                 }else{
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history Promotions",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history Promotions",3,6,$request->use_id);
                     return response()->json([
                         'status' => true,
                         'message' => "The history promotions '".$promotion->pro_name ."' of student '". $promotion->per_name ."' has been added succesfully.",
                     ],200);}
                 }
         }
-    public function show($proj_id, $use_id,$history_Promotion)
+    public function show($history_Promotion)
     {
         $history_promotions = History_Promotion::searchPromotions($history_Promotion);
         if(!$history_promotions){
@@ -66,7 +66,7 @@ class HistoryPromotionController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,$proj_id, $use_id, $history_Promotion)
+    public function update(Request $request, $history_Promotion)
     {
                 $rules = [
                     'pro_id' =>'required|integer',
@@ -90,7 +90,7 @@ class HistoryPromotionController extends Controller
                         'message' => $validator->errors()->all()
                         ]);
                 }else{
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla history Promotions",1,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla history Promotions",1,6,$request->use_id);
                     return response()->json([
                         'status' => true,
                         'message' => "The history promotions '".$promotion->pro_name ."' of student '". $promotion->per_name ."' has been updated succesfully.",

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
  
 class MonetaryStatesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {     
         $monState = MonetaryState::all();
         return response()->json([
@@ -17,7 +17,7 @@ class MonetaryStatesController extends Controller
         ], 200);
    
 }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
             $rules = [
                 'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
@@ -40,7 +40,7 @@ class MonetaryStatesController extends Controller
             }
 }
 
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {      
         $monState = MonetaryState::find($id);
         if ($monState == null) {
@@ -56,7 +56,7 @@ class MonetaryStatesController extends Controller
         } 
 }
  
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {      
         $monState = MonetaryState::find($id);
             if ($monState == null) {
@@ -77,7 +77,7 @@ class MonetaryStatesController extends Controller
                 } else {
                     $monState->mon_sta_name = $request->mon_sta_name;
                     $monState->save();
-                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $proj_id, $use_id);
+                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1);
  
                     return response()->json([
                         'status' => True,

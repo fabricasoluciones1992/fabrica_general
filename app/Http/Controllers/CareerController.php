@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class CareerController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $careers = Career::select();
         return response()->json([
@@ -13,7 +13,7 @@ class CareerController extends Controller
             'data' => $careers,
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -30,14 +30,14 @@ class CareerController extends Controller
                 $careers->car_name = $request->car_name;
                 $careers->car_typ_id = $request->car_typ_id;
                 $careers->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla careers",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla careers",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The career '". $careers->car_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id, $use_id, $career)
+    public function show($career)
     {
         $careers = Career::search($career);
         if(!$careers){
@@ -52,7 +52,7 @@ class CareerController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $career)
+    public function update(Request $request, $career)
     {
             $rules = [
                 'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -69,7 +69,7 @@ class CareerController extends Controller
                 $careers->car_name = $request->car_name;
                 $careers->car_typ_id = $request->car_typ_id;
                 $careers->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers",1,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The career with ID: ". $careers->car_id." has been updated to '" . $careers->car_name ."' succesfully.",

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AreaController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $areas = Area::all();
@@ -23,7 +23,7 @@ class AreaController extends Controller
             ]);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'are_name' => 'required|string|min:1|unique:areas|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -37,14 +37,14 @@ class AreaController extends Controller
         }else{
             $area = new Area($request->input());
             $area->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Area: $request->are_name",3,6,$request->use_id);;
             return response()->json([
                 'status' => True,
                 'message' => "The area: ".$area->are_name." has been created successfully."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $area = Area::find($id);
         if ($area == null) {
@@ -59,7 +59,7 @@ class AreaController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $area = Area::find($id);
         if ($area == null) {
@@ -82,7 +82,7 @@ class AreaController extends Controller
             }else{
                 $area->are_name = $request->are_name;
                 $area->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Area del dato: id->$id",1,6,$request->use_id);;
                 return response()->json([
                     'status' => True,
                     'message' => "The area: ".$area->are_name." has been update successfully."

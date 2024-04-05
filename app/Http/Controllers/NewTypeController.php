@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class NewTypeController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $newtypes = NewType::all();
@@ -23,7 +23,7 @@ class NewTypeController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'new_typ_name' => 'required|string|min:1|max:255|unique:new_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
@@ -37,14 +37,14 @@ class NewTypeController extends Controller
         }else{
             $newtype = new NewType($request->input());
             $newtype->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,6,$request->use_id);
             return response()->json([
              'status' => True,
              'message' => "The newType: ".$newtype->new_typ_name." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $newType = NewType::find($id);
         if ($newType == null) {
@@ -59,7 +59,7 @@ class NewTypeController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $newType = NewType::find($id);
         if ($newType == null) {
@@ -82,7 +82,7 @@ class NewTypeController extends Controller
             }else{
                 $newType->new_typ_name = $request->new_typ_name;
                 $newType->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_name ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla NewType del dato: $id con el dato: $request->new_typ_name ",1,6,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'data' => "The newType: ".$newType->new_typ_name." has been update successfully."

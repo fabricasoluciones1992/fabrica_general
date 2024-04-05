@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {    
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $positions = Position::select();
@@ -25,7 +25,7 @@ class PositionController extends Controller
             ]);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'pos_name' => 'required|string|min:1|max:255|unique:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -40,14 +40,14 @@ class PositionController extends Controller
         }else{
             $position = new Position($request->input());
             $position->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,6,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The position: ".$position->pos_name." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $position = Position::search($id);
         if ($position == null) {
@@ -62,7 +62,7 @@ class PositionController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id )
+    public function update(Request $request, $id )
     {
         $positons = Position::find($id);
         if ($positons == null) {
@@ -87,7 +87,7 @@ class PositionController extends Controller
                 $positons->pos_name = $request->pos_name;
                 $positons->are_id = $request->are_id;
                 $positons->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The position: ".$positons->pos_name." has been update successfully."

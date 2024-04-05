@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
  
 class ActivityController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $activities = Activity::all();
         return response()->json([
@@ -17,7 +17,7 @@ class ActivityController extends Controller
         ],200);
  
     }
-    public function store(Request $request, $proj_id,$use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -32,14 +32,14 @@ class ActivityController extends Controller
                 $activities = new Activity();
                 $activities->acti_name = $request->acti_name;
                 $activities->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,6,$request->use_id);;
                 return response()->json([
                 'status' => true,
                 'message' => "The activity '". $activities->acti_name ."' has been added succesfully."
             ],200);}
     }
  
-    public function show($proj_id, $use_id, $activity)
+    public function show($activity)
     {
         $activities = Activity::find($activity);
         if(!$activities){
@@ -55,7 +55,7 @@ class ActivityController extends Controller
         }
     }
  
-    public function update(Request $request,$proj_id, $use_id, $activity)
+    public function update(Request $request, $activity)
     {
             $rules = [
                 'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
@@ -70,7 +70,7 @@ class ActivityController extends Controller
                 $activities = Activity::find($activity);
                 $activities->acti_name = $request->acti_name;
                 $activities->save();
-                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,$proj_id,$use_id);
+                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,6,$request->use_id);;
                 return response()->json([
                 'status' => true,
                 'data' => "The activity with ID: ". $activities->acti_id." has been updated to '" . $activities->acti_name ."' succesfully.",

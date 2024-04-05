@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class PromotionController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $promotions = Promotion::all();
         return response()->json([
@@ -14,7 +14,7 @@ class PromotionController extends Controller
         ],200);
     }
  
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
                 $rules = [
                     'pro_name' =>'required|numeric|max:9999',
@@ -31,7 +31,7 @@ class PromotionController extends Controller
                     $promotions->pro_name = $request->pro_name;
                     $promotions->pro_group = $request->pro_group;
                     $promotions->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla promotions",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla promotions",3,6,$request->use_id);
                     return response()->json([
                         'status' => true,
                         'message' => "The promotion '". $promotions->pro_name ."' has been added succesfully."
@@ -40,7 +40,7 @@ class PromotionController extends Controller
         }
  
  
-    public function show($proj_id, $use_id, $promotion)
+    public function show($promotion)
     {
         $promotions = Promotion::find($promotion);
         if(!$promotions){
@@ -57,7 +57,7 @@ class PromotionController extends Controller
         }
     }
  
-    public function update(Request $request, $proj_id, $use_id, $promotion)
+    public function update(Request $request, $promotion)
     {
                 $rules = [
                     'pro_name' =>'required|numeric|max:9999',
@@ -74,7 +74,7 @@ class PromotionController extends Controller
                     $promotions->pro_name = $request->pro_name;
                     $promotions->pro_group = $request->pro_group;
                     $promotions->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,6,$request->use_id);
                     return response()->json([
                         'status' => true,
                         'data' => "The promotion with ID: ". $promotions -> pro_id." has been updated to '" . $promotions->pro_name ."' succesfully.",

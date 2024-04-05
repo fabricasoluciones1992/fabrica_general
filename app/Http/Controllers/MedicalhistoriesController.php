@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class MedicalhistoriesController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $medicalHistory = Medicalhistories::select();
           return response()->json([
@@ -14,7 +14,7 @@ class MedicalhistoriesController extends Controller
             'data' => $medicalHistory
         ],200);    
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
              'per_id' =>'required|integer',
@@ -30,7 +30,7 @@ class MedicalhistoriesController extends Controller
             $medicalHistory = new medicalhistories($request->input());
             $medicalHistory->med_his_status = 1;
             $medicalHistory->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,6,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The medical history ". $medicalHistory -> per_name ." has been added succesfully.",
@@ -38,7 +38,7 @@ class MedicalhistoriesController extends Controller
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $medicalHistory = medicalhistories::search($id);
         if ($medicalHistory == null) {
@@ -53,7 +53,7 @@ class MedicalhistoriesController extends Controller
             ],200);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $medicalHistory = medicalhistories::find($id);
         if ($medicalHistory == null) {
@@ -78,7 +78,7 @@ class MedicalhistoriesController extends Controller
                 $medicalHistory->dis_id = $request->dis_id;
                 $medicalHistory->med_his_status = $request->med_his_status;
                 $medicalHistory->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The medical history: ".$medicalHistory->med_his_id." has been updated succesfully."

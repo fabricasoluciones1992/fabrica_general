@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         try {
             $relationships = relationships::all();
@@ -23,7 +23,7 @@ class RelationshipsController extends Controller
             ],500);
         }
     }
-    public function store($proj_id,$use_id,Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'rel_name' => 'required|string|min:1|max:255|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
@@ -37,14 +37,14 @@ class RelationshipsController extends Controller
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,6,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The relationship: ".$relationship->rel_name." has been created."
             ],200);
         }
     }
-    public function show($proj_id,$use_id,$id)
+    public function show($id)
     {
         $relationship = relationships::find($id);
         if ($relationship == null) {
@@ -59,7 +59,7 @@ class RelationshipsController extends Controller
             ]);
         }
     }
-    public function update($proj_id,$use_id,Request $request, $id)
+    public function update(Request $request, $id)
     {
         $relationship = relationships::find($id);
         if ($relationship == null) {
@@ -82,7 +82,7 @@ class RelationshipsController extends Controller
             }else{
                 $relationship->rel_name = $request->rel_name;
                 $relationship->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,6,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The Relationship ".$relationship->rel_name." has been update successfully."

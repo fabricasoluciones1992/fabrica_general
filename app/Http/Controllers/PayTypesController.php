@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class PayTypesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $paytype = Pay_Types::all();
         return response()->json([
@@ -14,7 +14,7 @@ class PayTypesController extends Controller
             'data' => $paytype,
         ],200);
     }
-    public function store(Request $request,$proj_id, $use_id)
+    public function store(Request $request)
     {
                  $rules = [
                      'pay_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -28,14 +28,14 @@ class PayTypesController extends Controller
                 }else{
                     $paytype = new Pay_Types($request->input());
                     $paytype->save();
-                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Types",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Types",3,6,$request->use_id);
                     return response()->json([
                       'status' => True,
                       'message' => "The pay type '". $paytype->pay_typ_name ."' has been added succesfully."
                     ],200);
                 }
         }
-    public function show($proj_id, $use_id, $id)
+    public function show($id)
     {
         $paytype = Pay_Types::find($id);
         if ($paytype == null) {
@@ -50,7 +50,7 @@ class PayTypesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,$proj_id, $use_id, $id)
+    public function update(Request $request, $id)
     {
                 $paytype = Pay_Types::find($id);
                 if ($paytype == null) {
@@ -71,7 +71,7 @@ class PayTypesController extends Controller
                     }else{
                         $paytype->pay_typ_name = $request->pay_typ_name;
                         $paytype->save();
-                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay types",3,$proj_id,$use_id);
+                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay types",3,6,$request->use_id);
                         return response()->json([
                           'status' => True,
                           'message' => "The pay type with ID: ". $paytype -> pay_typ_id." has been updated to '" . $paytype->pay_typ_name ."' succesfully."

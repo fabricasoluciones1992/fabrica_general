@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class LearningObjectsController extends Controller
 {
-    public function index($proj_id,$use_id)
+    public function index()
     {
         $learning_objects = Learning_Objects::all();
         return response()->json([
@@ -15,7 +15,7 @@ class LearningObjectsController extends Controller
         ],200);
     }
  
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -32,14 +32,14 @@ class LearningObjectsController extends Controller
             }else{
                 $learning_objects = new Learning_Objects($request->input());
                 $learning_objects->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla learning objects",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla learning objects",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The learning objects '". $learning_objects->lea_obj_object ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id, $use_id, $learning_Objects)
+    public function show($learning_Objects)
     {
         $learning_object = Learning_Objects::find($learning_Objects);
         if(!$learning_object){
@@ -54,7 +54,7 @@ class LearningObjectsController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $learning_Objects)
+    public function update(Request $request, $learning_Objects)
     {
             $rules = [
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -76,7 +76,7 @@ class LearningObjectsController extends Controller
             $learning_objects->cof_id = $request->cof_id;
             $learning_objects->save();
             $cof = DB::table('coformacion')->where('cof_id', $learning_objects->cof_id)->first();
-            Controller::NewRegisterTrigger("Se realizo una edición en la tabla learning objects",1,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se realizo una edición en la tabla learning objects",1,6,$request->use_id);
             return response()->json([
                 'status' => true,
                 'data' => "The learning objects with ID: ". $learning_objects->lea_obj_id." has been updated to proccess coformation '" . $cof->cof_id ."' succesfully.",

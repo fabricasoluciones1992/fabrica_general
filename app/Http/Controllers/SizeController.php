@@ -5,12 +5,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class SizeController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $sizes = Size::all();
         return $sizes;
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
                 $rules = [
                     'siz_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -29,13 +29,13 @@ class SizeController extends Controller
                     $sizes->siz_min = $request->siz_min;
                     $sizes->siz_max = $request->siz_max;
                     $sizes->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla sizes",3,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla sizes",3,6,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'message' => "The size '". $sizes->siz_name ."' has been added succesfully."
                 ],200);}
         }
-    public function show($proj_id, $use_id,$size)
+    public function show($size)
     {
         $sizes = Size::find($size);
         if(!$sizes){
@@ -50,7 +50,7 @@ class SizeController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $size)
+    public function update(Request $request, $size)
     {
                 $rules = [
                     'siz_name' =>'required|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -69,7 +69,7 @@ class SizeController extends Controller
                     $sizes->siz_min = $request->siz_min;
                     $sizes->siz_max = $request->siz_max;
                     $sizes->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla sizes",1,$proj_id,$use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla sizes",1,6,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'data' => "The coformador type with ID: ". $sizes -> siz_id." has been updated to '" . $sizes->siz_name ."' succesfully.",

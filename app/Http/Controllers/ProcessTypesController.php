@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class ProcessTypesController extends Controller
 {
-    public function index($proj_id, $use_id)
+    public function index()
     {
         $process_type = Process_Types::all();
         return response()->json([
@@ -13,7 +13,7 @@ class ProcessTypesController extends Controller
             'data' => $process_type,
         ],200);
     }
-    public function store(Request $request, $proj_id, $use_id)
+    public function store(Request $request)
     {
             $rules = [
                 'pro_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -27,14 +27,14 @@ class ProcessTypesController extends Controller
             }else{
                 $process_type = new Process_Types($request->input());
                 $process_type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla process type",3,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla process type",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The process type '". $process_type->pro_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($proj_id, $use_id, $process_Types)
+    public function show($process_Types)
     {
         $process_type = Process_Types::find($process_Types);
         if(!$process_type){
@@ -49,7 +49,7 @@ class ProcessTypesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $proj_id, $use_id, $process_Types)
+    public function update(Request $request, $process_Types)
     {
             $rules = [
                 'pro_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -64,7 +64,7 @@ class ProcessTypesController extends Controller
                 $process_type = Process_Types::find($process_Types);
                 $process_type->pro_typ_name = $request-> pro_typ_name;
                 $process_type->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla process type",1,$proj_id,$use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla process type",1,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The process type with ID: ". $process_type->pro_typ_id." has been updated to '".$process_type->pro_typ_name."' succesfully.",
