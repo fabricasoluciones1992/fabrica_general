@@ -49,7 +49,7 @@ class AccessController extends Controller
             $access = new Access($request->input());
             $access->acc_status = 1;
             $access->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Access: $request->acc_id",3,$request->createdBy);
             return response()->json([
                 'status' => True,
                 'message' => "The access: ".$access->use_id." has been created."
