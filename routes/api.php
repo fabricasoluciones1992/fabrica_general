@@ -59,6 +59,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('reset/password', [PersonController::class, 'reset_password'])->name('reset.password');
 Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('send.email');
 Route::post('password/emergency', [PersonController::class, 'passwordEmergency'])->name('password.emergency');
+Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->name('profile');
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access', AccessController::class)->names('access')->parameter('','access');
@@ -83,7 +84,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories', MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
-    Route::get('profile/{proj_id/{use_id}', [PersonController::class, 'profile'])->name('profile');
     Route::post('update/password', [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
@@ -92,13 +92,13 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('career', CareerController::class)->names('career')->parameter('','career');
     Route::resource('careers/types', CareerTypesController::class)->names('career.types')->parameter('','career_types');
     Route::resource('contact/companies/type', ContactCompaniesTypesController::class)->names('contact.companies.types')->parameter('','contact_companies_types');
-    Route::resource('contract/types', ContractTypeController::class)->names('contract.types')->parameter('','contract_types');
+    // Route::resource('contract/types', ContractTypeController::class)->names('contract.types')->parameter('','contract_types');
     Route::resource('country', CountryController::class)->names('country')->parameter('','country');
-    Route::resource('History/career', HistoryCarrerController::class)->names('')->parameter('','history_career');
+    // Route::resource('History/career', HistoryCarrerController::class)->names('')->parameter('','history_career');
     Route::resource('history/promotion', HistoryPromotionController::class)->names('history.promotion')->parameter('','history_promotion');
     Route::resource('industry', IndustryController::class)->names('industry')->parameter('','industry');
     Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('','learning_objects');
-    Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('','money_states');
+    // Route::resource('monetary/states', MonetaryStatesController::class)->names('monetary.states')->parameter('','money_states');
     Route::resource('pay/times', PayTimesController::class)->names('pay.times')->parameter('','pay_times');
     Route::resource('pay/types', PayTypesController::class)->names('pay.types')->parameter('','pay_types');
     Route::resource('period', PeriodController::class)->names('period')->parameter('','period');
