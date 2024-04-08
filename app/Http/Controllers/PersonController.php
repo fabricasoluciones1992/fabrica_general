@@ -49,11 +49,11 @@ class PersonController extends Controller
             ],500);
         }
     }
-    public function profile()
+    public function profile($proj_id,$use_id)
     {
         try {
             $persons = Person::findByper($use_id);
-            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$proj_id,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $persons  

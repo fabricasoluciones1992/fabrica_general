@@ -7,6 +7,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CareerTypesController;
 use App\Http\Controllers\CivilStatesController;
+use App\Http\Controllers\ContactCompaniesTypesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContractTypeController;
 use App\Http\Controllers\CountryController;
@@ -40,7 +41,6 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TelephonesController;
 use App\Http\Controllers\VinculationTypeController;
-use App\Models\Contact_Companies_Types;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,15 +83,15 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories', MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
-    Route::get('profile', [PersonController::class, 'profile'])->name('profile');
+    Route::get('profile/{proj_id/{use_id}', [PersonController::class, 'profile'])->name('profile');
     Route::post('update/password', [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
     Route::get('last/persons', [PersonController::class, 'lastPersons'])->name('last.persons');
     Route::resource('activity', ActivityController::class)->names('activity')->parameter('','activity');
     Route::resource('career', CareerController::class)->names('career')->parameter('','career');
-    Route::resource('career/types', CareerTypesController::class)->names('career.types')->parameter('','career_types');
-    Route::resource('contact/companies/type', Contact_Companies_Types::class)->names('contact.companies.types')->parameter('','contact_companies_types');
+    Route::resource('careers/types', CareerTypesController::class)->names('career.types')->parameter('','career_types');
+    Route::resource('contact/companies/type', ContactCompaniesTypesController::class)->names('contact.companies.types')->parameter('','contact_companies_types');
     Route::resource('contract/types', ContractTypeController::class)->names('contract.types')->parameter('','contract_types');
     Route::resource('country', CountryController::class)->names('country')->parameter('','country');
     Route::resource('History/career', HistoryCarrerController::class)->names('')->parameter('','history_career');
