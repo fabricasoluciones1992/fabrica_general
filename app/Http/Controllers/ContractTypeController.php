@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Contract_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class ContractTypeController extends Controller
 {
     public function index()

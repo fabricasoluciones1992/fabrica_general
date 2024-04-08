@@ -130,7 +130,7 @@ class PersonController extends Controller
     }
     public function update_password(Request $request)
     {
-        $person = User::find($use_id);
+        $person = User::find($request->use_id);
         if ($request->use_password != $person->use_password) {
             return response()->json([
                 'status' => False,
@@ -169,7 +169,7 @@ class PersonController extends Controller
             }
         }
     }
-    public function destroy($proj_id,$use_id,$id)
+    public function destroy(Request $request, $id)
     {
         $user = User::find($id);
         $newStatus  = ($user->use_status == 1) ? 0 : 1;

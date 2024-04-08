@@ -6,7 +6,7 @@ use App\Models\MonetaryState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
  
-class MonetaryStatesController extends Controller
+class MonetaryStateController extends Controller
 {
     public function index()
     {     
@@ -31,7 +31,7 @@ class MonetaryStatesController extends Controller
             } else {
                 $monState = new MonetaryState($request->input());
                 $monState->save();
-                Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3,$proj_id, $use_id);
+                Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3, $request->use_id);
  
                 return response()->json([
                     'status' => True,
@@ -77,7 +77,7 @@ class MonetaryStatesController extends Controller
                 } else {
                     $monState->mon_sta_name = $request->mon_sta_name;
                     $monState->save();
-                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1);
+                    Controller::NewRegisterTrigger("An update was made in the monetary states table", 1, $request->use_id);
  
                     return response()->json([
                         'status' => True,
