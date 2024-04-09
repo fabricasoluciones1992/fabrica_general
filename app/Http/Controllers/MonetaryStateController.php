@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\MonetaryState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
- 
+
 class MonetaryStateController extends Controller
 {
     public function index()
-    {     
+    {
         $monState = MonetaryState::all();
         return response()->json([
             'status' => true,
             'data' => $monState
         ], 200);
-   
-}
+    }
+
     public function store(Request $request)
     {
             $rules = [
@@ -30,9 +30,9 @@ class MonetaryStateController extends Controller
                 ]);
             } else {
                 $monState = new MonetaryState($request->input());
+                $monState->mon_sta_status = 1;
                 $monState->save();
                 Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3, $request->use_id);
- 
                 return response()->json([
                     'status' => True,
                     'message' => "The economic state type '".$monState->mon_sta_name."' has been created successfully."
@@ -41,7 +41,7 @@ class MonetaryStateController extends Controller
 }
 
     public function show($id)
-    {      
+    {
         $monState = MonetaryState::find($id);
         if ($monState == null) {
             return response()->json([
@@ -53,11 +53,11 @@ class MonetaryStateController extends Controller
                 'status' => true,
                 'data' => $monState
             ]);
-        } 
+        }
 }
- 
+
     public function update(Request $request, $id)
-    {      
+    {
         $monState = MonetaryState::find($id);
             if ($monState == null) {
                 return response()->json([
