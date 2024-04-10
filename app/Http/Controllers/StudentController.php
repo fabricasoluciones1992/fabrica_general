@@ -9,7 +9,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = DB::table('ViewStudents')->get();
+        $students = DB::table('ViewStudents')->latest()->take(50)->get();
         return response()->json([
             'status' => true,
             'data' => $students,
