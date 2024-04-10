@@ -322,16 +322,5 @@ class PersonController extends Controller
             ],400);
         }
 
-    }
-
-    public function uploadFile(Request $request)
-{
-    return "request";
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        return response()->json(['mensaje' => 'Archivo subido correctamente'], 200);
-    } else {
-        return response()->json(['mensaje' => 'No se encontró ningún archivo'], 400);
-    }
-}
+    } 
 }

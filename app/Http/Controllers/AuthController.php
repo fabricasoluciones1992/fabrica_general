@@ -148,4 +148,33 @@ class AuthController extends Controller
             'message'=> "logout success."
         ]);
     }
+
+    public function uploadFile(Request $request)
+    {
+        // Verifica si hay un archivo CSV en la solicitud
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Guarda el archivo en el directorio de almacenamiento
+            $file->storeAs('csv', $file->getClientOriginalName());
+
+            // Lee el archivo CSV
+            $csvData = array_map('str_getcsv', file($file->path()));
+
+            // Procesa los datos CSV y guárdalos en una variable
+            $csvVariable = [];
+            foreach ($csvData as $row) {
+                $csvVariable[] = [
+                    'use_mail' => $row[0],
+                    // 'use_password' => $row[1],
+                    // 'per_name' => $row[2],
+                    // Agrega más campos según tu CSV
+                ];
+            }
+
+            return $csvVariable;
+        }
+
+        return response()->json(['error' => 'No CSV file found in request'], 400);
+    }
 }

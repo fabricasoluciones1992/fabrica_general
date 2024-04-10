@@ -87,7 +87,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('update/password/{proj_id}/{use_id}', [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
-    Route::post('prueba', [PersonController::class, 'viewForDocument'])->name('view.for.document');
+    Route::post('prueba', [AuthController::class, 'uploadFile'])->name('upload.persons');
     Route::get('last/persons', [PersonController::class, 'lastPersons'])->name('last.persons');
     Route::resource('activity', ActivityController::class)->names('activity')->parameter('','activity');
     Route::resource('career', CareerController::class)->names('career')->parameter('','career');
