@@ -16,7 +16,7 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'pha_phase' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -26,12 +26,12 @@ class PhaseController extends Controller
                 ]);
             }else{
                 $phases = new Phase();
-                $phases->pha_phase=$request->pha_phase;
+                $phases->pha_name=$request->pha_name;
                 $phases->save();
                 Controller::NewRegisterTrigger("Se realizo una inserción en la tabla phases",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "The phase '". $phases->pha_phase ."' has been added succesfully."
+                    'message' => "The phase '". $phases->pha_name ."' has been added succesfully."
                 ],200);
             }
     }
@@ -54,7 +54,7 @@ class PhaseController extends Controller
     {
  
             $rules = [
-                'pha_phase' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -64,7 +64,7 @@ class PhaseController extends Controller
                 ]);
             }else{
                 $phases = Phase::find($phase);
-                $phases->pha_phase=$request->pha_phase;
+                $phases->pha_name=$request->pha_name;
                 $phases->save();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla phases",1,6,$request->use_id);
                 return response()->json([

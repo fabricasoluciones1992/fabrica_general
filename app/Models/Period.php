@@ -12,7 +12,7 @@ class Period extends Model
     protected $table = 'periods';
     protected $primaryKey = 'peri_id';
     protected $fillable = [
-        'peri_period',
+        'peri_name',
         'peri_start',
         'peri_end',
         'pha_id',
