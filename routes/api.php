@@ -84,6 +84,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('medical/histories', MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
+    Route::get('students', [StudentController::class, 'indexAmount'])->name('filtrar.personas');
     Route::post('update/password/{proj_id}/{use_id}', [PersonController::class, 'update_password'])->name('update.password');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
