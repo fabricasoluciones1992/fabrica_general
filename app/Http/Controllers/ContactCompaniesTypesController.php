@@ -21,6 +21,7 @@ class ContactCompaniesTypesController extends Controller
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
+
                 return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
@@ -58,10 +59,11 @@ class ContactCompaniesTypesController extends Controller
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->con_com_typ_name, 'contact_companies_types', 'con_com_typ_id', $contact_Companies_Types);
 
-            if ($validator->fails()||$validate) {
+            if ($validator->fails()||$validate==0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
                 $contact_companies_type = Contact_Companies_Types::find($contact_Companies_Types);

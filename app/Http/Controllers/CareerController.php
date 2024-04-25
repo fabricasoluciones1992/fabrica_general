@@ -62,9 +62,10 @@ class CareerController extends Controller
             $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_typ_id', $career);
 
             if ($validator->fails()||$validate==0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' =>$msg
                 ]);
             }else{
                 $careers = Career::find($career);

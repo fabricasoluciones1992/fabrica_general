@@ -58,9 +58,11 @@ class VinculationTypeController extends Controller
             $validate = Controller::validate_exists($request->vin_typ_name, 'vinculation_types', 'vin_typ_name', 'car_typ_id', $vinculation_Type);
 
             if ($validator->fails()||$validate==0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
                 $vinculation_type = Vinculation_Type::find($vinculation_Type);

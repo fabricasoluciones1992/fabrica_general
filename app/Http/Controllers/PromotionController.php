@@ -67,9 +67,11 @@ class PromotionController extends Controller
                 $validate = Controller::validate_exists($request->pro_name, 'promotions', 'pro_name', 'pro_group', $promotion);
 
                 if ($validator->fails()||$validate) {
+                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+
                     return response()->json([
                     'status' => False,
-                    'message' => $validator->errors()->all()
+                    'message' => $msg
                     ]);
                 }else{
                     $promotions = Promotion::find($promotion);

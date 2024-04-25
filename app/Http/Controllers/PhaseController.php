@@ -60,9 +60,11 @@ class PhaseController extends Controller
             $validate = Controller::validate_exists($request->car_name, 'phases', 'pha_name', $phase);
 
             if ($validator->fails()) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
                 $phases = Phase::find($phase);
