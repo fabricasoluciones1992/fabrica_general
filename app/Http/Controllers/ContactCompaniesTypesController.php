@@ -17,7 +17,7 @@ class ContactCompaniesTypesController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'con_com_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'con_com_typ_name' =>'required|unique:contact_companies_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -56,7 +56,9 @@ class ContactCompaniesTypesController extends Controller
                 'con_com_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->con_com_typ_name, 'contact_companies_types', 'con_com_typ_id', $contact_Companies_Types);
+
+            if ($validator->fails()||$validate) {
                 return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()

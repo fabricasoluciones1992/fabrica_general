@@ -20,7 +20,7 @@ class MonetaryStateController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'mon_sta_name' =>'required|unique:monetary_states|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -69,7 +69,9 @@ class MonetaryStateController extends Controller
                     'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->mon_sta_name, 'monetary_states', 'mon_sta_name', $id);
+
+                if ($validator->fails()||$validate==0) {
                     return response()->json([
                         'status' => False,
                         'message' => $validator->errors()->all()

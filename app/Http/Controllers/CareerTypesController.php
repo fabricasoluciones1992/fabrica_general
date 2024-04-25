@@ -16,7 +16,7 @@ class CareerTypesController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'car_typ_name' =>'required|unique:career_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -56,7 +56,9 @@ class CareerTypesController extends Controller
                 'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->car_typ_name, 'career_types', 'car_typ_name', $career_Types);
+
+            if ($validator->fails()||$validate==0) {
                 return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()

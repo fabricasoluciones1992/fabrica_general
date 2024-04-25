@@ -16,7 +16,7 @@ class CareerController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'car_name' =>'required|unique:careers|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'car_typ_id'=>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -59,7 +59,9 @@ class CareerController extends Controller
                 'car_typ_id'=>'required|integer'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_typ_id', $career);
+
+            if ($validator->fails()||$validate==0) {
                 return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()

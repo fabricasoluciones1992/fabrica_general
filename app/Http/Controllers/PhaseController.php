@@ -16,7 +16,7 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'pha_name' =>'required|unique:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -57,6 +57,8 @@ class PhaseController extends Controller
                 'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
+            $validate = Controller::validate_exists($request->car_name, 'phases', 'pha_name', $phase);
+
             if ($validator->fails()) {
                 return response()->json([
                 'status' => False,

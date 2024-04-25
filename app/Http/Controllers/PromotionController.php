@@ -17,7 +17,7 @@ class PromotionController extends Controller
     public function store(Request $request)
     {
                 $rules = [
-                    'pro_name' =>'required|numeric|max:9999',
+                    'pro_name' =>'required|unique:promotions|numeric|max:9999',
                     'pro_group' =>'required|string|max:1',
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -64,7 +64,9 @@ class PromotionController extends Controller
                     'pro_group' =>'required|string',
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->pro_name, 'promotions', 'pro_name', 'pro_group', $promotion);
+
+                if ($validator->fails()||$validate) {
                     return response()->json([
                     'status' => False,
                     'message' => $validator->errors()->all()
