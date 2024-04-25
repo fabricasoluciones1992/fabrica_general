@@ -18,7 +18,7 @@ class PayTimesController extends Controller
     {
  
                  $rules = [
-                     'pay_tim_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_tim_name' =>'required|string|unique:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -64,10 +64,12 @@ class PayTimesController extends Controller
                         'pay_tim_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                     ];
                     $validator = Validator::make($request->input(), $rules);
-                    if ($validator->fails()) {
+                    $validate = Controller::validate_exists($request->pay_tim_name, 'pay_times', 'pay_tim_name', 'pay_tim_id', $id);
+                    if ($validator->fails() || $validate == 0) {
+                        $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                         return response()->json([
                           'status' => False,
-                          'message' => $validator->errors()->all()
+                          'message' => $msg
                         ],400);
                     }else{
                         $paytimes->pay_tim_name = $request->pay_tim_name;

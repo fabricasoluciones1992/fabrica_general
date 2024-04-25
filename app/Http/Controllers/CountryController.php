@@ -16,7 +16,7 @@ class CountryController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'cou_name' =>'required|string|unique:countries|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -49,19 +49,21 @@ class CountryController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $country)
+    public function update(Request $request, $id)
     {
             $rules = [
                 'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->cou_name, 'countries', 'cou_name', 'cou_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
-                $countries = Country::find($country);
+                $countries = Country::find($id);
                 $countries->cou_name = $request->cou_name;
                 $countries->save();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla countries",1,6,$request->use_id);

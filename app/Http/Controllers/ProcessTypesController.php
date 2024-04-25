@@ -16,7 +16,7 @@ class ProcessTypesController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'pro_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'pro_typ_name' =>'required|string|unique:process_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -49,19 +49,21 @@ class ProcessTypesController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $process_Types)
+    public function update(Request $request, $id)
     {
             $rules = [
                 'pro_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->pro_typ_name, 'process_types', 'pro_typ_name', 'pro_typ_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
-                $process_type = Process_Types::find($process_Types);
+                $process_type = Process_Types::find($id);
                 $process_type->pro_typ_name = $request-> pro_typ_name;
                 $process_type->save();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla process type",1,6,$request->use_id);

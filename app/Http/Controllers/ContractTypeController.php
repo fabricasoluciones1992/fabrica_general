@@ -19,7 +19,7 @@ class ContractTypeController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'con_typ_name' =>'required|string|unique:contract_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -53,19 +53,21 @@ class ContractTypeController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $contract_Types)
+    public function update(Request $request, $id)
     {
             $rules = [
                 'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->con_typ_name, 'contract_type', 'con_typ_name', 'con_typ_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
-                $contract_Type = Contract_types::find($contract_Types);
+                $contract_Type = Contract_types::find($id);
                 $contract_Type->con_typ_name = $request->con_typ_name;
                 $contract_Type->save();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla contract types",1,6,$request->use_id);
