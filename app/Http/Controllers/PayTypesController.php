@@ -17,7 +17,7 @@ class PayTypesController extends Controller
     public function store(Request $request)
     {
                  $rules = [
-                     'pay_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_typ_name' =>'required|string|unique:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -63,10 +63,12 @@ class PayTypesController extends Controller
                         'pay_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                     ];
                     $validator = Validator::make($request->input(), $rules);
-                    if ($validator->fails()) {
+                    $validate = Controller::validate_exists($request->pay_typ_name, 'pay_types', 'pay_typ_name', 'pay_typ_id', $id);
+                    if ($validator->fails() || $validate == 0) {
+                        $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                         return response()->json([
                           'status' => False,
-                          'message' => $validator->errors()->all()
+                          'message' => $msg
                         ],400);
                     }else{
                         $paytype->pay_typ_name = $request->pay_typ_name;

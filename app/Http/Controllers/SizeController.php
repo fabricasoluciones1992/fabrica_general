@@ -13,7 +13,7 @@ class SizeController extends Controller
     public function store(Request $request)
     {
                 $rules = [
-                    'siz_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                    'siz_name' =>'required|string|unique:sizes|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                     'siz_min' =>'required|numeric',
                     'siz_max' =>'required|numeric',
                 ];
@@ -50,7 +50,7 @@ class SizeController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $size)
+    public function update(Request $request, $id)
     {
                 $rules = [
                     'siz_name' =>'required|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -58,13 +58,15 @@ class SizeController extends Controller
                     'siz_max' =>'required|numeric',
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
+                $validate = Controller::validate_exists($request->siz_name, 'sizes', 'siz_name', 'siz_id', $id);
+                if ($validator->fails() || $validate == 0) {
+                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                     return response()->json([
                     'status' => False,
-                    'message' => $validator->errors()->all()
+                    'message' => $msg
                     ]);
                 }else{
-                    $sizes = Size::find($size);
+                    $sizes = Size::find($id);
                     $sizes->siz_name = $request->siz_name;
                     $sizes->siz_min = $request->siz_min;
                     $sizes->siz_max = $request->siz_max;

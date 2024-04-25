@@ -20,7 +20,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'acti_name' =>'required|string|unique: activities|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -55,19 +55,21 @@ class ActivityController extends Controller
         }
     }
  
-    public function update(Request $request, $activity)
+    public function update(Request $request, $id)
     {
             $rules = [
                 'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
             ];
             $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
+            $validate = Controller::validate_exists($request->acti_name, 'activities', 'acti_name', 'acti_id', $id);
+            if ($validator->fails() || $validate == 0) {
+                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
-                'message' => $validator->errors()->all()
+                'message' => $msg
                 ]);
             }else{
-                $activities = Activity::find($activity);
+                $activities = Activity::find($id);
                 $activities->acti_name = $request->acti_name;
                 $activities->save();
                         Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,6,$request->use_id);;
