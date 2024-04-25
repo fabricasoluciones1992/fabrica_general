@@ -9,18 +9,18 @@ class EpsController extends Controller
 {
     public function index()
     {
-        try {
+        // try {
             $eps = Eps::all();
             return response()->json([
                 'status' => true,
                 'data' => $eps
             ],200);
-        } catch (\Throwable $th) {
-            return response()->json([
-               'status' => false,
-              'message' => "Error in index, not found elements"
-            ],500);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //        'status' => false,
+        //       'message' => "Error in index, not found elements"
+        //     ],500);
+        // }
     }
     public function store(Request $request)
     {

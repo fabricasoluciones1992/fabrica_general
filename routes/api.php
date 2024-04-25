@@ -61,7 +61,7 @@ Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name
 Route::post('password/emergency', [PersonController::class, 'passwordEmergency'])->name('password.emergency');
 Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->name('profile');
 
-Route::middleware(['auth:sanctum'])->group(function() {
+// Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access', AccessController::class)->names('access')->parameter('','access');
     Route::resource('areas', AreaController::class)->names('areas')->parameter('','areas');
     Route::resource('contacts', ContactController::class)->names('contacts')->parameter('','contacts');
@@ -109,4 +109,4 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('promotion', PromotionController::class)->names('promotion')->parameter('','promotion');
     Route::resource('size', SizeController::class)->names('size')->parameter('','size');
     Route::resource('vinculation/type', VinculationTypeController::class)->names('vinculation.type')->parameter('','vinculation_type');
-});
+// });

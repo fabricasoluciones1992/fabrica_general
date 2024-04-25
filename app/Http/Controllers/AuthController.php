@@ -54,7 +54,7 @@ class AuthController extends Controller
                         ],401);
                     }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
-                    $person = DB::table('Viewpersons')->first();
+                    $person = DB::table('Viewpersons')->where('use_id','=',$user->use_id)->first();
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 5,$request->proj_id,$user->use_id);
                     $projects = DB::table('access')->where('use_id','=',$user->use_id)->pluck('proj_id');
                     return response()->json([
