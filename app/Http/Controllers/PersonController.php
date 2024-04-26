@@ -327,7 +327,7 @@ class PersonController extends Controller
     public function updatePhoto(Request $request, $id){
         $user = User::find($id);
         $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Cambia los tipos de archivo y el tamaño según tus necesidades
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $image = $request->file('file');
