@@ -322,5 +322,25 @@ class PersonController extends Controller
             ],400);
         }
 
-    } 
+    }
+
+    public function updatePhoto(Request $request, $id){
+        $user = User::find($id);
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Cambia los tipos de archivo y el tamaño según tus necesidades
+        ]);
+
+        $image = $request->file('file');
+        $imageName = time().'.'.$image->getClientOriginalExtension();
+        $image->move(public_path('images'), $imageName);
+
+        $imageUrl = asset('images/'.$imageName);
+
+        $user->use_photo = $imageUrl;
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' => "Image updated successfully"
+        ], 200);
+    }
 }
