@@ -331,10 +331,10 @@ class PersonController extends Controller
         ]);
 
         $image = $request->file('file');
-        $imageName = base64_encode($image).".".$image->getClientOriginalExtension();
+        $imageName = $image->getClientOriginalExtension();
         $image->move(public_path('images'), $imageName);
 
-        $imageUrl = asset('images/'.$imageName);
+        $imageUrl = base64_encode(asset('images/'.$imageName));
 
         $user->use_photo = $imageUrl;
         $user->save();
