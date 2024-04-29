@@ -97,7 +97,7 @@ class HistoryPromotionController extends Controller
                     ],200);}
                 }
         }
-    public function destroy(History_Promotion $history_Promotion)
+    public function destroy()
     {
         return response()->json([
             'status' => false,

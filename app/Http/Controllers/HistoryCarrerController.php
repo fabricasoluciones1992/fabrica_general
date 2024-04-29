@@ -82,7 +82,7 @@ class HistoryCarrerController extends Controller
                 ],200);
             }
         }
-    public function destroy(History_career $History_career)
+    public function destroy()
     {
         return response()->json([
             'status' => false,

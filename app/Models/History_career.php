@@ -40,7 +40,7 @@ class History_career extends Model
         ->join('careers', 'history_careers.car_id', '=', 'careers.car_id')
         ->join('persons', 'students.per_id', '=', 'persons.per_id')
         ->select('history_careers.his_car_id','careers.car_name','persons.per_name')
-        ->where('history_careers.his_car_id','=',$History_career)
+        ->where('students.per_id','=',$History_career)
         ->first();
         return $history_careers;
     }

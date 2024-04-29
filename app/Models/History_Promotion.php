@@ -41,7 +41,7 @@ class History_Promotion extends Model
         ->leftJoin('promotions', 'history_promotions.pro_id', '=', 'promotions.pro_id')
         ->Join('persons','students.per_id','=',"persons.per_id")
         ->select('history_promotions.his_pro_id', 'persons.per_name','promotions.pro_name')
-        ->where('history_promotions.his_pro_id','=',$history_Promotion)
+        ->where('students.per_id','=',$history_Promotion)
         ->first();
         return $history_promotions;
     }
