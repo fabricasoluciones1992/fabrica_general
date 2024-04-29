@@ -331,7 +331,7 @@ class PersonController extends Controller
         ]);
 
         $image = $request->file('file');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
+        $imageName = base64_encode($image).".".$image->getClientOriginalExtension();
         $image->move(public_path('images'), $imageName);
 
         $imageUrl = asset('images/'.$imageName);

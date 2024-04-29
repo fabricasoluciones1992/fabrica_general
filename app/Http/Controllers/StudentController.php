@@ -9,7 +9,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = DB::table('ViewStudents')->get();
+        $students = DB::table('viewStudents')->get();
         return response()->json([
             'status' => true,
             'data' => $students,
@@ -18,7 +18,7 @@ class StudentController extends Controller
 
     public function indexAmount()
     {
-        $students = DB::table('ViewStudents')->orderBy('stu_id', 'desc')->take(50)->get();
+        $students = DB::table('viewStudents')->orderBy('stu_id', 'desc')->take(50)->get();
         return response()->json([
             'status' => true,
             'data' => $students,
@@ -55,7 +55,7 @@ class StudentController extends Controller
    }
     public function show($student)
     {
-        $students = DB::table('ViewStudents')->where('stu_id','=', $student)->first();
+        $students = DB::table('viewStudents')->where('stu_id','=', $student)->first();
         if(!$students){
             return response()->json([
                 'status' => false,
