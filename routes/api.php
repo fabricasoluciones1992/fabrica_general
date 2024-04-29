@@ -98,6 +98,7 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::post('update/password/{proj_id}/{use_id}', [PersonController::class, 'update_password'])->name('update.password');
     Route::post('update/photo/{id}', [PersonController::class, 'updatePhoto'])->name('update.photo');
     Route::post('prueba', [AuthController::class, 'uploadFile'])->name('upload.persons');
+    Route::get('persons/filtred/{id}/{docTypeId}', [PersonController::class, 'filtredforDocument'])->name('filtredforDocument');
     Route::get('last/persons', [PersonController::class, 'lastPersons'])->name('last.persons');
     Route::resource('phase', PhaseController::class)->names('phase')->parameter('','phase');
     Route::resource('positions', PositionController::class)->names('positions')->parameter('','positions');

@@ -343,4 +343,27 @@ class PersonController extends Controller
             'message' => "Image updated successfully"
         ], 200);
     }
+
+
+    public static function findByDocument($id, $docTypeId){
+        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id AND doc_typ_id = $docTypeId");
+        return $persons;
+    }
+
+    public function filtredforDocument($id, $docTypeId)
+{
+    try {
+        $persons = PersonController::findByDocument($id, $docTypeId);
+
+        return response()->json([
+            'status' => true,
+            'data' => $persons
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => "Error occurred while found elements"
+        ], 500);
+    }
+}
 }
