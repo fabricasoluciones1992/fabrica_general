@@ -56,14 +56,13 @@ class AuthController extends Controller
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     $person = DB::table('ViewPersons')->where('use_id','=',$user->use_id)->first();
                     Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 5,$request->proj_id,$user->use_id);
-                    $projects = DB::table('access')->where('use_id','=',$user->use_id)->pluck('proj_id');
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
+                        'use_photo' => $person->use_photo,
                         'per_document' => $person->per_document,
                         'per_typ_name' => $person->per_typ_name,
-                        // 'projects'=>$projects,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
                         'acc_administrator' =>$acceso
                     ], 200);
@@ -152,24 +151,17 @@ class AuthController extends Controller
 
     public function uploadFile(Request $request)
     {
-        // Verifica si hay un archivo CSV en la solicitud
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
-            // Guarda el archivo en el directorio de almacenamiento
             $file->storeAs('csv', $file->getClientOriginalName());
 
-            // Lee el archivo CSV
             $csvData = array_map('str_getcsv', file($file->path()));
 
-            // Procesa los datos CSV y guárdalos en una variable
             $csvVariable = [];
             foreach ($csvData as $row) {
                 $csvVariable[] = [
                     'use_mail' => $row[0],
-                    // 'use_password' => $row[1],
-                    // 'per_name' => $row[2],
-                    // Agrega más campos según tu CSV
                 ];
             }
 
