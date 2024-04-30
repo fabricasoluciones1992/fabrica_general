@@ -42,6 +42,7 @@ class Person extends Model
     }
     public static function findByper($use_id){
         $persons = DB::select("SELECT * FROM ViewPersons WHERE per_id = $use_id");
+        $persons[0]->use_photo = base64_decode($persons[0]->use_photo);
         foreach ($persons as $person) {
             $mails = DB::table('mails')->where('per_id', '=', $person->per_id)->get();
             $telephones = DB::table('telephones')->where('per_id', '=', $person->per_id)->get();

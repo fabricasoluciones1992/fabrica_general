@@ -60,7 +60,7 @@ class AuthController extends Controller
                         'status' => True,
                         'message' => "User login successfully",
                         'use_id' => $user->use_id,
-                        'use_photo' => $person->use_photo,
+                        'use_photo' => base64_decode($person->use_photo),
                         'per_document' => $person->per_document,
                         'per_typ_name' => $person->per_typ_name,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
