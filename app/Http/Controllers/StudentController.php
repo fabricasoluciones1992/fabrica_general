@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +32,6 @@ class StudentController extends Controller
         'stu_stratum' => 'required',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
-        'stu_military' => 'required|numeric|max:9999999999',
         'per_id' => 'required|integer',
         'loc_id' => 'required|integer',
         'mon_sta_id' => 'required|integer',
@@ -42,6 +43,13 @@ class StudentController extends Controller
             'message' => $validator->errors()->all()
             ]);
         }else{
+        $person = Person::find($request->per_id);
+        if ($person != []) {
+            return response()->json([
+                'status' => False,
+                'message' => "the student already exists"
+            ]);
+        }
         $students = new Student($request->input());
         $students->save();
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
@@ -71,10 +79,8 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-        'stu_code' => 'required|numeric',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
-        'stu_military' => 'required|numeric|max:9999999999',
         'per_id' => 'required|integer',
         'loc_id' => 'required|integer',
         'mon_sta_id' => 'required|integer',
