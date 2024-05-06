@@ -12,7 +12,6 @@ class Student extends Model
     protected $primaryKey = 'stu_id';
     protected $fillable = [
         'stu_stratum',
-        'stu_code',
         'stu_journey',
         'stu_rh',
         'stu_scholarship',

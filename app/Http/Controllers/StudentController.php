@@ -28,7 +28,6 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-        'stu_code' => 'required|numeric',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
         'stu_military' => 'required|numeric|max:9999999999',
@@ -55,7 +54,7 @@ class StudentController extends Controller
    }
     public function show($student)
     {
-        $students = DB::table('viewStudents')->where('stu_id','=', $student)->first();
+        $students = DB::table('viewStudents')->where('per_document','=', $student)->first();
         if(!$students){
             return response()->json([
                 'status' => false,
