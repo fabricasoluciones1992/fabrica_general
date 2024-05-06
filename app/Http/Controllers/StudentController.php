@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,10 +30,8 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-        'stu_code' => 'required|numeric',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
-        'stu_military' => 'required|numeric|max:9999999999',
         'per_id' => 'required|integer',
         'loc_id' => 'required|integer',
         'mon_sta_id' => 'required|integer',
@@ -43,19 +43,31 @@ class StudentController extends Controller
             'message' => $validator->errors()->all()
             ]);
         }else{
+        $person = Student::where('per_id','=',$request->per_id)->get();
+        if ($person != "[]") {
+            return response()->json([
+                'status' => False,
+                'message' => "the student already exists"
+            ]);
+        }
         $students = new Student($request->input());
         $students->save();
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
         Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,6,$request->use_id);
         return response()->json([
             'status' => true,
+            'stu_id' => $students->stu_id,
             'message' => "The student '". $person->per_name ."' has been added succesfully."
         ],200);}
 
    }
     public function show($student)
     {
-        $students = DB::table('viewStudents')->where('stu_id','=', $student)->first();
+        $students = DB::table('viewStudents')->where('per_document','=', $student)->first();
+        $careers = DB::select("SELECT careers.car_name FROM history_careers INNER JOIN careers ON careers.car_id = history_careers.car_id WHERE stu_id = $students->stu_id");
+        $promotions = DB::select("SELECT promotions.pro_name, promotions.pro_group FROM history_promotions INNER JOIN promotions ON promotions.pro_id = history_promotions.pro_id WHERE stu_id = $students->stu_id");
+        $students->careers = $careers;
+        $students->promotions = $promotions;
         if(!$students){
             return response()->json([
                 'status' => false,
@@ -72,10 +84,8 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-        'stu_code' => 'required|numeric',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
-        'stu_military' => 'required|numeric|max:9999999999',
         'per_id' => 'required|integer',
         'loc_id' => 'required|integer',
         'mon_sta_id' => 'required|integer',
