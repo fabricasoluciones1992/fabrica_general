@@ -43,8 +43,8 @@ class StudentController extends Controller
             'message' => $validator->errors()->all()
             ]);
         }else{
-        $person = Person::find($request->per_id);
-        if ($person != []) {
+        $person = Student::where('per_id','=',$request->per_id)->get();
+        if ($person != "[]") {
             return response()->json([
                 'status' => False,
                 'message' => "the student already exists"
