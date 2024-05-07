@@ -36,7 +36,7 @@ class HistoryPromotionController extends Controller
                 $history_promotions->pro_id = $request->pro_id;
                 $history_promotions->stu_id = $request->stu_id;
                 $history_promotions->save();
-                $promotion = Promotion::search($history_promotions->his_pro_id);
+                $promotion = Promotion::search($history_promotions->pro_id);
                 if(!$history_promotions){
                     return response()->json([
                         'status' => False,
@@ -46,7 +46,7 @@ class HistoryPromotionController extends Controller
                     Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history Promotions",3,6,$request->use_id);
                     return response()->json([
                         'status' => true,
-                        'message' => "The history promotions '".$promotion->pro_name ."' of student '". $promotion->per_name ."' has been added succesfully.",
+                        'message' => "The history promotions '".$promotion->pro_name ."' of student '". $request->stu_id ."' has been added succesfully.",
                     ],200);}
                 }
         }
