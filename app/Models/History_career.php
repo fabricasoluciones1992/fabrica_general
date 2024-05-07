@@ -31,7 +31,7 @@ class History_career extends Model
         INNER JOIN students s ON hc.stu_id = s.stu_id
         INNER JOIN persons p ON s.per_id = p.per_id
         INNER JOIN careers c ON hc.car_id = c.car_id
-        WHERE hc.his_car_id = :his_car_id", ['his_car_id' => $history_careers->his_car_id]);
+        WHERE hc.his_car_id = $history_careers");
         return $career[0];
     }
 

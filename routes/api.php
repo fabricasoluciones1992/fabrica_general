@@ -77,7 +77,7 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::resource('eps', EpsController::class)->names('eps')->parameter('','eps');
     Route::resource('genders', GenderController::class)->names('genders')->parameter('','genders');
     Route::resource('history/promotion', HistoryPromotionController::class)->names('history.promotion')->parameter('','history_promotion');
-    Route::resource('History/career', HistoryCarrerController::class)->names('')->parameter('','history_career');
+    Route::resource('history/careers', HistoryCarrerController::class)->names('')->parameter('','history_career');
     Route::resource('industry', IndustryController::class)->names('industry')->parameter('','industry');
     Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('','learning_objects');
     Route::resource('localities', LocalityController::class)->names('localities')->parameter('','localities');
