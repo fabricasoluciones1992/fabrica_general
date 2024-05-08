@@ -39,6 +39,7 @@ use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\RelationshipsController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentEnrollmentsController;
 use App\Http\Controllers\TelephonesController;
 use App\Http\Controllers\VinculationTypeController;
 use Illuminate\Support\Facades\Route;
@@ -108,6 +109,7 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::resource('relationships', RelationshipsController::class)->names('relationships')->parameter('','relationships');
     Route::resource('size', SizeController::class)->names('size')->parameter('','size');
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
+    Route::apiResource('students/enrollments',StudentEnrollmentsController::class)->names('student.enrollments')->parameter('', 'student_enrollments');
     Route::get('students', [StudentController::class, 'indexAmount'])->name('filtrar.personas');
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('vinculation/type', VinculationTypeController::class)->names('vinculation.type')->parameter('','vinculation_type');

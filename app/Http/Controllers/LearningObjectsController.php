@@ -82,11 +82,4 @@ class LearningObjectsController extends Controller
                 'data' => "The learning objects with ID: ". $learning_objects->lea_obj_id." has been updated to proccess coformation '" . $cof->cof_id ."' succesfully.",
             ],200);}
     }
-    public function destroy(Learning_Objects $learning_Objects)
-    {
-        return response()->json([
-            'status' => false,
-            'message' => "Functions not available"
-         ],400);
-    }
 }
