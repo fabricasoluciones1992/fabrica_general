@@ -23,7 +23,6 @@ class StudentEnrollmentsController extends Controller
 
                 $rules = [
                     'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_enr_status' =>'required',
                     'stu_id' =>'required',
                     'peri_id'=>'required'
                 ];
@@ -36,7 +35,7 @@ class StudentEnrollmentsController extends Controller
                 }else{
                 $students_enrollments = new Student_enrollments();
                 $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
-                $students_enrollments->stu_enr_status = $request->stu_enr_status;
+                $students_enrollments->stu_enr_status = 1;
                 $students_enrollments->stu_id = $request->stu_id;
                 $students_enrollments->peri_id = $request->peri_id;
                 $students_enrollments->save();
