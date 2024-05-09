@@ -21,7 +21,6 @@ class StudentEnrollmentsController extends Controller
     public function store(Request $request)
     {
 
-            if ($request->acc_administrator == 1) {
                 $rules = [
                     'stu_enr_semester' =>'required|numeric|max:7|min:1',
                     'stu_enr_status' =>'required',
@@ -47,12 +46,6 @@ class StudentEnrollmentsController extends Controller
                     'status' => true,
                     'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->peri_name."' has been added succesfully.",
                 ],200);}
-            }else{
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Access denied. This action can only be performed by active administrators.'
-                ], 403);
-            }
         }
     public function show($student_enrollments)
     {
