@@ -39,7 +39,7 @@ class StudentEnrollmentsController extends Controller
                 $students_enrollments->stu_id = $request->stu_id;
                 $students_enrollments->peri_id = $request->peri_id;
                 $students_enrollments->save();
-                $student = DB::table('ViewStudent')->where('stu_id', $request->stu_id)->first();
+                $student = DB::table('ViewStudents')->where('stu_id', $request->stu_id)->first();
                 Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments",3,$request->use_id);
                 return response()->json([
                     'status' => true,
