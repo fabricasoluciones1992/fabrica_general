@@ -11,7 +11,7 @@ class StudentEnrollmentsController extends Controller
         $students_enrollments = Student_enrollments::leftJoin('periods', 'periods.peri_id', '=', 'student_enrollments.peri_id')
         ->leftJoin('students', 'students.stu_id', '=', 'student_enrollments.stu_id')
         ->join('persons', 'persons.per_id', '=', 'students.per_id')
-        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.peri_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
+        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.per_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
         ->get();
         return response()->json([
             'status' => true,
@@ -43,7 +43,7 @@ class StudentEnrollmentsController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments",3,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->peri_name."' has been added succesfully.",
+                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->per_name."' has been added succesfully.",
                 ],200);}
         }
     public function show($student_enrollments)
@@ -51,7 +51,7 @@ class StudentEnrollmentsController extends Controller
         $students_enrollments = Student_enrollments::leftJoin('periods', 'periods.peri_id', '=', 'student_enrollments.peri_id')
         ->leftJoin('students', 'students.stu_id', '=', 'student_enrollments.stu_id')
         ->join('persons', 'persons.per_id', '=', 'students.per_id')
-        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.peri_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
+        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.per_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
         ->where('student_enrollments.stu_enr_id', '=', $student_enrollments)
         ->first();
         if(!$student_enrollments){
@@ -90,7 +90,7 @@ class StudentEnrollmentsController extends Controller
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments",4,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->peri_name."' has been updated succesfully.",
+                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->per_name."' has been updated succesfully.",
                 ],200);
             }
         }
