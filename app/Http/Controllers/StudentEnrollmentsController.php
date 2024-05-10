@@ -8,11 +8,7 @@ class StudentEnrollmentsController extends Controller
 {
     public function index()
     {
-        $students_enrollments = Student_enrollments::leftJoin('periods', 'periods.peri_id', '=', 'student_enrollments.peri_id')
-        ->leftJoin('students', 'students.stu_id', '=', 'student_enrollments.stu_id')
-        ->join('persons', 'persons.per_id', '=', 'students.per_id')
-        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.peri_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
-        ->get();
+        $students_enrollments = Student_enrollments::select();
         return response()->json([
             'status' => true,
             'data' => $students_enrollments,
@@ -23,8 +19,9 @@ class StudentEnrollmentsController extends Controller
 
                 $rules = [
                     'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required',
-                    'peri_id'=>'required'
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    "use_id" =>'required|exists:users',
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

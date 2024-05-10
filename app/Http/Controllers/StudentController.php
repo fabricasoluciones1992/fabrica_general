@@ -61,14 +61,9 @@ class StudentController extends Controller
         ],200);}
 
    }
-    public function show($id)
+    public function show($student)
     {
-        $students = Student::show($id);
-        return $students;
-        $careers = DB::select("SELECT careers.car_name FROM history_careers INNER JOIN careers ON careers.car_id = history_careers.car_id WHERE stu_id = $students->stu_id");
-        $promotions = DB::select("SELECT promotions.pro_name, promotions.pro_group FROM history_promotions INNER JOIN promotions ON promotions.pro_id = history_promotions.pro_id WHERE stu_id = $students->stu_id");
-        $students->careers = $careers;
-        $students->promotions = $promotions;
+        $students = Student::search($student);
         if(!$students){
             return response()->json([
                 'status' => false,
