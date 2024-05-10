@@ -47,6 +47,8 @@ class AuthController extends Controller
                 }
                     $acceso = ($acceso == 2) ? 0 : $acceso;
                     $tokens = DB::table('personal_access_tokens')->where('tokenable_id', '=', $user->use_id)->get();
+                    $student = DB::table('viewStudents')->where('per_id', '=', $user->use_id)->get();
+                    $stu_id = ($student != "[]") ? $student[0]->stu_id: null;
                     if ($tokens != "[]") {
                         return response()->json([
                             'status' => false,
@@ -63,6 +65,7 @@ class AuthController extends Controller
                         'use_photo' => base64_decode($person->use_photo),
                         'per_document' => $person->per_document,
                         'per_typ_name' => $person->per_typ_name,
+                        'stu_id' => $stu_id,
                         'token' => $user->createToken('API TOKEN')->plainTextToken,
                         'acc_administrator' =>$acceso
                     ], 200);
