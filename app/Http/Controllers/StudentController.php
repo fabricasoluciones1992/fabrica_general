@@ -12,6 +12,11 @@ class StudentController extends Controller
     public function index()
     {
         $students = DB::table('viewStudents')->get();
+        foreach ($students as $student) {
+            $data = Student::find($student->stu_id);
+            $student->promotion = $data->lastPromotion();
+            $student->career = $data->lastCareer();
+        }
         return response()->json([
             'status' => true,
             'data' => $students,
