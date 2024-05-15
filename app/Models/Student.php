@@ -31,8 +31,10 @@ class Student extends Model
         $student->career = $students->lastCareer();
         $careers = DB::select("SELECT careers.car_name FROM history_careers INNER JOIN careers ON careers.car_id = history_careers.car_id WHERE stu_id = $students->stu_id");
         $promotions = DB::select("SELECT promotions.pro_name, promotions.pro_group FROM history_promotions INNER JOIN promotions ON promotions.pro_id = history_promotions.pro_id WHERE stu_id = $students->stu_id");
+        $enrollments = DB::select("SELECT promotions.pro_name, promotions.pro_group FROM student_enrollments INNER JOIN promotions ON promotions.pro_id = student_enrollments.pro_id WHERE stu_id = $students->stu_id");
         $student->careers = $careers;
         $student->promotions = $promotions;
+        $student->enrollments = $enrollments;
         return $student;
     }
 

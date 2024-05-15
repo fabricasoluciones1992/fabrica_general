@@ -326,17 +326,6 @@ class PersonController extends Controller
 
     public function updatePhoto(Request $request, $id){
         $user = User::find($id);
-        $rules = [
-            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ];
-
-        $validator = Validator::make($request->input(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                ]);
-            }else{
 
         $image = $request->file('file');
         $image->move(public_path('images'), "$user->use_mail.jpg");
@@ -349,7 +338,6 @@ class PersonController extends Controller
             'status' => true,
             'message' => "Image updated successfully"
         ], 200);
-    }
     }
 
 
