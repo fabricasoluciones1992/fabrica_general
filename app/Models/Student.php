@@ -29,6 +29,7 @@ class Student extends Model
         $students = Student::find($student->stu_id);
         $student->promotion = $students->lastPromotion();
         $student->career = $students->lastCareer();
+        $student->semester = $students->lastEnrollments();
         $student->use_photo = base64_decode($student->use_photo);
         $careers = DB::select("SELECT careers.car_name FROM history_careers INNER JOIN careers ON careers.car_id = history_careers.car_id WHERE stu_id = $students->stu_id");
         $promotions = DB::select("SELECT promotions.pro_name, promotions.pro_group FROM history_promotions INNER JOIN promotions ON promotions.pro_id = history_promotions.pro_id WHERE stu_id = $students->stu_id");
@@ -60,10 +61,9 @@ class Student extends Model
 
     public function lastEnrollments(){
         $data = DB::table('student_enrollments')
-        ->join('careers', 'history_careers.car_id', '=', 'careers.car_id')
-        ->where('history_careers.stu_id', $this->stu_id)
-        ->orderBy('history_careers.his_car_id', 'desc')
+        ->where('stu_id', $this->stu_id)
+        ->orderBy('stu_enr_id', 'desc')
         ->first();
-        return $data->car_name;
+        return $data->stu_enr_semester;
     }
 }

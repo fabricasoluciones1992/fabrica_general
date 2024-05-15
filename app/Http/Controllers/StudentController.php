@@ -16,6 +16,7 @@ class StudentController extends Controller
             $data = Student::find($student->stu_id);
             $student->promotion = $data->lastPromotion();
             $student->career = $data->lastCareer();
+            $student->semester = $students->lastEnrollments();
         }
         return response()->json([
             'status' => true,
