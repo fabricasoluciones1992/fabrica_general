@@ -29,8 +29,8 @@ class AccessController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'proj_id' =>'required|integer',
-            'use_id' =>'required|integer'
+            'proj_id' =>'required|integer|exists:projects',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -83,8 +83,8 @@ class AccessController extends Controller
             ],400);
         }else{
             $rules = [
-                'proj_id' =>'required|integer',
-                'use_id' =>'required|integer'
+                'proj_id' =>'required|integer|exists:projects',
+                'use_id' =>'required|integer|exists:users',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

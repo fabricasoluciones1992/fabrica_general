@@ -86,12 +86,12 @@ class AuthController extends Controller
             'per_birthdate'=> 'required|date',
             'per_direction'=> 'required|min:1|max:255|string|regex:/^(?=.*[a-zA-Z0-9])[\w\s\-#\.]+$/',
             'per_rh' => 'required|min:1|max:3|string',
-            'civ_sta_id'=> 'required|integer',
-            'doc_typ_id'=> 'required|integer',
-            'eps_id'=> 'required|integer',
-            'gen_id'=> 'required|integer',
-            'mul_id'=> 'required|integer',
-            'per_typ_id'=> 'required|integer',
+            'civ_sta_id'=> 'required|integer|exists:civil_states',
+            'doc_typ_id'=> 'required|integer|exists:document_types',
+            'eps_id'=> 'required|integer|exists:eps',
+            'gen_id'=> 'required|integer|exists:genders',
+            'mul_id'=> 'required|integer|exists:multiculturalisms',
+            'per_typ_id'=> 'required|integer|exists:person_types',
         ];
 
         $validator = Validator::make($request->input(), $rules);

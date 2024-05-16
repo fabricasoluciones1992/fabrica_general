@@ -17,7 +17,7 @@ class CareerController extends Controller
     {
             $rules = [
                 'car_name' =>'required|unique:careers|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
-                'car_typ_id'=>'required|integer'
+                'car_typ_id'=>'required|integer|exists:career_types'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -56,7 +56,7 @@ class CareerController extends Controller
     {
             $rules = [
                 'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
-                'car_typ_id'=>'required|integer'
+                'car_typ_id'=>'required|integer|exists:careers_types'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_typ_id', $career);

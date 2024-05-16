@@ -20,7 +20,8 @@ class TelephonesController extends Controller
         $rules = [
             'tel_number' =>['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:15'],
             'tel_description' =>'string|max:255',
-            'per_id' =>'required|integer'
+            'per_id' =>'required|integer',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -31,7 +32,7 @@ class TelephonesController extends Controller
         }else{
             $telephone = new telephone($request->input());
             $telephone->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,$proj_id,$use_id );
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla telephones",3,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The Telephone number ".$telephone->tel_number." has been added succesfully.",
