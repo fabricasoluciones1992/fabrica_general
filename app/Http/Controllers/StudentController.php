@@ -27,6 +27,12 @@ class StudentController extends Controller
     public function indexAmount()
     {
         $students = DB::table('viewStudents')->orderBy('stu_id', 'desc')->take(50)->get();
+        foreach ($students as $student) {
+            $data = Student::find($student->stu_id);
+            $student->promotion = $data->lastPromotion();
+            $student->career = $data->lastCareer();
+            $student->semester = $data->lastEnrollments();
+        }
         return response()->json([
             'status' => true,
             'data' => $students,
