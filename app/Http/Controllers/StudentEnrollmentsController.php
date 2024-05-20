@@ -14,7 +14,7 @@ class StudentEnrollmentsController extends Controller
             'data' => $students_enrollments,
         ],200);
     }
-    public function store(Request $request)
+    public static function store(Request $request)
     {
 
                 $rules = [

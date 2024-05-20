@@ -17,11 +17,11 @@ class HistoryCarrerController extends Controller
             'data' => $history_careers,
         ],200);
     }
-    public function store(Request $request)
+    public static function store(Request $request)
     {
             $rules = [
-                'car_id' =>'required|integer',
-                'stu_id' =>'required|integer'
+                'car_id' =>'required|integer|exists:careers',
+                'stu_id' =>'required|integer|exists:students'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -57,31 +57,15 @@ class HistoryCarrerController extends Controller
             ],200);
         }
     }
-    public function update(Request $request, $History_career)
+
+    public function update()
     {
-                 $rules = [
-                    'car_id' =>'required|integer',
-                    'stu_id' =>'required|integer'
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                    ]);
-                }else{
-                $history_careers = History_career::find($History_career);
-                $history_careers->car_id = $request->car_id;
-                $history_careers->stu_id = $request->stu_id;
-                $history_careers->save();
-                $career = History_career::search($history_careers->his_car_id);
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla history careers",1,6,$request->use_id);
-                return response()->json([
-                    'status' => true,
-                    'message' => "The history career '".$career->per_name ."' '". $career->car_name ."' has been added succesfully."
-                ],200);
-            }
-        }
+        return response()->json([
+            'status' => false,
+            'message' => "Functions not available"
+         ],400);
+    }
+
     public function destroy()
     {
         return response()->json([

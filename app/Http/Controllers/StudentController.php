@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\History_Promotion;
 use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class StudentController extends Controller
 {
@@ -47,6 +49,7 @@ class StudentController extends Controller
         'per_id' => 'required|integer',
         'loc_id' => 'required|integer',
         'mon_sta_id' => 'required|integer',
+        'use_id' => 'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -64,6 +67,13 @@ class StudentController extends Controller
         }
         $students = new Student($request->input());
         $students->save();
+        $request->merge(['stu_id' => $students->stu_id]);
+        $promotion = HistoryPromotionController::store($request);
+        $career = HistoryCarrerController::store($request);
+        $enrollment = StudentEnrollmentsController::store($request);
+        if ($promotion != false || $career != false || $enrollment != false) {
+            return $career;
+        }
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
         Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,6,$request->use_id);
         return response()->json([

@@ -56,10 +56,10 @@ class CareerController extends Controller
     {
             $rules = [
                 'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
-                'car_typ_id'=>'required|integer|exists:careers_types'
+                'car_typ_id'=>'required|integer|exists:career_types'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_typ_id', $career);
+            $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_id', $career);
 
             if ($validator->fails()||$validate==0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();

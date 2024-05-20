@@ -17,8 +17,8 @@ class MedicalhistoriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'per_id' =>'required|integer',
-             'dis_id' =>'required|integer',
+             'per_id' =>'required|integer|exists:persons',
+             'dis_id' =>'required|integer|exists:diseases',
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {

@@ -22,7 +22,7 @@ class MailsController extends Controller
         $rules = [
             'mai_mail' => ['required','min:4','regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/'],
             'mai_description' =>'string | max:255',
-            'per_id' =>'required|integer'
+            'per_id' =>'required|integer|exists:persons'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -68,7 +68,7 @@ class MailsController extends Controller
             $rules = [
                 'mai_mail' =>'required|string|max:255|regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/',
                 'mai_description' =>'string|max:255',
-                'per_id' =>'required|integer'
+                'per_id' =>'required|integer|exists:persons'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

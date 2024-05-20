@@ -26,6 +26,9 @@ class Student extends Model
 
     public static function search($id){
         $student = DB::table('viewStudents')->where('per_document','=', $id)->first();
+        if ($student == []) {
+           return $student;
+        }
         $students = Student::find($student->stu_id);
         $student->promotion = $students->lastPromotion();
         $student->career = $students->lastCareer();

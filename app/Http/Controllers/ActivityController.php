@@ -20,7 +20,8 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'acti_name' =>'required|string|unique: activities|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'acti_name' =>'required|string|unique:activities|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -58,7 +59,8 @@ class ActivityController extends Controller
     public function update(Request $request, $id)
     {
             $rules = [
-                'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->acti_name, 'activities', 'acti_name', 'acti_id', $id);
