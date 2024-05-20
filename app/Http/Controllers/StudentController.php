@@ -43,46 +43,65 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $rules = [
-        'stu_stratum' => 'required',
-        'stu_journey' => 'required',
-        'stu_scholarship' => 'required',
-        'per_id' => 'required|integer',
-        'loc_id' => 'required|integer',
-        'mon_sta_id' => 'required|integer',
-        'use_id' => 'required|integer|exists:users'
+            'stu_stratum' => 'required',
+            'stu_journey' => 'required',
+            'stu_scholarship' => 'required',
+            'per_id' => 'required|integer',
+            'loc_id' => 'required|integer',
+            'mon_sta_id' => 'required|integer',
         ];
-        $validator = Validator::make($request->input(), $rules);
+
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json([
-            'status' => False,
-            'message' => $validator->errors()->all()
+                'status' => false,
+                'message' => $validator->errors()->all()
             ]);
-        }else{
-        $person = Student::where('per_id','=',$request->per_id)->get();
-        if ($person != "[]") {
+        }
+
+        $existingStudent = Student::where('per_id', $request->per_id)->first();
+        if ($existingStudent) {
             return response()->json([
-                'status' => False,
-                'message' => "the student already exists"
+                'status' => false,
+                'message' => "The student already exists"
             ]);
         }
-        $students = new Student($request->input());
-        $students->save();
-        $request->merge(['stu_id' => $students->stu_id]);
-        $promotion = HistoryPromotionController::store($request);
-        $career = HistoryCarrerController::store($request);
-        $enrollment = StudentEnrollmentsController::store($request);
-        if ($promotion != false || $career != false || $enrollment != false) {
-            return $career;
+
+        $student = new Student($request->all());
+        $student->save();
+        $stu_id = $student->stu_id;
+        $request->merge(['stu_id' => $stu_id]);
+
+        $promotionResponse = app('App\Http\Controllers\HistoryPromotionController')->store($request);
+        $promotion = json_decode($promotionResponse->getContent(), true);
+        if ($promotion['status'] === false) {
+            $student->delete();
+            return response()->json($promotion);
         }
-        $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
-        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students",3,6,$request->use_id);
+    
+        $careerResponse = app('App\Http\Controllers\HistoryCarrerController')->store($request);
+        $career = json_decode($careerResponse->getContent(), true);
+        if ($career['status'] === false) {
+            $student->delete();
+            return response()->json($career);
+        }
+    
+        $enrollmentResponse = app('App\Http\Controllers\StudentEnrollmentsController')->store($request);
+        $enrollment = json_decode($enrollmentResponse->getContent(), true);
+        if ($enrollment['status'] === false) {
+            $student->delete();
+            return response()->json($enrollment);
+        }
+        $person = DB::table('persons')->where('per_id', $student->per_id)->first();
+        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students", 3, 6, $request->use_id);
+
         return response()->json([
             'status' => true,
-            'stu_id' => $students->stu_id,
-            'message' => "The student '". $person->per_name ."' has been added succesfully."
-        ],200);}
+            'stu_id' => $student->stu_id,
+            'message' => "The student '". $person->per_name ."' has been added successfully."
+        ], 200);
+    }
 
-   }
     public function show($student)
     {
         $students = Student::search($student);
