@@ -11,18 +11,26 @@ class MailsController extends Controller
 {
     public function index()
     {
+        try{
         $mail = mail::select();
         return response()->json([
             'status' => true,
             'data' => $mail
-        ],200);    
+        ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
         $rules = [
             'mai_mail' => ['required','min:4','regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/'],
             'mai_description' =>'string | max:255',
-            'per_id' =>'required|integer|exists:persons'
+            'per_id' =>'required|integer|exists:persons',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -68,7 +76,8 @@ class MailsController extends Controller
             $rules = [
                 'mai_mail' =>'required|string|max:255|regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/',
                 'mai_description' =>'string|max:255',
-                'per_id' =>'required|integer|exists:persons'
+                'per_id' =>'required|integer|exists:persons',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

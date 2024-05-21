@@ -8,16 +8,24 @@ class ContactCompaniesTypesController extends Controller
 {
     public function index()
     {
+        try{
         $contact_companies_types = Contact_Companies_Types::all();
         return response()->json([
         'status' => true,
         'data' => $contact_companies_types,
         ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
                 'con_com_typ_name' =>'required|unique:contact_companies_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -55,9 +63,10 @@ class ContactCompaniesTypesController extends Controller
     {
             $rules = [
                 'con_com_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->con_com_typ_name, 'contact_companies_types', 'con_com_typ_id', $contact_Companies_Types);
+            $validate = Controller::validate_exists($request->con_com_typ_name, 'contact_companies_types', 'con_com_typ_name','con_com_typ_id', $contact_Companies_Types);
 
             if ($validator->fails()||$validate==0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();

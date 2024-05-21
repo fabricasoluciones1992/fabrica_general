@@ -9,11 +9,18 @@ class PeriodController extends Controller
  
     public function index()
     {
+        try{
         $periods = Period::select();
           return response()->json([
             'status' => true,
             'data' => $periods
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
@@ -21,7 +28,8 @@ class PeriodController extends Controller
                     'peri_name' =>'required|string|max:15',
                     'peri_start' =>'required|date',
                     'peri_end' =>'required|date',
-                    'pha_id' =>'required|integer'
+                    'pha_id' =>'required|integer|exists:phases',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -68,7 +76,8 @@ class PeriodController extends Controller
                         'peri_name' =>'required|string|max:15',
                         'peri_start' =>'required|date',
                         'peri_end' =>'required|date',
-                        'pha_id' =>'required|integer'
+                        'pha_id' =>'required|integer|exists:phases',
+                        'use_id' =>'required|integer|exists:users'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     if ($validator->fails()) {

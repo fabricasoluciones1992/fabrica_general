@@ -27,6 +27,7 @@ class DiseasesController extends Controller
     {
         $rules = [
             'dis_name' => 'required|string|min:1|max:255|unique:diseases|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -71,6 +72,7 @@ class DiseasesController extends Controller
         } else {
             $rules = [
                 'dis_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->dis_name, 'diseases', 'dis_name', 'dis_id', $id);

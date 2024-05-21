@@ -26,7 +26,8 @@ class NewTypeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'new_typ_name' => 'required|string|min:1|max:255|unique:new_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
+            'new_typ_name' => 'required|string|min:1|max:255|unique:new_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -69,7 +70,8 @@ class NewTypeController extends Controller
             ],400);
         }else{
             $rules = [
-                'new_typ_name' => 'required|string|min:1|max:255|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
+                'new_typ_name' => 'required|string|min:1|max:255|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->new_typ_name, 'new_types', 'new_typ_name', 'new_typ_id', $id);

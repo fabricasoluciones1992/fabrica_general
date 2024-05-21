@@ -27,7 +27,7 @@ class CivilStatesController extends Controller
     {
         $rules = [
             'civ_sta_name' => 'required|string|min:1|max:255|unique:civil_states|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -65,15 +65,16 @@ class CivilStatesController extends Controller
     {
         $rules = [
             'civ_sta_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
-        if ($validator->fails()) {
+        $validate = Controller::validate_exists($request->civ_sta_name, 'civil_states', 'civ_sta_name', 'civ_sta_id', $id);
+        if ($validator->fails() || $validate == 0) {
+            $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
             return response()->json([
-
-          'status' => False,
-          'message' => $validator->errors()->all()
-            ]);
+                'status' => False,
+                'message' => $msg
+                    ]);
         }else{
             $civilState = civilStates::find($id);
             $msg = $civilState->civ_sta_name;
@@ -83,26 +84,13 @@ class CivilStatesController extends Controller
                     'data' => ['message' => 'The requested civil state is not found']
                 ],400);
             }else{
-                $rules = [
-                    'civ_sta_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                $validate = Controller::validate_exists($request->civ_sta_name, 'civil_states', 'civ_sta_name', 'civ_sta_id', $id);
-                if ($validator->fails() || $validate == 0) {
-                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
-                    return response()->json([
-                'status' => False,
-                'message' => $msg
-                    ]);
-                }else{
                     $civilState->civ_sta_name = $request->civ_sta_name;
                     $civilState->save();
                     Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6,$request->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "The civil state: ".$civilState->civ_sta_name." has been update."
-                    ],200);                
-                }
+                    ],200);
             }
         }
     }

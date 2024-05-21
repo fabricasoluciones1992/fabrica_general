@@ -10,16 +10,24 @@ class ContractTypeController extends Controller
 {
     public function index()
     {
+        try{
         $contract_Type = Contract_types::all();
         return response()->json([
             'status' => true,
             'data' => $contract_Type,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
-                'con_typ_name' =>'required|string|unique:contract_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'con_typ_name' =>'required|string|unique:contract_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -56,7 +64,8 @@ class ContractTypeController extends Controller
     public function update(Request $request, $id)
     {
             $rules = [
-                'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->con_typ_name, 'contract_type', 'con_typ_name', 'con_typ_id', $id);

@@ -16,7 +16,8 @@ class CareerTypesController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'car_typ_name' =>'required|unique:career_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'car_typ_name' =>'required|unique:career_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -53,10 +54,11 @@ class CareerTypesController extends Controller
     public function update(Request $request,$career_Types)
     {
             $rules = [
-                'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'car_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->car_typ_name, 'career_types', 'car_typ_name', $career_Types);
+            $validate = Controller::validate_exists($request->car_typ_name, 'career_types', 'car_typ_name', 'car_typ_id', $career_Types);
 
             if ($validator->fails()||$validate==0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();

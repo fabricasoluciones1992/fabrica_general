@@ -8,17 +8,25 @@ class PayTimesController extends Controller
 {
     public function index()
     {
+        try{
         $paytimes = Pay_Times::all();
         return response()->json([
             'status' => true,
             'data' => $paytimes,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
  
                  $rules = [
                      'pay_tim_name' =>'required|string|unique:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -62,6 +70,7 @@ class PayTimesController extends Controller
                 }else{
                     $rules = [
                         'pay_tim_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                        'use_id' =>'required|integer|exists:users'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     $validate = Controller::validate_exists($request->pay_tim_name, 'pay_times', 'pay_tim_name', 'pay_tim_id', $id);

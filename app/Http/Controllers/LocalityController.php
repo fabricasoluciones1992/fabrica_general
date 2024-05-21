@@ -26,6 +26,7 @@ class LocalityController extends Controller
     {
         $rules = [
             'loc_name' => 'required|string|min:1|max:255|unique:localities|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if($validator->fails()){

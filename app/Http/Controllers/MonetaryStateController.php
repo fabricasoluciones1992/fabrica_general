@@ -10,17 +10,25 @@ class MonetaryStateController extends Controller
 {
     public function index()
     {
+        try{
         $monState = MonetaryState::all();
         return response()->json([
             'status' => true,
             'data' => $monState
         ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
 
     public function store(Request $request)
     {
             $rules = [
                 'mon_sta_name' =>'required|unique:monetary_states|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -67,9 +75,10 @@ class MonetaryStateController extends Controller
             } else {
                 $rules = [
                     'mon_sta_name' =>'required|string|min:1|max:50|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/u',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                $validate = Controller::validate_exists($request->mon_sta_name, 'monetary_states', 'mon_sta_name', $id);
+                $validate = Controller::validate_exists($request->mon_sta_name, 'monetary_states', 'mon_sta_name','mon_sta_id', $id);
 
                 if ($validator->fails()||$validate==0) {
                     $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();

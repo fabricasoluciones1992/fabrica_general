@@ -33,8 +33,9 @@ class ContactController extends Controller
             'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'con_mail' =>'required|string|max:255|regex:/^[a-zA-Z0-9]+([-.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-.]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/',
             'con_telephone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:15'],
-            'rel_id' => 'required|integer',
-            'per_id' => 'required|integer',
+            'rel_id' => 'required|integer|exists:relationships',
+            'per_id' => 'required|integer|exists:persons',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -82,8 +83,8 @@ class ContactController extends Controller
                 'con_name' => 'required|string|min:1|max:250|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
                 'con_mail' => 'required|min:4|regex:/^[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.]?[a-zA-Z0-9]+)*\.[a-zA-Z]2,}$/',
                 'con_telephone' => 'required|min:7|max:15|regex:/^[0-9\s\-\+\(\)]*$/',
-                'rel_id' => 'required|integer',
-                'per_id' => 'required|integer'
+                'rel_id' => 'required|integer|exists:relationships',
+                'per_id' => 'required|integer|exists:persons',
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

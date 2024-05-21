@@ -8,11 +8,18 @@ class LearningObjectsController extends Controller
 {
     public function index()
     {
+        try{
         $learning_objects = Learning_Objects::all();
         return response()->json([
             'status' => true,
             'data' => $learning_objects,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
  
     public function store(Request $request)
@@ -21,7 +28,7 @@ class LearningObjectsController extends Controller
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_subject' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_semester' =>'required|numeric|max:7|min:1',
-                'cof_id'=>'required|integer'
+                'cof_id'=>'required|integer|exists:conformacion'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -60,7 +67,7 @@ class LearningObjectsController extends Controller
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_subject' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_semester' =>'required|numeric|max:7|min:1',
-                'cof_id'=>'required|integer'
+                'cof_id'=>'required|integer|exists:coformacion'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

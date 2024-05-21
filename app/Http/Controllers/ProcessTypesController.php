@@ -7,16 +7,24 @@ class ProcessTypesController extends Controller
 {
     public function index()
     {
+        try{
         $process_type = Process_Types::all();
         return response()->json([
             'status' => true,
             'data' => $process_type,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
                 'pro_typ_name' =>'required|string|unique:process_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -53,6 +61,7 @@ class ProcessTypesController extends Controller
     {
             $rules = [
                 'pro_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->pro_typ_name, 'process_types', 'pro_typ_name', 'pro_typ_id', $id);

@@ -26,6 +26,7 @@ class GenderController extends Controller
     {
         $rules = [
             'gen_name' => 'required|string|min:1|max:255|unique:genders|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -71,6 +72,7 @@ class GenderController extends Controller
         }else{
             $rules = [
                 'gen_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->gen_name, 'genders', 'gen_name', 'gen_id', $id);

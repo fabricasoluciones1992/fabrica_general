@@ -29,7 +29,8 @@ class PositionController extends Controller
     {
         $rules = [
             'pos_name' => 'required|string|min:1|max:255|unique:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-            'are_id' =>'required|integer'
+            'are_id' =>'required|integer|exists:areas',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -73,7 +74,8 @@ class PositionController extends Controller
         }else{
             $rules = [
                 'pos_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-                'are_id' =>'required|integer'
+                'are_id' =>'required|integer|exists:areas',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->pos_name, 'positions', 'pos_name', 'pos_id', $id);

@@ -8,11 +8,18 @@ class StudentEnrollmentsController extends Controller
 {
     public function index()
     {
+        try{
         $students_enrollments = Student_enrollments::select();
         return response()->json([
             'status' => true,
             'data' => $students_enrollments,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public static function store(Request $request)
     {
@@ -68,8 +75,9 @@ class StudentEnrollmentsController extends Controller
 
                 $rules = [
                     'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required',
-                    'peri_id'=>'required'
+                    'stu_id' =>'required|exists:students',
+                    'peri_id'=>'required|exists:periods',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {

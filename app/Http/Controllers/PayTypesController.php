@@ -8,16 +8,24 @@ class PayTypesController extends Controller
 {
     public function index()
     {
+        try{
         $paytype = Pay_Types::all();
         return response()->json([
             'status' => true,
             'data' => $paytype,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
                  $rules = [
                      'pay_typ_name' =>'required|string|unique:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -61,6 +69,7 @@ class PayTypesController extends Controller
                 }else{
                     $rules = [
                         'pay_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                        'use_id' =>'required|integer|exists:users'
                     ];
                     $validator = Validator::make($request->input(), $rules);
                     $validate = Controller::validate_exists($request->pay_typ_name, 'pay_types', 'pay_typ_name', 'pay_typ_id', $id);

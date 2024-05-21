@@ -7,16 +7,24 @@ class VinculationTypeController extends Controller
 {
     public function index()
     {
+        try{
         $vinculation_types = Vinculation_Type::all();
         return response()->json([
             'status' => true,
             'data' => $vinculation_types,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
                 'vin_typ_name' =>'required|unique:vinculation_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -53,6 +61,7 @@ class VinculationTypeController extends Controller
     {
             $rules = [
                 'vin_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->vin_typ_name, 'vinculation_types', 'vin_typ_name', 'car_typ_id', $vinculation_Type);

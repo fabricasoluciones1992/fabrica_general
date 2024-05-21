@@ -10,11 +10,18 @@ class PromotionController extends Controller
 {
     public function index()
     {
+        try{
         $promotions = Promotion::all();
         return response()->json([
             'status' => true,
             'data' => $promotions,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
  
     public function store(Request $request)
@@ -22,6 +29,7 @@ class PromotionController extends Controller
     $rules = [
         'pro_name' => 'required|numeric|max:9999',
         'pro_group' => 'required|string|max:1',
+        'use_id' =>'required|integer|exists:users'
     ];
 
     $validator = Validator::make($request->input(), $rules);
@@ -81,6 +89,7 @@ class PromotionController extends Controller
                 $rules = [
                     'pro_name' =>'required|numeric|max:9999',
                     'pro_group' =>'required|string',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 $validate = Controller::validate_exists($request->pro_name, 'promotions', 'pro_name', 'pro_group', $promotion);

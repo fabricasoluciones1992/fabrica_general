@@ -26,6 +26,7 @@ class MulticulturalismsController extends Controller
     {
         $rules = [
             'mul_name' => 'required|string|min:1|max:255|unique:multiculturalisms|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -69,6 +70,7 @@ class MulticulturalismsController extends Controller
         }else{
             $rules = [
                 'mul_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->mul_name, 'multiculturalisms', 'mul_name', 'mul_id', $id);

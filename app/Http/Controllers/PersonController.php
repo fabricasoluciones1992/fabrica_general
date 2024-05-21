@@ -30,10 +30,7 @@ class PersonController extends Controller
         }
 
     }
-    public function store(Request $request)
-    {
-        //
-    }
+
     public function show( $id)
     {
         try {
@@ -90,15 +87,15 @@ class PersonController extends Controller
                 'per_expedition'=> 'required|date|after_or_equal:per_birthdate|before_or_equal:now',
                 'per_birthdate'=> 'required|date|before_or_equal:now',
                 'per_direction'=> 'required|min:1|max:255|regex:/^(?=.*[a-zA-Z0-9])[\w\s\-\#\.]+$/',
-                'civ_sta_id'=> 'required|integer',
-                'doc_typ_id'=> 'required|integer',
-                'eps_id'=> 'required|integer',
-                'gen_id'=> 'required|integer',
-                'mul_id'=> 'required|integer',
+                'civ_sta_id'=> 'required|integer|exists:civil_states',
+                'doc_typ_id'=> 'required|integer|exists:document_types',
+                'eps_id'=> 'required|integer|exists:eps',
+                'gen_id'=> 'required|integer|exists:genders',
+                'mul_id'=> 'required|integer|exists:multiculturalisms',
                 'per_rh' => 'required',
-                'per_typ_id' => 'required|integer',
+                'per_typ_id' => 'required|integer|exists:person_types',
             ];
-            
+
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
                 return response()->json([

@@ -29,7 +29,8 @@ class ProjectController extends Controller
     {
         $rules = [
             'proj_name' => 'required|string|min:1|max:255|unique:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-            'are_id' => 'required|numeric'
+            'are_id' => 'required|integer|exists:areas',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -74,7 +75,8 @@ class ProjectController extends Controller
         }else{
             $rules = [
                 'proj_name' => 'required|string|min:1|max:255|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-                'are_id' => 'required|numeric'
+                'are_id' => 'required|integer|exists:areas',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->proj_name, 'projects', 'proj_name', 'proj_id', $id);

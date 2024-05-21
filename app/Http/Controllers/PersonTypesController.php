@@ -10,11 +10,18 @@ class PersonTypesController extends Controller
 {
     public function index()
     {
+        try{
         $personTypes = PersonTypes::all();
         return response()->json([
             'status' =>True,
             'data' => $personTypes
         ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function create()
     {
@@ -27,7 +34,8 @@ class PersonTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'per_typ_name' => 'required|string|min:1|max:255|unique:person_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
+            'per_typ_name' => 'required|string|min:1|max:255|unique:person_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -62,14 +70,6 @@ class PersonTypesController extends Controller
         }
     }
 
-    public function edit($id)
-    {
-        return response()->json([
-            'status' => false,
-            'message' => "FUNCTION NOT AVAILABLE"
-         ],400);
-    }
-
     public function update(Request $request, $id)
     {
         $personType = PersonTypes::find($id);
@@ -80,7 +80,8 @@ class PersonTypesController extends Controller
             ],400);
         }else{
             $rules = [
-                'per_typ_name' => 'required|string|min:1|max:255|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/'
+                'per_typ_name' => 'required|string|min:1|max:255|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->per_typ_name, 'person_types', 'per_typ_name', 'per_typ_id', $id);

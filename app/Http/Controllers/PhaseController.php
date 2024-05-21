@@ -7,16 +7,24 @@ class PhaseController extends Controller
 {
     public function index()
     {
+        try{
         $phases = Phase::all();
         return response()->json([
             'status' => true,
             'data' => $phases,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
-                'pha_name' =>'required|unique:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'pha_name' =>'required|unique:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -54,10 +62,11 @@ class PhaseController extends Controller
     {
  
             $rules = [
-                'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'pha_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->car_name, 'phases', 'pha_name', $phase);
+            $validate = Controller::validate_exists($request->car_name, 'phases', 'pha_name','pha_id', $phase);
 
             if ($validator->fails()) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();

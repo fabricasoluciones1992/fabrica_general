@@ -7,16 +7,24 @@ class CountryController extends Controller
 {
     public function index()
     {
+        try{
         $countries = Country::all();
         return response()->json([
             'status' => true,
             'data' => $countries,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
-                'cou_name' =>'required|string|unique:countries|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'cou_name' =>'required|string|unique:countries|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -52,7 +60,8 @@ class CountryController extends Controller
     public function update(Request $request, $id)
     {
             $rules = [
-                'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                'cou_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'use_id' =>'required|integer|exists:users',
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->cou_name, 'countries', 'cou_name', 'cou_id', $id);

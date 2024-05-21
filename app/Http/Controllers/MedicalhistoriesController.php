@@ -8,11 +8,18 @@ class MedicalhistoriesController extends Controller
 {
     public function index()
     {
+        try{
         $medicalHistory = Medicalhistories::select();
           return response()->json([
             'status' => true,
             'data' => $medicalHistory
-        ],200);    
+        ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
@@ -66,6 +73,7 @@ class MedicalhistoriesController extends Controller
                 'per_id' =>'required|integer',
                 'dis_id' =>'required|integer',
                 'med_his_status' =>'required|integer',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

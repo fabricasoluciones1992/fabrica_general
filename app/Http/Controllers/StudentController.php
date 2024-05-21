@@ -13,6 +13,7 @@ class StudentController extends Controller
 {
     public function index()
     {
+        try{
         $students = DB::table('viewStudents')->get();
         foreach ($students as $student) {
             $data = Student::find($student->stu_id);
@@ -24,6 +25,12 @@ class StudentController extends Controller
             'status' => true,
             'data' => $students,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
 
     public function indexAmount()
@@ -46,9 +53,9 @@ class StudentController extends Controller
             'stu_stratum' => 'required',
             'stu_journey' => 'required',
             'stu_scholarship' => 'required',
-            'per_id' => 'required|integer',
-            'loc_id' => 'required|integer',
-            'mon_sta_id' => 'required|integer',
+            'per_id' => 'required|integer|exists:persons',
+            'loc_id' => 'required|integer|exists:localities',
+            'mon_sta_id' => 'required|integer|exists:monetary_states',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -123,9 +130,9 @@ class StudentController extends Controller
         'stu_stratum' => 'required',
         'stu_journey' => 'required',
         'stu_scholarship' => 'required',
-        'per_id' => 'required|integer',
-        'loc_id' => 'required|integer',
-        'mon_sta_id' => 'required|integer',
+        'per_id' => 'required|integer|exists:persons',
+        'loc_id' => 'required|integer|exists:localities',
+        'mon_sta_id' => 'required|integer|exists:monetary_states',
         ];
         $validator = Validator::make($request->input(), $rules);
            if ($validator->fails()) {

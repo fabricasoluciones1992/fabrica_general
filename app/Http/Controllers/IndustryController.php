@@ -10,16 +10,24 @@ class IndustryController extends Controller
 {
     public function index()
     {
+        try{
         $industries = Industry::all();
         return response()->json([
             'status' => true,
             'data' => $industries,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
                 $rules = [
-                    'ind_name' =>'required|string|unique:industries|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                    'ind_name' =>'required|string|unique:industries|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -55,7 +63,8 @@ class IndustryController extends Controller
     public function update(Request $request, $id)
     {
                 $rules = [
-                    'ind_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u'
+                    'ind_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                    'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 $validate = Controller::validate_exists($request->ind_name, 'industries', 'ind_name', 'ind_id', $id);

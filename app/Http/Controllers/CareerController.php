@@ -7,17 +7,25 @@ class CareerController extends Controller
 {
     public function index()
     {
+        try{
         $careers = Career::select();
         return response()->json([
             'status' => true,
             'data' => $careers,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public function store(Request $request)
     {
             $rules = [
                 'car_name' =>'required|unique:careers|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
-                'car_typ_id'=>'required|integer|exists:career_types'
+                'car_typ_id'=>'required|integer|exists:career_types',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -56,7 +64,8 @@ class CareerController extends Controller
     {
             $rules = [
                 'car_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
-                'car_typ_id'=>'required|integer|exists:career_types'
+                'car_typ_id'=>'required|integer|exists:career_types',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->car_name, 'careers', 'car_name', 'car_id', $career);

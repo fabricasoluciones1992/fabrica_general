@@ -10,11 +10,19 @@ class ActivityController extends Controller
 {
     public function index()
     {
+        try{
+
         $activities = Activity::all();
         return response()->json([
             'status' => true,
             'data' => $activities,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
  
     }
     public function store(Request $request)

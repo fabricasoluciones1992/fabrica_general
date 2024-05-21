@@ -11,17 +11,25 @@ class HistoryCarrerController extends Controller
 {
     public function index()
     {
+        try{
         $history_careers = History_career::select();
         return response()->json([
             'status' => true,
             'data' => $history_careers,
         ],200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th
+        ],500);
+    }
     }
     public static function store(Request $request)
     {
             $rules = [
                 'car_id' =>'required|integer|exists:careers',
-                'stu_id' =>'required|integer|exists:students'
+                'stu_id' =>'required|integer|exists:students',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
