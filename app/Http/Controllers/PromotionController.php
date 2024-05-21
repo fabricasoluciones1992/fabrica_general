@@ -2,6 +2,9 @@
 namespace App\Http\Controllers;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+
 use Illuminate\Support\Facades\Validator;
 class PromotionController extends Controller
 {
@@ -15,29 +18,45 @@ class PromotionController extends Controller
     }
  
     public function store(Request $request)
-    {
-                $rules = [
-                    'pro_name' =>'required|unique:promotions|numeric|max:9999',
-                    'pro_group' =>'required|string|max:1',
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                    ]);
-                }else{
-                    $promotions = new Promotion();
-                    $promotions->pro_name = $request->pro_name;
-                    $promotions->pro_group = $request->pro_group;
-                    $promotions->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla promotions",3,6,$request->use_id);
-                    return response()->json([
-                        'status' => true,
-                        'message' => "The promotion '". $promotions->pro_name ."' has been added succesfully."
-                    ],200);
-                }
+{
+    $rules = [
+        'pro_name' => 'required|numeric|max:9999',
+        'pro_group' => 'required|string|max:1',
+    ];
+
+    $validator = Validator::make($request->input(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => $validator->errors()->all()
+        ]);
+    } else {
+        $existingPromotion = DB::table('promotions')
+                                ->where('pro_name', $request->pro_name)
+                                ->where('pro_group', $request->pro_group)
+                                ->exists();
+
+        if ($existingPromotion) {
+            return response()->json([
+                'status' => false,
+                'message' => 'A promotion with the same name and group already exists.'
+            ]);
+        } else {
+            $promotions = new Promotion();
+            $promotions->pro_name = $request->pro_name;
+            $promotions->pro_group = $request->pro_group;
+            $promotions->save();
+            Controller::NewRegisterTrigger("An insertion was made into the promotions table", 3, 6, $request->use_id);
+            return response()->json([
+                'status' => true,
+                'message' => "The promotion '". $promotions->pro_name ."' in group '". $promotions->pro_group ."' has been added successfully."
+            ], 200);
         }
+    }
+}
+
+
  
  
     public function show($promotion)
