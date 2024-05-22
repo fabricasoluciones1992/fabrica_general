@@ -18,7 +18,8 @@ class StudentController extends Controller
         foreach ($students as $student) {
             $data = Student::find($student->stu_id);
             $student->promotion = $data->lastPromotion();
-            $student->career = $data->lastCareer();
+            $student->car_id = $data->lastCareer()->car_id;
+            $student->career = $data->lastCareer()->car_name;
             $student->semester = $data->lastEnrollments();
         }
         return response()->json([
@@ -39,7 +40,8 @@ class StudentController extends Controller
         foreach ($students as $student) {
             $data = Student::find($student->stu_id);
             $student->promotion = $data->lastPromotion();
-            $student->career = $data->lastCareer();
+            $student->car_id = $data->lastCareer()->car_id;
+            $student->career = $data->lastCareer()->car_name;
             $student->semester = $data->lastEnrollments();
         }
         return response()->json([

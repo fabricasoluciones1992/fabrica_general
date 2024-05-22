@@ -183,9 +183,15 @@ class PersonController extends Controller
     {
         $mail = new PHPMailer(true);
         $user = DB::table("users")->where('use_mail','=',$request->use_mail)->first();
+        if ($user == null) {
+            return response()->json([
+               'status' => false,
+                'data' => ['message' => 'Could not find the user you are looking for']
+            ],400);
+        }else{
         try {
             /* Email SMTP Settings */
-            $mail->SMTPDebug = 0;
+            $mail->SMTPDebug = 0; 
             $mail->isSMTP();
             $mail->Host = env('MAIL_HOST');
             $mail->SMTPAuth = true;
@@ -229,6 +235,7 @@ class PersonController extends Controller
         } catch (Exception $e) {
                 return $e;
         }
+    }
     }
 
     public function reset_password(Request $request)

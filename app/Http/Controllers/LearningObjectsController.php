@@ -28,7 +28,7 @@ class LearningObjectsController extends Controller
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_subject' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_semester' =>'required|numeric|max:7|min:1',
-                'cof_id'=>'required|integer|exists:conformacion'
+                'car_id'=>'required|integer|exists:careers'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {

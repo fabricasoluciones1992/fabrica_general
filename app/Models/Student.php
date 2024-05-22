@@ -59,7 +59,7 @@ class Student extends Model
         ->where('history_careers.stu_id', $this->stu_id)
         ->orderBy('history_careers.his_car_id', 'desc')
         ->first();
-        return $data->car_name;
+        return $data;
     }
 
     public function lastEnrollments(){
