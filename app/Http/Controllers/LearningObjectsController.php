@@ -67,7 +67,7 @@ class LearningObjectsController extends Controller
                 'lea_obj_object' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_subject' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'lea_obj_semester' =>'required|numeric|max:7|min:1',
-                'cof_id'=>'required|integer|exists:coformacion'
+                'car_id'=>'required|integer|exists:careers'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
@@ -80,13 +80,12 @@ class LearningObjectsController extends Controller
             $learning_objects->lea_obj_object = $request->lea_obj_object;
             $learning_objects->lea_obj_subject = $request->lea_obj_subject;
             $learning_objects->lea_obj_semester = $request->lea_obj_semester;
-            $learning_objects->cof_id = $request->cof_id;
+            $learning_objects->car_id = $request->car_id;
             $learning_objects->save();
-            $cof = DB::table('coformacion')->where('cof_id', $learning_objects->cof_id)->first();
             Controller::NewRegisterTrigger("Se realizo una edición en la tabla learning objects",1,6,$request->use_id);
             return response()->json([
                 'status' => true,
-                'data' => "The learning objects with ID: ". $learning_objects->lea_obj_id." has been updated to proccess coformation '" . $cof->cof_id ."' succesfully.",
+                'data' => "The learning objects with ID: ". $learning_objects->lea_obj_id." has been updated succesfully.",
             ],200);}
     }
 }

@@ -14,7 +14,7 @@ class Learning_Objects extends Model
         'lea_obj_object',
         'lea_obj_subject',
         'lea_obj_semester',
-        'cof_id'
+        'car_id'
     ];
     public $timestamps = false;
 }
