@@ -9,7 +9,7 @@ class LearningObjectsController extends Controller
     public function index()
     {
         try{
-        $learning_objects = Learning_Objects::all();
+        $learning_objects = DB::table('learning_objects')->join('careers', 'learning_objects.car_id', '=', 'careers.car_id')->get();
         return response()->json([
             'status' => true,
             'data' => $learning_objects,
