@@ -18,7 +18,7 @@ class Career extends Model
 
     public static function select(){
         $careers = Career::join('career_types', 'careers.car_typ_id', '=', 'career_types.car_typ_id')
-        ->select('careers.car_id', 'careers.car_name', 'career_types.car_typ_name')
+        ->select('careers.car_id', 'careers.car_name', 'career_types.car_typ_id', 'career_types.car_typ_name')
         ->get();
         return $careers;
     }
