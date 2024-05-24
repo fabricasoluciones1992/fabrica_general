@@ -31,10 +31,10 @@ class PersonController extends Controller
 
     }
 
-    public function show( $id)
+    public function show( $id, $docTypeId)
     {
         try {
-            $persons = Person::findByDocument($id);
+            $persons = Person::findByDocument($id, $docTypeId);
             return response()->json([
                 'status' => true,
                 'data' => $persons

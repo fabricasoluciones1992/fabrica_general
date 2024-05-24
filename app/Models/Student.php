@@ -16,8 +16,8 @@ class Student extends Model
         'stu_code',
         'stu_journey',
         'stu_rh',
-        'stu_scholarship',
         'stu_military',
+        'stu_pier',
         'per_id',
         'loc_id',
         'mon_sta_id'

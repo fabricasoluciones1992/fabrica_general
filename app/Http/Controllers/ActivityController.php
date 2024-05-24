@@ -40,6 +40,7 @@ class ActivityController extends Controller
             }else{
                 $activities = new Activity();
                 $activities->acti_name = $request->acti_name;
+                $activities->code = $request->code;
                 $activities->save();
                 Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,6,$request->use_id);;
                 return response()->json([
