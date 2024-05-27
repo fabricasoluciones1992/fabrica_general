@@ -54,7 +54,6 @@ class StudentController extends Controller
         $rules = [
             'stu_stratum' => 'required',
             'stu_journey' => 'required',
-            'stu_scholarship' => 'required',
             'per_id' => 'required|integer|exists:persons',
             'loc_id' => 'required|integer|exists:localities',
             'mon_sta_id' => 'required|integer|exists:monetary_states',

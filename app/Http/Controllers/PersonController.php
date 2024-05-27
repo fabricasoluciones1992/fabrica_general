@@ -31,10 +31,10 @@ class PersonController extends Controller
 
     }
 
-    public function show( $id)
+    public function show( $id, $docTypeId)
     {
         try {
-            $persons = Person::findByDocument($id);
+            $persons = Person::findByDocument($id, $docTypeId);
             return response()->json([
                 'status' => true,
                 'data' => $persons
@@ -344,17 +344,10 @@ class PersonController extends Controller
         ], 200);
     }
 
-
-    public static function findByDocument($id, $docTypeId){
-        $persons = DB::select("SELECT * FROM ViewPersons WHERE per_document = $id AND doc_typ_id = $docTypeId");
-        return $persons;
-    }
-
     public function filtredforDocument($id, $docTypeId)
 {
     try {
-        $persons = PersonController::findByDocument($id, $docTypeId);
-
+        $persons = Person::findByDocument($id, $docTypeId);
         return response()->json([
             'status' => true,
             'data' => $persons
