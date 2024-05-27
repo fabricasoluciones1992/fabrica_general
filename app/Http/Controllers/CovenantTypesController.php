@@ -6,7 +6,7 @@ use App\Models\Covenant_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CovenantTypeController extends Controller
+class CovenantTypesController extends Controller
 {
     public function index()
     {
