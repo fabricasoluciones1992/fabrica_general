@@ -38,7 +38,6 @@ class MonetaryStateController extends Controller
                 ]);
             } else {
                 $monState = new MonetaryState($request->input());
-                $monState->mon_sta_status = 1;
                 $monState->save();
                 Controller::NewRegisterTrigger("An insertion was made in the monetary states table", 3, $request->use_id);
                 return response()->json([
@@ -101,20 +100,11 @@ class MonetaryStateController extends Controller
  
     public function destroy($proj_id,$use_id, $id)
     {
-        $monState = MonetaryState::find($id);
-            if ($monState->mon_sta_status == 1){
-                $monState->mon_sta_status = 0;
-                $monState->save();
-                Controller::NewRegisterTrigger("An delete was made in the permanences table",2,$proj_id, $use_id);
-                return response()->json([
-                    'status' => True,
-                    'message' => 'The requested economic state has been disabled successfully'
-                ]);
-            } else {
+        
                 return response()->json([
                     'status' => false,
-                    'message' => 'The requested economic state has already been disabled previously'
+                    'message' => 'Function not available'
                 ]);
-            }
+            
     }
 }

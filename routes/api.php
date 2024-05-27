@@ -17,6 +17,7 @@ use App\Http\Controllers\EpsController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\HistoryCarrerController;
 use App\Http\Controllers\HistoryPromotionController;
+use App\Http\Controllers\HistoryScholarshipsController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\LearningObjectsController;
 use App\Http\Controllers\LocalityController;
@@ -37,7 +38,7 @@ use App\Http\Controllers\ProcessTypesController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\RelationshipsController;
-use App\Http\Controllers\SizeController;
+use App\Http\Controllers\ScholarshipsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentEnrollmentsController;
 use App\Http\Controllers\TelephonesController;
@@ -107,7 +108,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('projects', ProjectController::class)->names('projects')->parameter('','projects');
     Route::resource('promotion', PromotionController::class)->names('promotion')->parameter('','promotion');
     Route::resource('relationships', RelationshipsController::class)->names('relationships')->parameter('','relationships');
-    Route::resource('size', SizeController::class)->names('size')->parameter('','size');
+    Route::resource('scholarships', ScholarshipsController::class)->names('scholarships')->parameter('','scholarships');
+    Route::resource('history/scholarships', HistoryScholarshipsController::class)->names('history.scholarships')->parameter('','history_scholarships');
+
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
     Route::apiResource('students/enrollments',StudentEnrollmentsController::class)->names('student.enrollments')->parameter('', 'student_enrollments');
     Route::get('students', [StudentController::class, 'indexAmount'])->name('filtrar.personas');
