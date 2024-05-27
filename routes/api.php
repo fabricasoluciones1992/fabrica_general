@@ -9,8 +9,8 @@ use App\Http\Controllers\CareerTypesController;
 use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\ContactCompaniesTypesController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\ContractTypeController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CovenantTypeController;
 use App\Http\Controllers\DiseasesController;
 use App\Http\Controllers\DocTypesController;
 use App\Http\Controllers\EpsController;
@@ -31,7 +31,6 @@ use App\Http\Controllers\PayTimesController;
 use App\Http\Controllers\PayTypesController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PersonController;
-use App\Http\Controllers\PersonTypesController;
 use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProcessTypesController;
@@ -41,6 +40,7 @@ use App\Http\Controllers\RelationshipsController;
 use App\Http\Controllers\ScholarshipsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentEnrollmentsController;
+use App\Http\Controllers\StudentTypeController;
 use App\Http\Controllers\TelephonesController;
 use App\Http\Controllers\VinculationTypeController;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +63,7 @@ Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name
 Route::post('password/emergency', [PersonController::class, 'passwordEmergency'])->name('password.emergency');
 Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->name('profile');
 
-Route::middleware(['auth:sanctum'])->group(function() {
+// Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('access', AccessController::class)->names('access')->parameter('','access');
     Route::resource('activity', ActivityController::class)->names('activity')->parameter('','activity');
     Route::resource('areas', AreaController::class)->names('areas')->parameter('','areas');
@@ -72,7 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('civil/states', CivilStatesController::class)->names('civil.states')->parameter('','civil_states');
     Route::resource('contact/companies/type', ContactCompaniesTypesController::class)->names('contact.companies.types')->parameter('','contact_companies_types');
     Route::resource('contacts', ContactController::class)->names('contacts')->parameter('','contacts');
-    Route::resource('contract/types', ContractTypeController::class)->names('contract.types')->parameter('','contract_types');
+    Route::resource('covenant/types', CovenantTypeController::class)->names('covenant.types')->parameter('','covenant_types');
     Route::resource('country', CountryController::class)->names('country')->parameter('','country');
     Route::resource('diseases', DiseasesController::class)->names('diseases')->parameter('','diseases');
     Route::resource('doc/types', DocTypesController::class)->names('doc.types')->parameter('','doc_types');
@@ -93,7 +93,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('pay/times', PayTimesController::class)->names('pay.times')->parameter('','pay_times');
     Route::resource('pay/types', PayTypesController::class)->names('pay.types')->parameter('','pay_types');
     Route::resource('period', PeriodController::class)->names('period')->parameter('','period');
-    Route::resource('persons/types', PersonTypesController::class)->names('persons.types')->parameter('','persons_types');
+    Route::resource('student/types', StudentTypeController::class)->names('student.types')->parameter('','student_types');
     Route::resource('persons', PersonController::class)->names('persons')->parameter('','persons');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
@@ -117,4 +117,4 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('vinculation/type', VinculationTypeController::class)->names('vinculation.type')->parameter('','vinculation_type');
 
-});
+// });
