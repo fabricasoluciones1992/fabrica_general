@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contract_types;
+use App\Models\Covenant_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ContractTypeController extends Controller
+class CovenantTypeController extends Controller
 {
     public function index()
     {
         try{
-        $contract_Type = Contract_types::all();
+        $covenant_type = Covenant_types::all();
         return response()->json([
             'status' => true,
-            'data' => $contract_Type,
+            'data' => $covenant_type,
         ],200);
     } catch (\Throwable $th) {
         return response()->json([
@@ -26,7 +26,7 @@ class ContractTypeController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'con_typ_name' =>'required|string|unique:contract_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'cov_typ_name' =>'required|string|unique:covenant_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -36,39 +36,39 @@ class ContractTypeController extends Controller
                 'message' => $validator->errors()->all()
                 ]);
             }else{
-                $contract_Type = new Contract_types();
-                $contract_Type->con_typ_name = $request->con_typ_name;
-                $contract_Type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla contract types",3,6,$request->use_id);
+                $covenant_type = new Covenant_types();
+                $covenant_type->cov_typ_name = $request->cov_typ_name;
+                $covenant_type->save();
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla covenant types",3,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "The contract type '". $contract_Type->con_typ_name ."' has been added succesfully."
+                    'message' => "The covenant type '". $covenant_type->cov_typ_name ."' has been added succesfully."
                 ],200);
             }
     }
-    public function show($contract_Types)
+    public function show($covenant_Types)
     {
-        $contract_Type = Contract_types::find($contract_Types);
-        if(!$contract_Type){
+        $covenant_type = Covenant_types::find($covenant_Types);
+        if(!$covenant_type){
             return response()->json([
                 'status' => false,
-                'data' => ['message'=>'Could not find the contract types you are looking for'],
+                'data' => ['message'=>'Could not find the covenant types you are looking for'],
             ],400);
         }else{
              return response()->json([
                 'status' => true,
-                'data' => $contract_Type,
+                'data' => $covenant_type,
             ],200);
         }
     }
     public function update(Request $request, $id)
     {
             $rules = [
-                'con_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'cov_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->con_typ_name, 'contract_type', 'con_typ_name', 'con_typ_id', $id);
+            $validate = Controller::validate_exists($request->cov_typ_name, 'covenant_types', 'cov_typ_name', 'cov_typ_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
@@ -76,21 +76,21 @@ class ContractTypeController extends Controller
                 'message' => $msg
                 ]);
             }else{
-                $contract_Type = Contract_types::find($id);
-                $contract_Type->con_typ_name = $request->con_typ_name;
-                $contract_Type->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla contract types",1,6,$request->use_id);
+                $covenant_type = Covenant_types::find($id);
+                $covenant_type->cov_typ_name = $request->cov_typ_name;
+                $covenant_type->save();
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla contract types",1,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'data' => "The contract type with ID: ". $contract_Type -> con_typ_id." has been updated to '" . $contract_Type->con_typ_name ."' succesfully.",
+                    'data' => "The contract type with ID: ". $covenant_type -> cov_typ_id." has been updated to '" . $covenant_type->cov_typ_name ."' succesfully.",
                 ],200);
             }
     }
-    public function destroy(Contract_types $contract_Types)
+    public function destroy(Covenant_types $covenant_Types)
     {
         return response()->json([
             'status' => false,
-            'message' => "Functions not available"
+            'message' => "Function not available."
          ],400);
     }
 }

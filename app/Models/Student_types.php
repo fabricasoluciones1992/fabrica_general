@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PersonTypes extends Model
+class Student_types extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'per_typ_id';
+    protected $primaryKey = 'stu_typ_id';
 
-    protected $table = "person_types";
+    protected $table = "students_types";
 
     protected $fillable = [
-        'per_typ_name',
+        'stu_typ_name',
     ];
 
     public $timestamps = false;
