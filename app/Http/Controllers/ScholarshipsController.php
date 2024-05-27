@@ -77,7 +77,7 @@ class ScholarshipsController extends Controller{
 
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->sch_name, 'scholarship', 'sch_name', 'sch_id', $id);
+            $validate = Controller::validate_exists($request->sch_name, 'scholarships', 'sch_name', 'sch_id', $id);
             if ($validator->fails() || $validate == 0) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([

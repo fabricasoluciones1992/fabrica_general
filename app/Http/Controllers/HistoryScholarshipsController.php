@@ -20,7 +20,6 @@ class HistoryScholarshipsController extends Controller{
 
 public function store(Request $request)
 {
-    if ($request->acc_administrator == 1) {
 
         $rules = [
             'sch_id' => 'required|numeric',
@@ -57,12 +56,7 @@ public function store(Request $request)
             'message' => "The scholarships history has been created successfully.",
         ], 200);
 
-    } else {
-        return response()->json([
-            'status' => false,
-            'message' => 'Access denied. This action can only be performed by active administrators.'
-        ], 403);
-    }
+    
 }
 
 
