@@ -83,7 +83,7 @@ foreach ($oldEnrollments as $oldEnrollment) {
 
     return response()->json([
         'status' => true,
-        'message' => "The enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' in the period '".$student->peri_id."' has been added successfully.",
+        'message' => "The enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' in the period '".$student->peri_name."' has been added successfully.",
     ], 200);
 }
 
@@ -132,15 +132,16 @@ foreach ($oldEnrollments as $oldEnrollment) {
                 $students_enrollments->pro_id = $request->pro_id;
                 $students_enrollments->save();
                 $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments",4,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments",4,6, $request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$student->stu_enr_semester."' the period '".$student->per_name."' has been updated succesfully.",
+                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$student->stu_enr_semester."' the period '".$student->peri_name."' has been updated succesfully.",
                 ],200);
             }
         }
     public function destroy(Request $request, $id)
     {
+        
             return response()->json([
                 'status' => false,
                 'message' => "function not available"
