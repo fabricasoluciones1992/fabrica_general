@@ -50,7 +50,7 @@ public function store(Request $request)
         $hScholar = new history_scholarships($request->input());
         $hScholar->save();
 
-        Controller::NewRegisterTrigger("An insertion was made in the scholarships Histories table '$hScholar->his_sch_id'", 3, $request->use_id);
+        Controller::NewRegisterTrigger("An insertion was made in the scholarships Histories table '$hScholar->his_sch_id'", 3,6,$request->use_id);
 
         return response()->json([
             'status' => true,

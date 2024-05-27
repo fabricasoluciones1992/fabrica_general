@@ -34,7 +34,7 @@ class ScholarshipsController extends Controller{
         } else {
             $scholarship = new scholarships(($request->input()));
             $scholarship->save();
-            Controller::NewRegisterTrigger("An insertion was made in the scholarships table'$scholarship->sch_id'", 3, $request->use_id);
+            Controller::NewRegisterTrigger("An insertion was made in the scholarships table'$scholarship->sch_id'", 3,6,$request->use_id);
 
             return response()->json([
                 'status' => true,

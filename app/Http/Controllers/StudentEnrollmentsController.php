@@ -28,7 +28,8 @@ class StudentEnrollmentsController extends Controller
                     'stu_enr_semester' =>'required|numeric|max:7|min:1',
                     'stu_id' =>'required|exists:students',
                     'peri_id'=>'required|exists:periods',
-                    "use_id" =>'required|exists:users',
+                    'use_id' =>'required|exists:users',
+
                 ];
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
@@ -44,7 +45,7 @@ class StudentEnrollmentsController extends Controller
                 $students_enrollments->peri_id = $request->peri_id;
                 $students_enrollments->save();
                 $student = DB::table('viewStudents')->where('stu_id', $request->stu_id)->first();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments",3,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments",3,6,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->per_name."' has been added succesfully.",
