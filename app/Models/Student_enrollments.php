@@ -23,12 +23,34 @@ class Student_enrollments extends Model
     public $timestamps = false;
 
     public static function select(){
-        $data = DB::select("select `student_enrollments`.stu_enr_id, `student_enrollments`.`stu_enr_semester`,`student_enrollments`.`stu_enr_date`, `student_enrollments`.`stu_enr_status`, `periods`.`peri_name`, `periods`.`peri_start`, `periods`.`peri_end`, `persons`.`per_name` from `student_enrollments` inner join `periods` on `periods`.`peri_id` = `student_enrollments`.peri_id inner join `viewStudents` on `viewStudents`.`stu_id` = `student_enrollments`.`stu_id` inner join `persons` on `persons`.`per_id` = `viewStudents`.`per_id`");
+        $data = DB::select("SELECT *
+        FROM viewEnrollments
+        WHERE stu_enr_status=1;
+         ");
         return $data;
     }
 
-    public static function search($id){
-        $data = DB::select("select `student_enrollments`.stu_enr_id, `student_enrollments`.`stu_enr_semester`,`student_enrollments`.`stu_enr_date`, `student_enrollments`.`stu_enr_status`, `periods`.`peri_name`, `periods`.`peri_start`, `periods`.`peri_end`, `persons`.`per_name` from `student_enrollments` inner join `periods` on `periods`.`peri_id` = `student_enrollments`.peri_id inner join `viewStudents` on `viewStudents`.`stu_id` = `student_enrollments`.`stu_id` inner join `persons` on `persons`.`per_id` = `viewStudents`.`per_id` where = `viewStudents`.`stu_id` = $id");
-        return $data[0];
+    public static function search($id)
+{
+    $data = DB::select("SELECT *
+        FROM viewEnrollments
+        WHERE stu_enr_id = $id ");
+
+    if (!empty($data)) {
+        $enrollment = $data[0];
+
+        if ($enrollment->stu_enr_status == 0) {
+            return [
+                'stu_enr_id' => $enrollment->stu_enr_id,
+                'message' => 'This enrollment is inactive.'
+            ];
+        } else {
+            return $enrollment;
+        }
+    } else {
+        return null;
     }
 }
+
+    }
+

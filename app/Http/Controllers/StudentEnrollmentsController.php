@@ -22,47 +22,78 @@ class StudentEnrollmentsController extends Controller
     }
     }
     public static function store(Request $request)
-    {
+{
+    $rules = [
+        'stu_enr_semester' => 'required|numeric|max:7|min:1',
+        'stu_id' => 'required|exists:students',
+        'peri_id' => 'required|exists:periods',
+        'car_id' => 'required|exists:careers',
+        'pro_id' => 'required|exists:promotions',  
+    ];
 
-                $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    'use_id' =>'required|exists:users',
+    $validator = Validator::make($request->input(), $rules);
 
-                ];
-                $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
-                    'status' => False,
-                    'message' => $validator->errors()->all()
-                    ]);
-                }else{
-                $students_enrollments = new Student_enrollments();
-                $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
-                $students_enrollments->stu_enr_status = 1;
-                $students_enrollments->stu_id = $request->stu_id;
-                $students_enrollments->peri_id = $request->peri_id;
-                $students_enrollments->save();
-                $student = DB::table('viewStudents')->where('stu_id', $request->stu_id)->first();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments",3,6,$request->use_id);
-                return response()->json([
-                    'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->per_name."' has been added succesfully.",
-                ],200);}
-        }
-    public function show($student_enrollments)
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => $validator->errors()->all()
+        ]);
+    }
+
+    $existingRecord = Student_enrollments::where('stu_enr_semester', $request->stu_enr_semester)
+                                          ->where('stu_id', $request->stu_id)
+                                          ->where('peri_id', $request->peri_id)
+                                          ->where('car_id', $request->car_id)
+                                          ->where('pro_id', $request->pro_id)
+                                          ->where('stu_enr_status', 1)
+                                          ->first();
+
+    if ($existingRecord) {
+        return response()->json([
+            'status' => false,
+            'message' => 'A record with the same characteristics already exists.'
+        ], 409);
+    }
+
+    $students_enrollments = new Student_enrollments();
+$students_enrollments->stu_enr_semester = $request->stu_enr_semester;
+$students_enrollments->stu_id = $request->stu_id;
+$students_enrollments->peri_id = $request->peri_id;
+$students_enrollments->car_id = $request->car_id;
+$students_enrollments->pro_id = $request->pro_id;
+$students_enrollments->stu_enr_status = 1;
+$students_enrollments->stu_enr_date = now()->toDateString(); 
+$students_enrollments->save();
+
+$oldEnrollments = Student_enrollments::where('stu_id', $request->stu_id)
+                                      ->where('stu_enr_status', 1)
+                                      ->where('stu_enr_id', '!=', $students_enrollments->stu_enr_id)
+                                      ->get();
+
+foreach ($oldEnrollments as $oldEnrollment) {
+    $oldEnrollment->stu_enr_status = 0;
+    $oldEnrollment->save();
+}
+
+
+
+    $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
+
+    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments", 3, 6, $request->use_id);
+
+    return response()->json([
+        'status' => true,
+        'message' => "The enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' in the period '".$student->peri_id."' has been added successfully.",
+    ], 200);
+}
+
+    public function show($id)
     {
-        $students_enrollments = Student_enrollments::leftJoin('periods', 'periods.peri_id', '=', 'student_enrollments.peri_id')
-        ->leftJoin('viewStudents', 'viewStudents.stu_id', '=', 'student_enrollments.stu_id')
-        ->join('persons', 'persons.per_id', '=', 'viewStudents.per_id')
-        ->select('student_enrollments.stu_enr_id', 'student_enrollments.stu_enr_semester', 'student_enrollments.stu_enr_status', 'periods.peri_name', 'periods.peri_start', 'periods.peri_end', 'persons.per_name')
-        ->where('student_enrollments.stu_enr_id', '=', $student_enrollments)
-        ->first();
-        if(!$student_enrollments){
+        $students_enrollments = Student_enrollments::search($id);
+        if($students_enrollments==null){
             return response()->json([
                 'status' => false,
-                'data' => ['message'=>'Could not find the student enrollments you are looking for'],
+                'data' => ['message'=>'The student enrollments requested not found'],
             ],400);
         }else{
             return response()->json([
@@ -71,45 +102,48 @@ class StudentEnrollmentsController extends Controller
             ],200);
         }
     }
-    public function update(Request $request,$student_enrollments)
+    public function update(Request $request,$id)
     {
+        $students_enrollments = Student_enrollments::search($id);
 
-                $rules = [
-                    'stu_enr_semester' =>'required|numeric|max:7|min:1',
-                    'stu_id' =>'required|exists:students',
-                    'peri_id'=>'required|exists:periods',
-                    'use_id' =>'required|integer|exists:users'
-                ];
+        $rules = [
+            'stu_enr_semester' => 'required|numeric|max:7|min:1',
+            'stu_id' => 'required|exists:students',
+            'peri_id' => 'required|exists:periods',
+            'car_id' => 'required|exists:careers',
+            'pro_id' => 'required|exists:promotions',
+            'stu_enr_date'=> 'required|date'  
+        ];
                 $validator = Validator::make($request->input(), $rules);
-                if ($validator->fails()) {
-                    return response()->json([
+                $validate = Controller::validate_exists($request->sch_name, 'student_enrollments', 'stu_id', 'peri_id','car_id','pro_id', $id);
+
+                if ($validator->fails()||$validate == 0) {
+                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+                return response()->json([
                     'status' => False,
-                    'message' => $validator->errors()->all()
-                    ]);
+                    'message' => $msg
+                ]);
                 }else{
-                $students_enrollments = Student_enrollments::find($student_enrollments);
+                $students_enrollments = Student_enrollments::find($id);
                 $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
                 $students_enrollments->stu_id = $request->stu_id;
                 $students_enrollments->peri_id = $request->peri_id;
+                $students_enrollments->car_id = $request->car_id;
+                $students_enrollments->pro_id = $request->pro_id;
                 $students_enrollments->save();
-                $student = DB::table('viewStudents')->where('stu_id', $request->stu_id)->first();
+                $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments",4,$request->use_id);
                 return response()->json([
                     'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' the period '".$student->per_name."' has been updated succesfully.",
+                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$student->stu_enr_semester."' the period '".$student->per_name."' has been updated succesfully.",
                 ],200);
             }
         }
-    public function destroy(Request $request, $student_enrollments)
+    public function destroy(Request $request, $id)
     {
-            $students_enrollments = Student_enrollments::find($student_enrollments);
-            $students_enrollments->stu_enr_status = $request->stu_enr_status;
-            $students_enrollments->save();
-            $statusMessage = ($students_enrollments->stu_enr_status == 1) ? "enabled" : "disenabled";
-            Controller::NewRegisterTrigger("Se realizó una $statusMessage de datos en la tabla students enrollments", 2, $request->use_id);
             return response()->json([
-                'status' => true,
-                'message' => "the students enrollments has been $statusMessage"
+                'status' => false,
+                'message' => "function not available"
             ], 200);
 
     }
