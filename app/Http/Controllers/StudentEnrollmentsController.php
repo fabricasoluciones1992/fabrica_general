@@ -102,43 +102,50 @@ foreach ($oldEnrollments as $oldEnrollment) {
             ],200);
         }
     }
-    public function update(Request $request,$id)
-    {
-        $students_enrollments = Student_enrollments::search($id);
+    public function update(Request $request, $id)
+{
+    $rules = [
+        'stu_enr_semester' => 'required|numeric|max:7|min:1',
+        'stu_id' => 'required|exists:students',
+        'peri_id' => 'required|exists:periods',
+        'car_id' => 'required|exists:careers',
+        'pro_id' => 'required|exists:promotions',
+        'stu_enr_date'=> 'required|date'  
+    ];
 
-        $rules = [
-            'stu_enr_semester' => 'required|numeric|max:7|min:1',
-            'stu_id' => 'required|exists:students',
-            'peri_id' => 'required|exists:periods',
-            'car_id' => 'required|exists:careers',
-            'pro_id' => 'required|exists:promotions',
-            'stu_enr_date'=> 'required|date'  
-        ];
-                $validator = Validator::make($request->input(), $rules);
-                $validate = Controller::validate_exists($request->sch_name, 'student_enrollments', 'stu_id', 'peri_id','car_id','pro_id', $id);
+    $validator = Validator::make($request->input(), $rules);
+    $validate = Controller::validate_exists($request->sch_name, 'student_enrollments', 'stu_id', 'peri_id', 'car_id', 'pro_id', $id);
 
-                if ($validator->fails()||$validate == 0) {
-                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
-                return response()->json([
-                    'status' => False,
-                    'message' => $msg
-                ]);
-                }else{
-                $students_enrollments = Student_enrollments::find($id);
-                $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
-                $students_enrollments->stu_id = $request->stu_id;
-                $students_enrollments->peri_id = $request->peri_id;
-                $students_enrollments->car_id = $request->car_id;
-                $students_enrollments->pro_id = $request->pro_id;
-                $students_enrollments->save();
-                $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments",4,6, $request->use_id);
-                return response()->json([
-                    'status' => true,
-                    'message' => "the enrollment of student '".$student->per_name."' in semester '".$student->stu_enr_semester."' the period '".$student->peri_name."' has been updated succesfully.",
-                ],200);
-            }
-        }
+    if ($validator->fails() || $validate == 0) {
+        $msg = ($validate == 0) ? "Value tried to register, it is already registered." : $validator->errors()->all();
+        return response()->json([
+            'status' => false,
+            'message' => $msg
+        ]);
+    } else {
+        $students_enrollments = Student_enrollments::find($id);
+        $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
+        $students_enrollments->stu_id = $request->stu_id;
+        $students_enrollments->peri_id = $request->peri_id;
+        $students_enrollments->car_id = $request->car_id;
+        $students_enrollments->pro_id = $request->pro_id;
+        $students_enrollments->stu_enr_status = 1;  
+        $students_enrollments->save();
+
+        Student_enrollments::where('stu_id', $request->stu_id)
+                           ->where('stu_enr_id', '!=', $students_enrollments->stu_enr_id)
+                           ->update(['stu_enr_status' => 0]);
+
+        $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
+        Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments", 4, 6, $request->use_id);
+        return response()->json([
+            'status' => true,
+            'message' => "The enrollment of student '".$student->per_name."' in semester '".$students_enrollments->stu_enr_semester."' in the period '".$student->peri_name."' has been updated successfully.",
+        ], 200);
+    }
+}
+
+
     public function destroy(Request $request, $id)
     {
         
