@@ -10,6 +10,7 @@ use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\CoformationProcessTypesController;
 use App\Http\Controllers\ContactCompaniesTypesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CoreMaterialController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CovenantTypesController;
 use App\Http\Controllers\DiseasesController;
@@ -82,7 +83,6 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::resource('history/promotion', HistoryPromotionController::class)->names('history.promotion')->parameter('','history_promotion');
     Route::resource('history/careers', HistoryCarrerController::class)->names('')->parameter('','history_career');
     Route::resource('industry', IndustryController::class)->names('industry')->parameter('','industry');
-    Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('','learning_objects');
     Route::resource('localities', LocalityController::class)->names('localities')->parameter('','localities');
     Route::resource('mails', MailsController::class)->names('mails')->parameter('','mails');
     Route::resource('medical/histories', MedicalhistoriesController::class)->names('medical.histories')->parameter('','medical_histories');
@@ -109,7 +109,8 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::resource('relationships', RelationshipsController::class)->names('relationships')->parameter('','relationships');
     Route::resource('scholarships', ScholarshipsController::class)->names('scholarships')->parameter('','scholarships');
     Route::resource('history/scholarships', HistoryScholarshipsController::class)->names('history.scholarships')->parameter('','history_scholarships');
-    
+    Route::resource('learning/objects', LearningObjectsController::class)->names('learning.objects')->parameter('', 'learning_objects');
+    Route::resource('core/materials', CoreMaterialController::class)->names('core.materials')->parameter('', 'core_materials');
     Route::resource('student/types', StudentTypeController::class)->names('student.types')->parameter('','student_types');
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
     Route::apiResource('students/enrollments',StudentEnrollmentsController::class)->names('student.enrollments')->parameter('', 'student_enrollments');
