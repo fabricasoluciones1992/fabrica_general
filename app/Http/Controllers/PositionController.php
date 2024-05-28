@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 
 class PositionController extends Controller
@@ -21,14 +20,14 @@ class PositionController extends Controller
         } catch (\Throwable $th) {
             return response()->json([ 
                'status' => false,
-              'message' => "Error occurred while found elements"
+              'message' => "Error occurred while searching elements."
             ]);
         }
     }
     public function store(Request $request)
     {
         $rules = [
-            'pos_name' => 'required|string|min:1|max:255|unique:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'pos_name' => 'required|string|min:1|max:255|exists:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'are_id' =>'required|integer|exists:areas',
             'use_id' =>'required|integer|exists:users'
         ];
@@ -41,7 +40,7 @@ class PositionController extends Controller
         }else{
             $position = new Position($request->input());
             $position->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Position : $request->pos_name, $request->are_id ",3,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The position: ".$position->pos_name." has been created."
@@ -54,7 +53,7 @@ class PositionController extends Controller
         if ($position == null) {
             return response()->json([
                'status' => false,
-                'data' => ['message' => 'The position requested was not found']
+                'data' => ['message' => 'The position requested was not found.']
             ],400);
         }else{
             return response()->json([
@@ -65,11 +64,11 @@ class PositionController extends Controller
     }
     public function update(Request $request, $id )
     {
-        $positons = Position::find($id);
-        if ($positons == null) {
+        $positions = Position::find($id);
+        if ($positions == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The position requested was not found']
+                'data' => ['message' => 'The position requested was not found.']
             ],400);
         }else{
             $rules = [
@@ -86,13 +85,13 @@ class PositionController extends Controller
                   'message' => $msg
                 ]);
             }else{
-                $positons->pos_name = $request->pos_name;
-                $positons->are_id = $request->are_id;
-                $positons->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,6,$request->use_id);
+                $positions->pos_name = $request->pos_name;
+                $positions->are_id = $request->are_id;
+                $positions->save();
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla position del dato: $id con los datos: $request->pos_name, $request->are_id ",1,$request->use_id);
                 return response()->json([
                   'status' => True,
-                  'message' => "The position: ".$positons->pos_name." has been update successfully."
+                  'message' => "The position: ".$positions->pos_name." has been update successfully."
                 ],200);
             }
         }

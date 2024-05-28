@@ -55,7 +55,7 @@ class PromotionController extends Controller
             $promotions->pro_name = $request->pro_name;
             $promotions->pro_group = $request->pro_group;
             $promotions->save();
-            Controller::NewRegisterTrigger("An insertion was made into the promotions table", 3, 6, $request->use_id);
+            Controller::NewRegisterTrigger("An insertion was made into the promotions table", 3, $request->use_id);
             return response()->json([
                 'status' => true,
                 'message' => "The promotion '". $promotions->pro_name ."' in group '". $promotions->pro_group ."' has been added successfully."
@@ -73,7 +73,7 @@ class PromotionController extends Controller
         if(!$promotions){
             return response()->json([
                 'status' => false,
-                'data' => ['message'=>'Could not find the promotions you are looking for'],
+                'data' => ['message'=>'Could not find the promotion you are looking for.'],
             ],400);
         }else{
  
@@ -106,7 +106,7 @@ class PromotionController extends Controller
                     $promotions->pro_name = $request->pro_name;
                     $promotions->pro_group = $request->pro_group;
                     $promotions->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,6,$request->use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,$request->use_id);
                     return response()->json([
                         'status' => true,
                         'data' => "The promotion with ID: ". $promotions -> pro_id." has been updated to '" . $promotions->pro_name ."' succesfully.",
@@ -114,11 +114,11 @@ class PromotionController extends Controller
                 }
         }
  
-    public function destroy(Promotion $promotion)
+    public function destroy()
     {
         return response()->json([
             'status' => false,
-            'message' => "Functions not available"
+            'message' => "Function not available."
          ],400);
     }
 }

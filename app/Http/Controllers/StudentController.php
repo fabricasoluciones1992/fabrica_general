@@ -1,13 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\History_Promotion;
-use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class StudentController extends Controller
 {
@@ -101,7 +98,7 @@ class StudentController extends Controller
             return response()->json($enrollment);
         }
         $person = DB::table('persons')->where('per_id', $student->per_id)->first();
-        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students", 3, 6, $request->use_id);
+        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students", 3, $request->use_id);
 
         return response()->json([
             'status' => true,
@@ -153,7 +150,7 @@ class StudentController extends Controller
         $students->mon_sta_id = $request->mon_sta_id;
         $students->save();
         $person = DB::table('persons')->where('per_id','=',$students->per_id)->first();
-        Controller::NewRegisterTrigger("Se realizo una edición en la tabla students",1,6,$request->use_id);
+        Controller::NewRegisterTrigger("Se realizo una edición en la tabla students",1,$request->use_id);
         return response()->json([
             'status' => true,
             'data' => "The student with ID: ". $students->stu_id." has been updated to '" . $person->per_name ."' succesfully.",
@@ -163,7 +160,7 @@ class StudentController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => "Functions not available"
+            'message' => "Function not available."
          ],400);
     }
 }

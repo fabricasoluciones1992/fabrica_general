@@ -50,7 +50,7 @@ class PersonController extends Controller
     {
         try {
             $persons = Person::findByper($use_id);
-            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$proj_id,$use_id);
+            Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$use_id);
             return response()->json([
                 'status' => true,
                 'data' => $persons  
@@ -117,7 +117,7 @@ class PersonController extends Controller
                 $person->per_rh = $request->per_rh;
                 $person->per_typ_id = $request->per_typ_id; 
                 $person->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The person: ".$person->per_name." has been update successfully."
@@ -158,7 +158,7 @@ class PersonController extends Controller
                 }
                 $person->use_password = $request->new_password;
                 $person->save();
-                Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,6,$request->use_id);
+                Controller::NewRegisterTrigger("se actualizo la contraseña del usuario: ".$person->use_mail,4,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "Password was successfully changed"
@@ -172,7 +172,7 @@ class PersonController extends Controller
         $newStatus  = ($user->use_status == 1) ? 0 : 1;
         $user->use_status = $newStatus;
         $user->save();
-        Controller::NewRegisterTrigger("Se cambio el estado de un dato en la tabla  ",4,6,$request->use_id);
+        Controller::NewRegisterTrigger("Se cambio el estado de un dato en la tabla persons",4,$request->use_id);
         return response()->json([
             'status' => true,
             'message' => 'user status updated successfully'
@@ -267,7 +267,7 @@ class PersonController extends Controller
             $person->use_password = $request->new_password;
             $person->save();
             Person::deleteCode($code);
-            Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,6,$person->use_id);
+            Controller::NewRegisterTrigger("se restauro la contraseña del usuario: ".$person->use_mail,4,$person->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "Password was successfully changed"

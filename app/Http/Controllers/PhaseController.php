@@ -23,7 +23,7 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'pha_name' =>'required|unique:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'pha_name' =>'required|exists:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -36,7 +36,7 @@ class PhaseController extends Controller
                 $phases = new Phase();
                 $phases->pha_name=$request->pha_name;
                 $phases->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla phases",3,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla phases",3,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The phase '". $phases->pha_name ."' has been added succesfully."
@@ -66,7 +66,7 @@ class PhaseController extends Controller
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->car_name, 'phases', 'pha_name','pha_id', $phase);
+            $validate = Controller::validate_exists($request->pha_name, 'phases', 'pha_name','pha_id', $phase);
 
             if ($validator->fails()) {
                 $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
@@ -77,9 +77,9 @@ class PhaseController extends Controller
                 ]);
             }else{
                 $phases = Phase::find($phase);
-                $phases->pha_name=$request->pha_name;
+                $phases->pha_name = $request->pha_name;
                 $phases->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla phases",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla phases",1,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The phase with ID: ". $phases -> pha_id." has been updated to '" . $phases->pha_name ."' succesfully.",
@@ -90,7 +90,7 @@ class PhaseController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => "Functions not available"
+            'message' => "Function not available."
          ],400);
     }
 }

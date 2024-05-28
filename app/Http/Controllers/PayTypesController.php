@@ -9,10 +9,10 @@ class PayTypesController extends Controller
     public function index()
     {
         try{
-        $paytype = Pay_Types::all();
+        $payType = Pay_Types::all();
         return response()->json([
             'status' => true,
-            'data' => $paytype,
+            'data' => $payType,
         ],200);
     } catch (\Throwable $th) {
         return response()->json([
@@ -24,7 +24,7 @@ class PayTypesController extends Controller
     public function store(Request $request)
     {
                  $rules = [
-                     'pay_typ_name' =>'required|string|unique:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_typ_name' =>'required|string|exists:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                      'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -34,19 +34,19 @@ class PayTypesController extends Controller
                       'message' => $validator->errors()->all()
                     ],400);
                 }else{
-                    $paytype = new Pay_Types($request->input());
-                    $paytype->save();
-                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Types",3,6,$request->use_id);
+                    $payType = new Pay_Types($request->input());
+                    $payType->save();
+                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Types",3,$request->use_id);
                     return response()->json([
                       'status' => True,
-                      'message' => "The pay type '". $paytype->pay_typ_name ."' has been added succesfully."
+                      'message' => "The pay type '". $payType->pay_typ_name ."' has been added succesfully."
                     ],200);
                 }
         }
     public function show($id)
     {
-        $paytype = Pay_Types::find($id);
-        if ($paytype == null) {
+        $payType = Pay_Types::find($id);
+        if ($payType == null) {
             return response()->json([
                'status' => false,
                 'data' => ['message' => 'Could not find the Pay Type you are looking for']
@@ -54,14 +54,14 @@ class PayTypesController extends Controller
         }else{
              return response()->json([
                'status' => true,
-                'data' => $paytype
+                'data' => $payType
             ],200);
         }
     }
     public function update(Request $request, $id)
     {
-                $paytype = Pay_Types::find($id);
-                if ($paytype == null) {
+                $payType = Pay_Types::find($id);
+                if ($payType == null) {
                     return response()->json([
                       'status' => false,
                         'data' => ['message' => 'Could not find required pay type']
@@ -80,17 +80,17 @@ class PayTypesController extends Controller
                           'message' => $msg
                         ],400);
                     }else{
-                        $paytype->pay_typ_name = $request->pay_typ_name;
-                        $paytype->save();
-                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay types",3,6,$request->use_id);
+                        $payType->pay_typ_name = $request->pay_typ_name;
+                        $payType->save();
+                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay types",3,$request->use_id);
                         return response()->json([
                           'status' => True,
-                          'message' => "The pay type with ID: ". $paytype -> pay_typ_id." has been updated to '" . $paytype->pay_typ_name ."' succesfully."
+                          'message' => "The pay type with ID: ". $payType -> pay_typ_id." has been updated to '" . $payType->pay_typ_name ."' succesfully."
                         ],200);
                     }
                 }
         }
-    public function destroy($id,$proj_id, $use_id)
+    public function destroy()
     {
         return response()->json([
             'status' => false,

@@ -25,7 +25,7 @@ class PayTimesController extends Controller
     {
  
                  $rules = [
-                     'pay_tim_name' =>'required|string|unique:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_tim_name' =>'required|string|exists:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                      'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
@@ -37,7 +37,7 @@ class PayTimesController extends Controller
                 }else{
                     $paytimes = new Pay_Times($request->input());
                     $paytimes->save();
-                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Times",3,6,$request->use_id);
+                    Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Pay Times",3,$request->use_id);
                     return response()->json([
                       'status' => True,
                       'message' => "The pay type '". $paytimes->pay_tim_name ."' has been added succesfully."
@@ -83,7 +83,7 @@ class PayTimesController extends Controller
                     }else{
                         $paytimes->pay_tim_name = $request->pay_tim_name;
                         $paytimes->save();
-                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay times",3,6,$request->use_id);
+                        Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla pay times",3,$request->use_id);
                         return response()->json([
                           'status' => True,
                           'message' => "The pay time with ID: ". $paytimes -> pay_tim_id." has been updated to '" . $paytimes->pay_tim_name ."' succesfully."

@@ -27,7 +27,7 @@ class StudentTypeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'stu_typ_name' => 'required|string|min:1|max:255|unique:students_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
+            'stu_typ_name' => 'required|string|min:1|max:255|exists:students_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
             'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -95,7 +95,7 @@ class StudentTypeController extends Controller
             };
         }
     }
-    public function destroy(student_types $student_types)
+    public function destroy()
     {
         return response()->json([
             'status' => false,

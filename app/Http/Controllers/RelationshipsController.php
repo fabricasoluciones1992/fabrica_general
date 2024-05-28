@@ -19,14 +19,14 @@ class RelationshipsController extends Controller
         } catch (\Throwable $th) {
             return response()->json([ 
                 'status' => false,
-                'message' => "Error occurred while found elements"
+                'message' => "Error occurred while found elements."
             ],500);
         }
     }
     public function store(Request $request)
     {
         $rules = [
-            'rel_name' => 'required|string|min:1|max:255|unique:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'rel_name' => 'required|string|min:1|max:255|exists:relationships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -38,7 +38,7 @@ class RelationshipsController extends Controller
         }else{
             $relationship = new relationships($request->input());
             $relationship->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Relationships : $request->rel_name ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The relationship: ".$relationship->rel_name." has been created."
@@ -84,7 +84,7 @@ class RelationshipsController extends Controller
             }else{
                 $relationship->rel_name = $request->rel_name;
                 $relationship->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Relationships del dato: $id con los datos: $request->rel_name ",1,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The Relationship ".$relationship->rel_name." has been update successfully."
@@ -96,7 +96,7 @@ class RelationshipsController extends Controller
     {
         return response()->json([
           'status' => false,
-          'message' => "FUNCTION NOT AVAILABLE"
+          'message' => "FUNCTION NOT AVAILABLE."
         ],400);
     }
 }

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -21,14 +19,14 @@ class ProjectController extends Controller
         } catch (\Throwable $th) {
             return response()->json([ 
              'status' => false,
-             'message' => "Error occurred while found elements"
+             'message' => "Error occurred while found elements."
             ],500);
         }
     }
     public function store(Request $request)
     {
         $rules = [
-            'proj_name' => 'required|string|min:1|max:255|unique:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'proj_name' => 'required|string|min:1|max:255|exists:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'are_id' => 'required|integer|exists:areas',
             'use_id' =>'required|integer|exists:users'
         ];
@@ -41,7 +39,7 @@ class ProjectController extends Controller
         }else{
             $project = new project($request->input());
             $project->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Project : $request->proj_name, $request->are_id ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Project : $request->proj_name, $request->are_id ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The project: ".$project->proj_name." has been created."
@@ -90,7 +88,7 @@ class ProjectController extends Controller
                 $project->proj_name = $request->proj_name;
                 $project->are_id = $request->are_id;
                 $project->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Project del dato: $id con los datos: $request->proj_name, $request->are_id ",4,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Project del dato: $id con los datos: $request->proj_name, $request->are_id ",4,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The project: ".$project->proj_name." has been update successfully."
@@ -102,7 +100,7 @@ class ProjectController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => "FUNCTION NOT AVAILABLE"
+            'message' => "FUNCTION NOT AVAILABLE."
         ],400);
     }
 }

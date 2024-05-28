@@ -21,8 +21,8 @@ class ScholarshipsController extends Controller{
     {
         $rules = [
 
-            'sch_name' => 'required|string|min:1|max:50|unique:scholarships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-            'sch_description' => 'required|string|min:1|max:255|unique:scholarships|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+            'sch_name' => 'required|string|min:1|max:50|exists:scholarships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'sch_description' => 'required|string|min:1|max:255|exists:scholarships|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -34,7 +34,7 @@ class ScholarshipsController extends Controller{
         } else {
             $scholarship = new scholarships(($request->input()));
             $scholarship->save();
-            Controller::NewRegisterTrigger("An insertion was made in the scholarships table'$scholarship->sch_id'", 3,6,$request->use_id);
+            Controller::NewRegisterTrigger("An insertion was made in the scholarships table'$scholarship->sch_id'", 3,$request->use_id);
 
             return response()->json([
                 'status' => true,
@@ -67,7 +67,7 @@ class ScholarshipsController extends Controller{
         if ($scholarship == null) {
             return response()->json([
                 'status' => false,
-                'data' => ['message' => 'The scholarship requested not found'],
+                'data' => ['message' => 'The scholarship requested not found.'],
             ], 400);
         } else {
             $rules = [
@@ -98,11 +98,11 @@ class ScholarshipsController extends Controller{
             }
         }
     }
-    public function destroy(Request $request,$id)
+    public function destroy()
     {
         return response()->json([
             'status' => false,
-            'message' => "Functions not available"
+            'message' => "Function not available."
         ], 400);
     }
 }
