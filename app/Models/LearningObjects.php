@@ -19,12 +19,17 @@ class LearningObjects extends Model
     public $timestamps = false;
 
     public static function select() {
-        $learningObjects = DB::table('learning_objects')->get();
+        $learningObjects = DB::table('learning_objects as le')
+        ->join("core_material as co",'co.cor_mat_id','=','le.cor_mat_id')
+        ->select('le.*', 'co.*')
+        ->get();
         return $learningObjects;
     }
 
     public static function findOne($id) {
         $learningObjects = DB::table('learning_objects')
+        ->join("core_material as co",'co.cor_mat_id','=','le.cor_mat_id')
+        ->select('le.*', 'co.*')
         ->where('lea_obj_id', $id)
         ->get();
         return $learningObjects;

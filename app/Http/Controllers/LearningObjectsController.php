@@ -35,7 +35,8 @@ class LearningObjectsController extends Controller
 
             $rules =[
                 'lea_obj_object' => ['required', 'regex:/^[A-ZÁÉÍÓÚÜÀÈÌÒÙÑ\s]+$/'],
-                'cor_mat_id' => ['required']
+                'cor_mat_id' => 'required|integer|exists:core_material',
+                'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             if ($validator->fails()) {
