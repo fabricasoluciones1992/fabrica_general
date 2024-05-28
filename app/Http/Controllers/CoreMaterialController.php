@@ -32,7 +32,8 @@ class CoreMaterialController extends Controller
         $rules =[
             'cor_mat_name' => ['required', 'regex:/^[A-ZÁÉÍÓÚÜÀÈÌÒÙÑ\s]+$/'],
             'cor_mat_semester' => ['required', 'regex:/^[1-7]$/'],
-            'car_id' => ['required']
+            'car_id' => 'required|integer|exists:careers',
+            'use_id' =>'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
@@ -46,7 +47,7 @@ class CoreMaterialController extends Controller
             $coreMaterial->cor_mat_semester = $request->cor_mat_semester ;
             $coreMaterial->car_id = $request->car_id ;
             $coreMaterial ->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla CoreMaterial ",3,2,1);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla CoreMaterial ",3,2,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => 'Core material: '.$coreMaterial->cor_mat_name.' created successfully.',
@@ -100,7 +101,7 @@ class CoreMaterialController extends Controller
             $coreMaterial->cor_mat_semester = $request->cor_mat_semester ;
             $coreMaterial->car_id = $request->car_id ;
             $coreMaterial ->save();
-            Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla CoreMaterial ",3,2,1);
+            Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla CoreMaterial ",3,2,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => 'Core material: '.$coreMaterial->cor_mat_name.' updated successfully.',
