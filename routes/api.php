@@ -7,7 +7,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CareerTypesController;
 use App\Http\Controllers\CivilStatesController;
-use App\Http\Controllers\CoformationProcessesController;
+use App\Http\Controllers\CoformationProcessTypesController;
 use App\Http\Controllers\ContactCompaniesTypesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
@@ -70,6 +70,7 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::resource('career', CareerController::class)->names('career')->parameter('','career');
     Route::resource('careers/types', CareerTypesController::class)->names('career.types')->parameter('','career_types');
     Route::resource('civil/states', CivilStatesController::class)->names('civil.states')->parameter('','civil_states');
+    Route::resource('coformation/process/types', CoformationProcessTypesController::class)->names('coformation.process.types')->parameter('','coformation_process_types');
     Route::resource('contact/companies/type', ContactCompaniesTypesController::class)->names('contact.companies.types')->parameter('','contact_companies_types');
     Route::resource('contacts', ContactController::class)->names('contacts')->parameter('','contacts');
     Route::resource('covenant/types', CovenantTypesController::class)->names('covenant.types')->parameter('','covenant_types');
@@ -103,7 +104,6 @@ Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->
     Route::get('last/persons', [PersonController::class, 'lastPersons'])->name('last.persons');
     Route::resource('phase', PhaseController::class)->names('phase')->parameter('','phase');
     Route::resource('positions', PositionController::class)->names('positions')->parameter('','positions');
-    Route::resource('coformation/processes', CoformationProcessesController::class)->names('coformation.processes')->parameter('','coformation_processes');
     Route::resource('projects', ProjectController::class)->names('projects')->parameter('','projects');
     Route::resource('promotion', PromotionController::class)->names('promotion')->parameter('','promotion');
     Route::resource('relationships', RelationshipsController::class)->names('relationships')->parameter('','relationships');
