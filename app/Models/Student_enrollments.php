@@ -23,11 +23,43 @@ class Student_enrollments extends Model
     public $timestamps = false;
 
     public static function select(){
-        $data = DB::select("SELECT *
-        FROM viewEnrollments
-        WHERE stu_enr_status=1;
-         ");
-        return $data;
+        $datas = DB::select("SELECT *
+        FROM viewEnrollments");
+        $enrollmentsType0 = [];
+        $enrollmentsType1 = [];
+        $enrollmentsType2 = [];
+
+        foreach($datas as $data){
+            $data->status_name = Student_enrollments::getStatusName($data->stu_enr_status);
+
+            if($data->stu_enr_status==0){
+                $enrollmentsType0[] = $data;
+            }elseif($data->stu_enr_status==1){
+                $enrollmentsType1[] = $data;
+
+            }elseif($data->stu_enr_status==3){
+                $enrollmentsType2[] = $data;
+
+            }
+        }
+        return[ 
+            'enrollment_Active'=>$enrollmentsType1,
+            'enrollment_Inactive'=>$enrollmentsType0,
+            'enrollment_Postpone'=>$enrollmentsType2,
+
+
+
+        ];
+    }
+    public static function getStatusName($status) {
+        switch ($status) {
+            case 0:
+                return 'Inactive';
+            case 1:
+                return 'Active';
+            case 2:
+                return 'Postpone'; 
+        }
     }
     public static function inactive(){
         $data = DB::select("SELECT *

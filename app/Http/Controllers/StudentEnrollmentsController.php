@@ -102,39 +102,37 @@ foreach ($oldEnrollments as $oldEnrollment) {
             ],200);
         }
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, $id)//pendiente o no se edita o se edita el mismo dia
 {
     $rules = [
         'stu_enr_semester' => 'required|numeric|max:7|min:1',
-        'stu_id' => 'required|exists:students',
         'peri_id' => 'required|exists:periods',
+        'stu_id' => 'required|exists:students',
         'car_id' => 'required|exists:careers',
+        'stu_enr_status' => 'required|numeric|max:2|min:0',
         'pro_id' => 'required|exists:promotions',
-        'stu_enr_date'=> 'required|date'  
     ];
 
     $validator = Validator::make($request->input(), $rules);
-    $validate = Controller::validate_exists($request->sch_name, 'student_enrollments', 'stu_id', 'peri_id', 'car_id', 'pro_id', $id);
 
-    if ($validator->fails() || $validate == 0) {
-        $msg = ($validate == 0) ? "Value tried to register, it is already registered." : $validator->errors()->all();
+    if ($validator->fails() ) {
         return response()->json([
             'status' => false,
-            'message' => $msg
+            'message' => $validator->errors()->all()
         ]);
     } else {
         $students_enrollments = Student_enrollments::find($id);
         $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
-        $students_enrollments->stu_id = $request->stu_id;
         $students_enrollments->peri_id = $request->peri_id;
         $students_enrollments->car_id = $request->car_id;
         $students_enrollments->pro_id = $request->pro_id;
-        $students_enrollments->stu_enr_status = 1;  
+        $students_enrollments->stu_enr_status = $request->stu_enr_status;
+        $students_enrollments->stu_enr_date = now()->toDateString(); 
+
+
         $students_enrollments->save();
 
-        Student_enrollments::where('stu_id', $request->stu_id)
-                           ->where('stu_enr_id', '!=', $students_enrollments->stu_enr_id)
-                           ->update(['stu_enr_status' => 0]);
+        
 
         $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
         Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments", 4, 6, $request->use_id);
@@ -144,6 +142,7 @@ foreach ($oldEnrollments as $oldEnrollment) {
         ], 200);
     }
 }
+
 
 public function historyEnrollments()
 {
@@ -160,13 +159,17 @@ public function historyEnrollments()
     ],500);
 }
 }
-    public function destroy(Request $request, $id)
-    {
-        
+public function destroy(Request $request,$id)
+{
+    $studentE = Student_enrollments::find($id);
+    $newSE=($studentE->stu_enr_status == 0) ? 1 : 0;
+            $studentE->stu_enr_status = $newSE;
+            $studentE->save();
+            Controller::NewRegisterTrigger("An change status was made in the students enrollments table",2, 6, $request->use_id);
             return response()->json([
-                'status' => false,
-                'message' => "function not available"
-            ], 200);
-
-    }
+                'status' => True,
+                'message' => 'The requested students enrollments has been change status successfully'
+            ]);
+        
+}
 }

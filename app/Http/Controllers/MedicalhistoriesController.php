@@ -37,7 +37,7 @@ class MedicalhistoriesController extends Controller
             $medicalHistory = new medicalhistories($request->input());
             $medicalHistory->med_his_status = 1;
             $medicalHistory->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Medical Histories",3,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The medical history ". $medicalHistory -> per_name ." has been added succesfully.",
