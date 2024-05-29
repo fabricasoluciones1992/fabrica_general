@@ -20,7 +20,9 @@ class CoreMaterial extends Model
     public $timestamps = false;
 
     public static function select() {
-        $coreMaterials = DB::table('core_material')->get();
+        $coreMaterials = DB::table('core_material')
+        ->join('careers', 'careers.car_id', '=', 'core_material.car_id')
+        ->select('core_material.cor_mat_id', 'core_material.cor_mat_name', 'core_material.cor_mat_semester', 'careers.car_id', 'careers.car_name')->get();
         return $coreMaterials;
     }
 
