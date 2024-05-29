@@ -23,7 +23,7 @@ class VinculationTypeController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'vin_typ_name' =>'required|exists:vinculation_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'vin_typ_name' =>'required|unique:vinculation_types|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);

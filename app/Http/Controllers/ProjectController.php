@@ -26,7 +26,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'proj_name' => 'required|string|min:1|max:255|exists:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'proj_name' => 'required|string|min:1|max:255|unique:projects|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'are_id' => 'required|integer|exists:areas',
             'use_id' =>'required|integer|exists:users'
         ];

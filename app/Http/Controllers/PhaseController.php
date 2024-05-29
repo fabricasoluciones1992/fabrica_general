@@ -23,7 +23,7 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
             $rules = [
-                'pha_name' =>'required|exists:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'pha_name' =>'required|unique:phases|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);

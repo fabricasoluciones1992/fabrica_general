@@ -38,7 +38,7 @@ class NewTypeController extends Controller
         }else{
             $newtype = new NewType($request->input());
             $newtype->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,$request->use_id);
             return response()->json([
              'status' => True,
              'message' => "The newType: ".$newtype->new_typ_name." has been created."
