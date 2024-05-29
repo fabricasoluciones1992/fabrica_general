@@ -25,7 +25,7 @@ class PayTimesController extends Controller
     {
  
                  $rules = [
-                     'pay_tim_name' =>'required|string|exists:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_tim_name' =>'required|string|unique:pay_times|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                      'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);

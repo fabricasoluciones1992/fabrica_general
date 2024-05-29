@@ -88,7 +88,7 @@ class TelephonesController extends Controller
                 $telephone->tel_description = $request->tel_description;
                 $telephone->per_id = $request->per_id;
                 $telephone->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla telephones",1,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The telephone ".$telephone->tel_number." has been updated succesfully."

@@ -24,7 +24,7 @@ class PayTypesController extends Controller
     public function store(Request $request)
     {
                  $rules = [
-                     'pay_typ_name' =>'required|string|exists:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                     'pay_typ_name' =>'required|string|unique:pay_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                      'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);

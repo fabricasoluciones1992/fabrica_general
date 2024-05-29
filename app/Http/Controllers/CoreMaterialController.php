@@ -18,7 +18,6 @@ class CoreMaterialController extends Controller
             'message' => 'There are no core materials available.'
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda de datos en la tabla CoreMaterial ",3,2,1);
             return response()->json([
                 'status'=>True,
                 'data'=>$coreMaterial],200);
@@ -47,7 +46,7 @@ class CoreMaterialController extends Controller
             $coreMaterial->cor_mat_semester = $request->cor_mat_semester ;
             $coreMaterial->car_id = $request->car_id ;
             $coreMaterial ->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla CoreMaterial ",3,2,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla CoreMaterial ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => 'Core material: '.$coreMaterial->cor_mat_name.' created successfully.',
@@ -67,7 +66,6 @@ class CoreMaterialController extends Controller
             'message' => 'There are no core materials available.'
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda de datos en la tabla CoreMaterial ",3,2,1);
             return response()->json([
                 'status'=>True,
                 'data'=>$coreMaterial],200);
@@ -101,7 +99,7 @@ class CoreMaterialController extends Controller
             $coreMaterial->cor_mat_semester = $request->cor_mat_semester ;
             $coreMaterial->car_id = $request->car_id ;
             $coreMaterial ->save();
-            Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla CoreMaterial ",3,2,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla CoreMaterial ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => 'Core material: '.$coreMaterial->cor_mat_name.' updated successfully.',
@@ -111,9 +109,9 @@ class CoreMaterialController extends Controller
     }
 
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla CoreMaterial ",3,2,1);
+        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla CoreMaterial ",3,$request->use_id);
         return response()->json([
             'message' => 'This function is not allowed.'
         ],400);

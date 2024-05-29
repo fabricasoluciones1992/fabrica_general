@@ -35,7 +35,7 @@ class VinculationTypeController extends Controller
             }else{
                 $vinculation_type = new Vinculation_Type($request->input());
                 $vinculation_type->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla vinculation type",3,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla vinculation type",3,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The vinculation type '". $vinculation_type->vin_typ_name ."' has been added succesfully."
@@ -77,7 +77,7 @@ class VinculationTypeController extends Controller
                 $vinculation_type = Vinculation_Type::find($vinculation_Type);
                 $vinculation_type->vin_typ_name = $request-> vin_typ_name;
                 $vinculation_type->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla vinculation type",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla vinculation type",1,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The vinculation type with ID: ". $vinculation_type->vin_typ_id." has been updated to '".$vinculation_type->vin_typ_name."' succesfully.",

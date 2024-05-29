@@ -27,7 +27,7 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'pos_name' => 'required|string|min:1|max:255|exists:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
+            'pos_name' => 'required|string|min:1|max:255|unique:positions|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
             'are_id' =>'required|integer|exists:areas',
             'use_id' =>'required|integer|exists:users'
         ];
