@@ -111,7 +111,6 @@ foreach ($oldEnrollments as $oldEnrollment) {
         'car_id' => 'required|exists:careers',
         'stu_enr_status' => 'required|numeric|max:2|min:0',
         'pro_id' => 'required|exists:promotions',
-        'stu_enr_date'=> 'required|date'  
     ];
 
     $validator = Validator::make($request->input(), $rules);
@@ -128,6 +127,8 @@ foreach ($oldEnrollments as $oldEnrollment) {
         $students_enrollments->car_id = $request->car_id;
         $students_enrollments->pro_id = $request->pro_id;
         $students_enrollments->stu_enr_status = $request->stu_enr_status;
+        $students_enrollments->stu_enr_date = now()->toDateString(); 
+
 
         $students_enrollments->save();
 
