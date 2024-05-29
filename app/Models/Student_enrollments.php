@@ -29,12 +29,20 @@ class Student_enrollments extends Model
          ");
         return $data;
     }
+    public static function inactive(){
+        $data = DB::select("SELECT *
+        FROM viewEnrollments
+        WHERE stu_enr_status=0;
+         ");
+        return $data;
+    }
+
 
     public static function search($id)
 {
     $data = DB::select("SELECT *
         FROM viewEnrollments
-        WHERE stu_enr_id = $id ");
+        WHERE per_document = $id ");
 
     if (!empty($data)) {
         $enrollment = $data[0];

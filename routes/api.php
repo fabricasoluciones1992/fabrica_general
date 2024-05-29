@@ -116,6 +116,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('student', StudentController::class)->names('student')->parameter('','student');
     Route::apiResource('students/enrollments',StudentEnrollmentsController::class)->names('student.enrollments')->parameter('', 'student_enrollments');
     Route::get('students', [StudentController::class, 'indexAmount'])->name('filtrar.personas');
+    Route::get('history/enrollments', [StudentEnrollmentsController::class, 'historyEnrollments']);
     Route::resource('telephones', TelephonesController::class)->names('telephones')->parameter('','telephones');
     Route::resource('vinculation/type', VinculationTypeController::class)->names('vinculation.type')->parameter('','vinculation_type');
 

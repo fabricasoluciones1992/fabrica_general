@@ -145,7 +145,21 @@ foreach ($oldEnrollments as $oldEnrollment) {
     }
 }
 
-
+public function historyEnrollments()
+{
+    try{
+    $students_enrollments = Student_enrollments::inactive();
+    return response()->json([
+        'status' => true,
+        'data' => $students_enrollments,
+    ],200);
+} catch (\Throwable $th) {
+    return response()->json([
+        'status' => false,
+        'message' => $th
+    ],500);
+}
+}
     public function destroy(Request $request, $id)
     {
         
