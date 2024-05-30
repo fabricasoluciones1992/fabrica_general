@@ -22,7 +22,7 @@ class ScholarshipsController extends Controller{
         $rules = [
 
             'sch_name' => 'required|string|min:1|max:50|unique:scholarships|regex:/^[A-ZÑÁÉÍÓÚÜ\s]+$/',
-            'sch_description' => 'required|string|min:1|max:255|exists:scholarships|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
+            'sch_description' => 'required|string|min:1|max:255|exists:scholarships',
 
         ];
         $validator = Validator::make($request->input(), $rules);
