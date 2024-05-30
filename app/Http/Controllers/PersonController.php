@@ -53,7 +53,7 @@ class PersonController extends Controller
             Controller::NewRegisterTrigger("Se ingreso al perfil de: ".$persons->per_name,4,$use_id);
             return response()->json([
                 'status' => true,
-                'data' => $persons  
+                'data' => $persons
             ],200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -93,7 +93,7 @@ class PersonController extends Controller
                 'gen_id'=> 'required|integer|exists:genders',
                 'mul_id'=> 'required|integer|exists:multiculturalisms',
                 'per_rh' => 'required',
-                'per_typ_id' => 'required|integer|exists:person_types',
+
             ];
 
             $validator = Validator::make($request->input(), $rules);
@@ -115,7 +115,7 @@ class PersonController extends Controller
                 $person->gen_id = $request->gen_id;
                 $person->mul_id = $request->mul_id;
                 $person->per_rh = $request->per_rh;
-                $person->per_typ_id = $request->per_typ_id; 
+                // $person->per_typ_id = $request->per_typ_id;
                 $person->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$request->use_id);
                 return response()->json([
@@ -191,7 +191,7 @@ class PersonController extends Controller
         }else{
         try {
             /* Email SMTP Settings */
-            $mail->SMTPDebug = 0; 
+            $mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host = env('MAIL_HOST');
             $mail->SMTPAuth = true;
@@ -275,27 +275,27 @@ class PersonController extends Controller
         }
     }
 
-    public function filtredfortypeperson($proj_id,$use_id,$column,$data)
-    {
-        if ($column == 'use_status') {
-            $personasVinculadas = User::filtredfortypeperson($column,$data);
-            return response()->json([
-                'status' => true,
-                'data' => $personasVinculadas
-            ],200);    
-        }elseif($column == "per_typ_id"){
-            $user = User::filtredfortypeperson($column,$data);     
-            return response()->json([
-                'status' => true,
-                'data' => $user
-            ],200); 
-        }else{
-            return response()->json([
-               'status' => False,
-              'message' => "Invalid column"
-            ],400);
-        }
-    }
+    // public function filtredfortypeperson($proj_id,$use_id,$column,$data)
+    // {
+    //     if ($column == 'use_status') {
+    //         $personasVinculadas = User::filtredfortypeperson($column,$data);
+    //         return response()->json([
+    //             'status' => true,
+    //             'data' => $personasVinculadas
+    //         ],200);
+    //     }elseif($column == "per_typ_id"){
+    //         $user = User::filtredfortypeperson($column,$data);
+    //         return response()->json([
+    //             'status' => true,
+    //             'data' => $user
+    //         ],200);
+    //     }else{
+    //         return response()->json([
+    //            'status' => False,
+    //           'message' => "Invalid column"
+    //         ],400);
+    //     }
+    // }
     public function viewForDocument(Request $request){
         $person = Person::viewForDocument($request);
         return response()->json([

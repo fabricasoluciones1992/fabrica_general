@@ -93,6 +93,13 @@ class AccessController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
+                $access = DB::table("access")->where('proj_id','=', $request->proj_id)->where('use_id','=', $request->use_id)->first();
+                if ($access != []) {
+                    return response()->json([
+                        'status' => False,
+                        'message' =>"This user already has access to this project"
+                    ]);
+                }
                 $acces->acc_status = $request->acc_status;
                 $acces->proj_id = $request->proj_id;
                 $acces->use_id = $request->use_id;
