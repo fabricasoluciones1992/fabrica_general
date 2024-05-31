@@ -13,7 +13,6 @@ class Promotion extends Model
     protected $primaryKey = 'pro_id';
     protected $fillable = [
         'pro_name',
-        'pro_group'
     ];
     public $timestamps = false;
 

@@ -81,8 +81,8 @@ class PersonController extends Controller
                 }
             }
             $rules = [
-                'per_name'=> 'required|min:1|max:150|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
-                'per_lastname'=> 'required|min:1|max:100|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+                'per_name'=> 'required|min:1|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+                'per_lastname'=> 'required|min:1|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
                 'per_document'=> 'required|min:1|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
                 'per_expedition'=> 'required|date|after_or_equal:per_birthdate|before_or_equal:now',
                 'per_birthdate'=> 'required|date|before_or_equal:now',
