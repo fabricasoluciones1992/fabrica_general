@@ -17,12 +17,16 @@ class history_scholarships extends Model
 
     protected $fillable = [
         'sch_id',
-        'stu_id'
+        'stu_id',
+        'his_sch_start',
+        'his_sch_end'
     ];
     public static function select(){
         $hScholar = DB::select("
                 SELECT 
             hs.his_sch_id,
+            hs.his_sch_start,
+            hs.his_sch_end,
             sc.sch_id,
             sc.sch_name,
             sc.sch_description,
@@ -47,6 +51,8 @@ class history_scholarships extends Model
         $hScholar = DB::select("
         SELECT 
             hs.his_sch_id,
+            hs.his_sch_start,
+            hs.his_sch_end,
             sc.sch_id,
             sc.sch_name,
             sc.sch_description,
