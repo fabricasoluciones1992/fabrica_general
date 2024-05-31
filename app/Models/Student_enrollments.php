@@ -15,6 +15,7 @@ class Student_enrollments extends Model
         'stu_enr_semester',
         'stu_enr_status',
         'stu_enr_date',
+        'stu_enr_journey',
         'peri_id',
         'stu_id',
         'car_id',
@@ -31,7 +32,7 @@ class Student_enrollments extends Model
 
         foreach($datas as $data){
             $data->status_name = Student_enrollments::getStatusName($data->stu_enr_status);
-
+            $data->journey_name = Student_enrollments::getJourneyName($data->stu_enr_journey);
             if($data->stu_enr_status==0){
                 $enrollmentsType0[] = $data;
             }elseif($data->stu_enr_status==1){
@@ -42,7 +43,7 @@ class Student_enrollments extends Model
 
             }
         }
-        return[ 
+        return[
             'enrollment_Active'=>$enrollmentsType1,
             'enrollment_Inactive'=>$enrollmentsType0,
             'enrollment_Postpone'=>$enrollmentsType2,
@@ -51,6 +52,15 @@ class Student_enrollments extends Model
 
         ];
     }
+
+    public static function getJourneyName($journey){
+        switch($journey){
+            case 0:
+                return 'Diurno';
+            case 1:
+                return 'Nocturno';
+        }
+    }
     public static function getStatusName($status) {
         switch ($status) {
             case 0:
@@ -58,7 +68,7 @@ class Student_enrollments extends Model
             case 1:
                 return 'Active';
             case 2:
-                return 'Postpone'; 
+                return 'Postpone';
         }
     }
     public static function inactive(){
@@ -74,8 +84,9 @@ class Student_enrollments extends Model
 {
     $data = DB::select("SELECT *
         FROM viewEnrollments
-        WHERE per_document = $id ");
+        WHERE per_document = $id AND stu_enr_status = 1");
 
+    $data[0]->stu_enr_journey = Student_enrollments::getJourneyName($data[0]->stu_enr_journey);
     if (!empty($data)) {
         $enrollment = $data[0];
 

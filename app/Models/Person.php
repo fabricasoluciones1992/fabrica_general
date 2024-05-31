@@ -27,13 +27,17 @@ class Person extends Model
         'mul_id',
         'use_id',
         'per_rh',
-        'per_typ_id',
+
     ];
     public $timestamps = false;
 
 
     public static function select(){
         $persons = DB::select("SELECT * FROM ViewPersons");
+        foreach($persons as $person){
+            $person->use_photo = base64_decode($person->use_photo);
+
+        }
         return $persons;
     }
     public static function findByDocument($id, $docTypeId){
@@ -47,7 +51,7 @@ class Person extends Model
             $mails = DB::table('mails')->where('per_id', '=', $person->per_id)->get();
             $telephones = DB::table('telephones')->where('per_id', '=', $person->per_id)->get();
             $contacts = DB::table('contacts')->where('per_id', '=', $person->per_id)->get();
-            $medical_histories = DB::table('medical_histories')->where('per_id', '=', $person->per_id)->get(); 
+            $medical_histories = DB::table('medical_histories')->where('per_id', '=', $person->per_id)->get();
             $person->mails = $mails;
             $person->telephones = $telephones;
             $person->contacts = $contacts;

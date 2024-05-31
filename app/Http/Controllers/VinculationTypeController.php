@@ -60,18 +60,18 @@ class VinculationTypeController extends Controller
     public function update(Request $request, $vinculation_Type)
     {
             $rules = [
-                'vin_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'vin_typ_name' =>'required|string|unique:vinculation_types|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
-            $validate = Controller::validate_exists($request->vin_typ_name, 'vinculation_types', 'vin_typ_name', 'car_typ_id', $vinculation_Type);
+            // $validate = Controller::validate_exists($request->vin_typ_name, 'vinculation_types', 'vin_typ_name', 'car_typ_id', $vinculation_Type);
 
-            if ($validator->fails()||$validate==0) {
-                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+            if ($validator->fails()) {
+                // $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
 
                 return response()->json([
                 'status' => False,
-                'message' => $msg
+                'message' => $validator->errors()->all()
                 ]);
             }else{
                 $vinculation_type = Vinculation_Type::find($vinculation_Type);
