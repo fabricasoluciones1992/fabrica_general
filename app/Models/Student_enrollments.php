@@ -19,7 +19,8 @@ class Student_enrollments extends Model
         'peri_id',
         'stu_id',
         'car_id',
-        'pro_id'
+        'pro_id',
+        'pha_id'
     ];
     public $timestamps = false;
 

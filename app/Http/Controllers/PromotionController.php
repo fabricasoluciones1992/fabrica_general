@@ -27,7 +27,7 @@ class PromotionController extends Controller
     public function store(Request $request)
 {
     $rules = [
-        'pro_name' => 'required|string',
+        'pro_name' => 'required|string|unique:promotions',
         'use_id' =>'required|integer|exists:users'
     ];
 
@@ -84,18 +84,17 @@ class PromotionController extends Controller
     public function update(Request $request, $promotion)
     {
                 $rules = [
-                    'pro_name' =>'required|string',
+                    'pro_name' =>'required|unique:promotions|string',
                     'use_id' =>'required|integer|exists:users'
                 ];
                 $validator = Validator::make($request->input(), $rules);
-                $validate = Controller::validate_exists($request->pro_name, 'promotions', 'pro_name', $promotion);
 
-                if ($validator->fails()||$validate) {
-                    $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+                if ($validator->fails()) {
+                    $validator->errors()->all();
 
                     return response()->json([
                     'status' => False,
-                    'message' => $msg
+                    'message' => $validator
                     ]);
                 }else{
                     $promotions = Promotion::find($promotion);

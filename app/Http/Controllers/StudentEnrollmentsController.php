@@ -33,6 +33,8 @@ class StudentEnrollmentsController extends Controller
             'peri_id' => 'required|exists:periods',
             'car_id' => 'required|exists:careers',
             'pro_id' => 'required|exists:promotions',
+            'pha_id' => 'required|exists:phases'
+
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -85,7 +87,7 @@ class StudentEnrollmentsController extends Controller
 
         $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
 
-        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments", 3, 6, $request->use_id);
+        Controller::NewRegisterTrigger("Se realizo una inserción en la tabla students_enrollments", 3,$request->use_id);
 
         return response()->json([
             'status' => true,
@@ -118,6 +120,8 @@ class StudentEnrollmentsController extends Controller
             'car_id' => 'required|exists:careers',
             'stu_enr_status' => 'required|numeric|max:2|min:0',
             'pro_id' => 'required|exists:promotions',
+            'pha_id' => 'required|exists:phases'
+
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -134,6 +138,7 @@ class StudentEnrollmentsController extends Controller
             $students_enrollments->peri_id = $request->peri_id;
             $students_enrollments->car_id = $request->car_id;
             $students_enrollments->pro_id = $request->pro_id;
+            $students_enrollments->pha_id = $request->pha_id;
             $students_enrollments->stu_enr_status = $request->stu_enr_status;
             $students_enrollments->stu_enr_date = now()->toDateString();
 
@@ -143,7 +148,7 @@ class StudentEnrollmentsController extends Controller
 
 
             $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
-            Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments", 4, 6, $request->use_id);
+            Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments", 4,$request->use_id);
             return response()->json([
                 'status' => true,
                 'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been updated successfully.",
