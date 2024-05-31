@@ -22,8 +22,10 @@ public function store(Request $request)
 {
 
         $rules = [
-            'sch_id' => 'required|numeric',
-            'stu_id' => 'required|numeric',
+            'sch_id' => 'required|numeric|exists:scholarships',
+            'stu_id' => 'required|numeric|exists:students',
+            'his_sch_star' => 'required|date',
+            'his_sch_end' => 'date',
         ];
         
         $validator = Validator::make($request->input(), $rules);
@@ -38,7 +40,6 @@ public function store(Request $request)
         $existingRecord = history_scholarships::where('sch_id', $request->sch_id)
                                               ->where('stu_id', $request->stu_id)
                                               ->first();
-        
         if ($existingRecord) {
             return response()->json([
                 'status' => false,
