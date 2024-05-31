@@ -62,7 +62,6 @@ class StudentController extends Controller
 {
     $rules = [
         'stu_stratum' => 'required',
-        'stu_journey' => 'required',
         'stu_military' => 'nullable|numeric|min:1',
         'stu_piar' => 'nullable|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
         'stu_typ_id' => 'required|integer|exists:students_types',
@@ -127,7 +126,6 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-            'stu_journey' => 'required',
             'stu_military' => 'nullable|numeric|min:1|max:10',
             'stu_piar' => 'nullable|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
             'stu_typ_id' => 'required|integer|exists:students_types',
@@ -149,7 +147,6 @@ class StudentController extends Controller
         $students = Student::find($student);
         $students->stu_stratum = $request->stu_stratum;
         $students->stu_typ_id = $request->stu_typ_id;
-        $students->stu_journey = $request->stu_journey;
         $students->stu_piar = $request->stu_piar;
         $students->stu_military = $request->stu_military;
         $students->per_id = $request->per_id;
