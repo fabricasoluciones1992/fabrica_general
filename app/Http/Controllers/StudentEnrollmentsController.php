@@ -52,6 +52,8 @@ class StudentEnrollmentsController extends Controller
             ->where('peri_id', $request->peri_id)
             ->where('car_id', $request->car_id)
             ->where('pro_id', $request->pro_id)
+            ->where('pha_id', $request->pha_id)
+
             ->where('stu_enr_status', 1)
             ->first();
 
@@ -69,6 +71,8 @@ class StudentEnrollmentsController extends Controller
         $students_enrollments->peri_id = $request->peri_id;
         $students_enrollments->car_id = $request->car_id;
         $students_enrollments->pro_id = $request->pro_id;
+        $students_enrollments->pha_id = $request->pha_id;
+
         $students_enrollments->stu_enr_status = 1;
         $students_enrollments->stu_enr_date = now()->toDateString();
         $students_enrollments->save();
