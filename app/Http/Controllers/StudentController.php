@@ -170,4 +170,12 @@ class StudentController extends Controller
             'message' => "Function not available."
          ],400);
     }
+
+    public function viewForDocumentStudent(Request $request){
+        $student = Student::viewForDocumentStudent($request);
+        return response()->json([
+            'status' => true,
+            'data' => $student
+        ],200);
+    }
 }
