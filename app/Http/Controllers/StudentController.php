@@ -87,8 +87,8 @@ class StudentController extends Controller
         ]);
     }
     $request->merge([
-        'stu_military' => $request->input('stu_military', 'N/A'),
-        'stu_piar' => $request->input('stu_piar', 'N/A')
+        'stu_military' => is_null($request->input('stu_military')) || $request->input('stu_military') === '' ? 'N/A' : $request->input('stu_military'),
+        'stu_piar' => is_null($request->input('stu_piar')) || $request->input('stu_piar') === '' ? 'N/A' : $request->input('stu_piar')
     ]);
 
     $student = new Student($request->all());
@@ -134,16 +134,17 @@ class StudentController extends Controller
             'mon_sta_id' => 'required|integer|exists:monetary_states',
         ];
         $validator = Validator::make($request->input(), $rules);
-        $request->merge([
-            'stu_military' => $request->input('stu_military', 'N/A'),
-            'stu_piar' => $request->input('stu_piar', 'N/A')
-        ]);
+        
            if ($validator->fails()) {
             return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
             ]);
         }else{
+        $request->merge([
+                'stu_military' => is_null($request->input('stu_military')) || $request->input('stu_military') === '' ? 'N/A' : $request->input('stu_military'),
+                'stu_piar' => is_null($request->input('stu_piar')) || $request->input('stu_piar') === '' ? 'N/A' : $request->input('stu_piar')
+         ]);
         $students = Student::find($student);
         $students->stu_stratum = $request->stu_stratum;
         $students->stu_typ_id = $request->stu_typ_id;
