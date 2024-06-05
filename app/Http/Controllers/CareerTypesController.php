@@ -29,7 +29,7 @@ class CareerTypesController extends Controller
                 $career_types = new Career_Types();
                 $career_types->car_typ_name = $request->car_typ_name;
                 $career_types->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla career types",3,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla career types",3,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The career type '". $career_types->car_typ_name ."' has been added succesfully."
@@ -70,7 +70,7 @@ class CareerTypesController extends Controller
                 $careers_types = Career_Types::find($career_Types);
                 $careers_types->car_typ_name = $request->car_typ_name;
                 $careers_types->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers_types",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers_types",1,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The career type with ID: ". $careers_types->car_typ_id." has been updated to '" . $careers_types->car_typ_name ."' succesfully.",

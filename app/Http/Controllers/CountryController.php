@@ -36,7 +36,7 @@ class CountryController extends Controller
                 $countries = new Country();
                 $countries->cou_name = $request->cou_name;
                 $countries->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla countries",3,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla countries",3,$request->use_id);
                 return response()->json([
                 'status' => true,
                 'message' => "The country '". $countries->cou_name ."' has been added succesfully."
@@ -75,7 +75,7 @@ class CountryController extends Controller
                 $countries = Country::find($id);
                 $countries->cou_name = $request->cou_name;
                 $countries->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla countries",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla countries",1,$request->use_id);
                 return response()->json([
                 'status' => true,
                 'data' => "The country with ID: ". $countries -> cou_id." has been updated to '" . $countries->cou_name ."' succesfully.",

@@ -37,7 +37,7 @@ class GenderController extends Controller
         }else{
             $gender = new Genders($request->input());
             $gender->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla genders: $request->gen_name ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The gender: ".$gender->gen_name." has been created."
@@ -85,7 +85,7 @@ class GenderController extends Controller
             }else{
                 $gender->gen_name = $request->gen_name;
                 $gender->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$gender_old. con el dato: $request->gen_name",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla genders del dato: .$gender_old. con el dato: $request->gen_name",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The gender: ".$gender->gen_name." has been update."

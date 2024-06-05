@@ -37,7 +37,7 @@ class MulticulturalismsController extends Controller
         }else{
             $multiculturalism = new multiculturalisms($request->input());
             $multiculturalism->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Multiculturalism : $request->mul_name ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been created successfully."
@@ -83,7 +83,7 @@ class MulticulturalismsController extends Controller
             }else{
                 $multiculturalism->mul_name = $request->mul_name;
                 $multiculturalism->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla multiculturalisms del dato: $id con el dato: $request->mul_name",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The multiculturalism: ".$multiculturalism->mul_name." has been updated successfully."

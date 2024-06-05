@@ -51,7 +51,7 @@ class HistoryPromotionController extends Controller
                 'message' => $validator->errors()->all()
                 ]);
         }else{
-            Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history Promotions",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history Promotions",3,$request->use_id);
             return response()->json([
                 'status' => true,
                 'message' => "The history promotions '".$promotion->pro_name ."' of student '". $request->stu_id ."' has been added succesfully.",

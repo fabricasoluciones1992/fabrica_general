@@ -43,7 +43,7 @@ class ActivityController extends Controller
                 $activities->acti_name = $request->acti_name;
                 $activities->acti_code = $request->acti_code;
                 $activities->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,6,$request->use_id);;
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,$request->use_id);;
                 return response()->json([
                 'status' => true,
                 'message' => "The activity '". $activities->acti_name ."' has been added succesfully."
@@ -88,7 +88,7 @@ class ActivityController extends Controller
                 $activities->acti_code = $request->acti_code;
 
                 $activities->save();
-                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,6,$request->use_id);;
+                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,$request->use_id);;
                 return response()->json([
                 'status' => true,
                 'data' => "The activity with ID: ". $activities->acti_id." has been updated to '" . $activities->acti_name ."' succesfully.",

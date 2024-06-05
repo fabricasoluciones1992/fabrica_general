@@ -37,7 +37,7 @@ class LocalityController extends Controller
         }else{
             $localities = new Locality($request->input());
             $localities->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Locality : $request->loc_name ",3,$request->use_id);
             return response()->json([
             'status' => true,
             'message' => "The locality: ".$localities->loc_name." has been created."
@@ -82,7 +82,7 @@ class LocalityController extends Controller
             }else{
                 $locality->loc_name = $request->loc_name;
                 $locality->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Locality del dato: $id con el dato: $request->loc_name",1,$request->use_id);
                 return response()->json([
                'status' => true,
                    'message' => "The locality: .$locality->loc_name. has been updated successfully"

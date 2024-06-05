@@ -37,7 +37,7 @@ class EpsController extends Controller
         }else{
             $eps = new Eps($request->input());
             $eps->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla EPS : $request->eps_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla EPS : $request->eps_name ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The eps: ".$eps->eps_name." has been created."
@@ -83,7 +83,7 @@ class EpsController extends Controller
             }else{
                 $eps->eps_name = $request->eps_name;
                 $eps->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla EPS del dato: $id con el dato: $request->eps_name",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla EPS del dato: $id con el dato: $request->eps_name",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The eps: ".$eps->eps_name." has been update."

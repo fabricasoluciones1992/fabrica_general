@@ -38,7 +38,7 @@ class DocTypesController extends Controller
         }else{
             $doctypes = new DocumentTypes($request->input());
             $doctypes->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla DocTypes: $request->doc_typ_name ",3,$request->use_id);
             return response()->json([
                'status' => True,
                'message' => "The type document: ".$doctypes->doc_typ_name." has been created."
@@ -84,7 +84,7 @@ class DocTypesController extends Controller
             }else{
                 $docTypes->doc_typ_name = $request->doc_typ_name;
                 $docTypes->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla DocTypes del dato: $id con el dato: $request->doc_typ_name",1,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The type document: ".$docTypes->doc_typ_name." has been update."

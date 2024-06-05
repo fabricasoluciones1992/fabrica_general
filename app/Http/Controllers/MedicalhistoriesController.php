@@ -86,7 +86,7 @@ class MedicalhistoriesController extends Controller
                 $medicalHistory->dis_id = $request->dis_id;
                 $medicalHistory->med_his_status = $request->med_his_status;
                 $medicalHistory->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla medical histories",1,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The medical history: ".$medicalHistory->med_his_id." has been updated succesfully."

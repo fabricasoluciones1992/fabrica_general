@@ -46,7 +46,7 @@ class ContactController extends Controller
         }else{
             $contact = new Contact($request->input());
             $contact->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla Contact : $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The contact: ".$contact->con_name." has been crated successfully.",
@@ -99,7 +99,7 @@ class ContactController extends Controller
                 $contact->rel_id = $request->rel_id;
                 $contact->per_id = $request->per_id;
                 $contact->save();
-                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla Contact del dato: $id con los datos: $request->con_name, $request->con_relationship, $request->con_mail, $request->con_telephone ",1,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => "The contact: ".$contact->con_name." has been updated successfully."
