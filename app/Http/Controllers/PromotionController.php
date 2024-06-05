@@ -83,28 +83,35 @@ class PromotionController extends Controller
  
     public function update(Request $request, $promotion)
     {
-                $rules = [
-                    'pro_name' =>'required|unique:promotions|string',
-                    'use_id' =>'required|integer|exists:users'
-                ];
-                $validator = Validator::make($request->input(), $rules);
-
-                if ($validator->fails()) {
-                    $validator->errors()->all();
-
+                $promotions = Promotion::find($promotion);
+                if ($promotions == null) {
                     return response()->json([
-                    'status' => False,
-                    'message' => $validator
-                    ]);
+                        'status' => false,
+                        'data' => ['message' => 'the area requested was not found']
+                    ],400);
                 }else{
-                    $promotions = Promotion::find($promotion);
-                    $promotions->pro_name = $request->pro_name;
-                    $promotions->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,$request->use_id);
-                    return response()->json([
-                        'status' => true,
-                        'data' => "The promotion with ID: ". $promotions -> pro_id." has been updated to '" . $promotions->pro_name ."' succesfully.",
-                    ],200);
+                    $rules = [
+                        'pro_name' =>'required|string',
+                        'use_id' =>'required|integer|exists:users'
+                    ];
+                    $validator = Validator::make($request->input(), $rules);
+                    $exist = Controller::validate_exists($request->pro_name,'promotions','pro_name','pro_id',$promotion);
+                    if ($validator->fails() || $exist == 0) {
+                        $validator->errors()->all();
+                        $msg = ($exist == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+                        return response()->json([
+                        'status' => False,
+                        'message' => $msg
+                        ]);
+                    }else{
+                        $promotions->pro_name = $request->pro_name;
+                        $promotions->save();
+                        Controller::NewRegisterTrigger("Se realizo una edición en la tabla promotions",1,$request->use_id);
+                        return response()->json([
+                            'status' => true,
+                            'data' => "The promotion with ID: ". $promotions -> pro_id." has been updated to '" . $promotions->pro_name ."' succesfully.",
+                        ],200);
+                    }
                 }
         }
  
