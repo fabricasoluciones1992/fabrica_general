@@ -67,7 +67,6 @@ class LearningObjectsController extends Controller
             'message' => 'There are no learning objects available.'
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda de datos en la tabla Learning objects ",3,2,1);
             return response()->json([
                 'status'=>True,
                 'data'=>$learningObjects],200);

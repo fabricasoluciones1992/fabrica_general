@@ -109,9 +109,8 @@ class CoreMaterialController extends Controller
     }
 
 
-    public function destroy(Request $request)
+    public function destroy()
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla CoreMaterial ",3,$request->use_id);
         return response()->json([
             'message' => 'This function is not allowed.'
         ],400);
