@@ -18,7 +18,6 @@ class LearningObjectsController extends Controller
             'message' => 'There are no learning objects available.'
             ],400);
         }else{
-            Controller::NewRegisterTrigger("Se realizó una busqueda de datos en la tabla Learning objects ",3,2,1);
             return response()->json([
                 'status'=>True,
                 'data'=>$learningObjects],200);
@@ -49,7 +48,7 @@ class LearningObjectsController extends Controller
                 $learningObject->lea_obj_object = $request->lea_obj_object;
                 $learningObject->cor_mat_id = $request->cor_mat_id ;
                 $learningObject ->save();
-                Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla Learning objects ",3,2,1);
+                Controller::NewRegisterTrigger("Se creo un registro en la tabla LearningObject: $request->lea_obj_object ",3,$request->use_id);
                 return response()->json([
                     'status' => True,
                     'message' => 'Learning object: '.$learningObject->lea_obj_object.' created successfully.',
@@ -99,7 +98,7 @@ class LearningObjectsController extends Controller
             $learningObject->lea_obj_object = $request->lea_obj_object;
             $learningObject->cor_mat_id = $request->cor_mat_id ;
             $learningObject ->save();
-            Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla Learning objects ",3,2,1);
+            Controller::NewRegisterTrigger("Se actualizó un registro en la tabla LearningObject: $request->lea_obj_object ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => 'Learning object: '.$learningObject->lea_obj_object.' updated successfully.',
