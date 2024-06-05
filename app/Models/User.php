@@ -35,9 +35,6 @@ class User extends Authenticatable
                 $persons = DB::select(" SELECT * FROM ViewPersons WHERE per_id = $person->use_id");
             } 
             return $persons;  
-        }elseif ($column == "per_typ_id"){
-            $user = DB::select(" SELECT * FROM ViewPersons WHERE per_typ_id = $data");
-            return $user;
         }else{
             return response()->json([
                 'status' => False,

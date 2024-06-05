@@ -91,7 +91,6 @@ class AuthController extends Controller
             'eps_id'=> 'required|integer|exists:eps',
             'gen_id'=> 'required|integer|exists:genders',
             'mul_id'=> 'required|integer|exists:multiculturalisms',
-            'per_typ_id'=> 'required|integer|exists:person_types',
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -131,7 +130,6 @@ class AuthController extends Controller
                 'gen_id'=> $request->gen_id,
                 'mul_id'=> $request->mul_id,
                 'use_id'=> $user->use_id,
-                'per_typ_id'=> $request->per_typ_id,
             ]);
             $person->save();
             Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name",3,6,$use_id);

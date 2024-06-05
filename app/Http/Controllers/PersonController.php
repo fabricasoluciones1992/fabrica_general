@@ -115,7 +115,6 @@ class PersonController extends Controller
                 $person->gen_id = $request->gen_id;
                 $person->mul_id = $request->mul_id;
                 $person->per_rh = $request->per_rh;
-                // $person->per_typ_id = $request->per_typ_id;
                 $person->save();
                 Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla persons del dato: $id con los datos: ",1,$request->use_id);
                 return response()->json([
@@ -275,27 +274,6 @@ class PersonController extends Controller
         }
     }
 
-    // public function filtredfortypeperson($proj_id,$use_id,$column,$data)
-    // {
-    //     if ($column == 'use_status') {
-    //         $personasVinculadas = User::filtredfortypeperson($column,$data);
-    //         return response()->json([
-    //             'status' => true,
-    //             'data' => $personasVinculadas
-    //         ],200);
-    //     }elseif($column == "per_typ_id"){
-    //         $user = User::filtredfortypeperson($column,$data);
-    //         return response()->json([
-    //             'status' => true,
-    //             'data' => $user
-    //         ],200);
-    //     }else{
-    //         return response()->json([
-    //            'status' => False,
-    //           'message' => "Invalid column"
-    //         ],400);
-    //     }
-    // }
     public function viewForDocument(Request $request){
         $person = Person::viewForDocument($request);
         return response()->json([
