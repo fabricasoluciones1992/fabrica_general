@@ -10,6 +10,7 @@ class Activity extends Model
     use HasFactory;
     protected $table = 'activities';
     protected $primaryKey = 'acti_id';
-    protected $fillable = ['acti_name'];
+    protected $fillable = ['acti_name',
+                            'acti_code'];
     public $timestamps = false;
 }

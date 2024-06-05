@@ -29,6 +29,7 @@ class ActivityController extends Controller
     {
             $rules = [
                 'acti_name' =>'required|string|unique:activities|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'acti_code'=>'required|unique:activities',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
@@ -40,7 +41,7 @@ class ActivityController extends Controller
             }else{
                 $activities = new Activity();
                 $activities->acti_name = $request->acti_name;
-                $activities->code = $request->code;
+                $activities->acti_code = $request->acti_code;
                 $activities->save();
                 Controller::NewRegisterTrigger("Se realizo una inserción en la tabla activities",3,6,$request->use_id);;
                 return response()->json([
@@ -69,12 +70,14 @@ class ActivityController extends Controller
     {
             $rules = [
                 'acti_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
+                'acti_code'=>'required',
                 'use_id' =>'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);
             $validate = Controller::validate_exists($request->acti_name, 'activities', 'acti_name', 'acti_id', $id);
-            if ($validator->fails() || $validate == 0) {
-                $msg = ($validate == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
+            $validateCode = Controller::validate_exists($request->acti_code, 'activities', 'acti_code', 'acti_id', $id);
+            if ($validator->fails() || $validate == 0||$validateCode==0) {
+                $msg = ($validate == 0|| $validateCode == 0) ? "value tried to register, it is already registered." : $validator->errors()->all();
                 return response()->json([
                 'status' => False,
                 'message' => $msg
@@ -82,6 +85,8 @@ class ActivityController extends Controller
             }else{
                 $activities = Activity::find($id);
                 $activities->acti_name = $request->acti_name;
+                $activities->acti_code = $request->acti_code;
+
                 $activities->save();
                         Controller::NewRegisterTrigger("Se realizo una edición en la tabla activities",1,6,$request->use_id);;
                 return response()->json([
