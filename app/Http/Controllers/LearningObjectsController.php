@@ -107,9 +107,9 @@ class LearningObjectsController extends Controller
     }
 
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla Learning objects ",3,2,1);
+        Controller::NewRegisterTrigger("Se intentó eliminar un dato en la tabla CoreMaterial ",3,$request->use_id);
         return response()->json([
             'message' => 'This function is not allowed.'
         ],400);
