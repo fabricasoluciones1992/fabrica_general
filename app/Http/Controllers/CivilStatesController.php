@@ -39,7 +39,7 @@ class CivilStatesController extends Controller
         }else{
             $civilStates = new civilStates($request->input());
             $civilStates->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla civilStates: $request->civ_sta_name ",3,$request->use_id);
             return response()->json([
                 'status' => True,
                 'message' => "The civil state: ".$civilStates->civ_sta_name." has been created."
@@ -86,7 +86,7 @@ class CivilStatesController extends Controller
             }else{
                     $civilState->civ_sta_name = $request->civ_sta_name;
                     $civilState->save();
-                    Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,6,$request->use_id);
+                    Controller::NewRegisterTrigger("Se realizo una Edicion de datos en la tabla CivilStates del dato: $msg con el dato: $request->civ_sta_name",1,$request->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "The civil state: ".$civilState->civ_sta_name." has been update."

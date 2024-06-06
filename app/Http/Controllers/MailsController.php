@@ -41,7 +41,7 @@ class MailsController extends Controller
         }else{
             $mail = new Mail($request->input());
             $mail->save();
-            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla mails",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizó una inserción de datos en la tabla mails",3,$request->use_id);
             return response()->json([
               'status' => True,
               'message' => "The mail: ".$mail->mai_mail." has been added succesfully.",
@@ -90,7 +90,7 @@ class MailsController extends Controller
                 $mail->mai_description = $request->mai_description;
                 $mail->per_id = $request->per_id;
                 $mail->save();
-                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla mails",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizó una actualización de datos en la tabla mails",1,$request->use_id);
                 return response()->json([
                   'status' => True,
                   'message' => "The mail ".$mail->mai_mail." has been updated succesfully."

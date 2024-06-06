@@ -43,7 +43,7 @@ class HistoryCarrerController extends Controller
             $history_careers->stu_id = $request->stu_id;
             $history_careers->save();
             $career = History_career::search($history_careers->his_car_id);
-            Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history careers",3,6,$request->use_id);
+            Controller::NewRegisterTrigger("Se realizo una inserción en la tabla history careers",3,$request->use_id);
             return response()->json([
                 'status' => true,
                 'message' => "The history career '".$career->per_name ."' '". $career->car_name ."' has been added succesfully."

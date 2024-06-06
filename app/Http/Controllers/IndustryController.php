@@ -39,7 +39,7 @@ class IndustryController extends Controller
                     $industries = new Industry();
                     $industries->ind_name = $request->ind_name;
                     $industries->save();
-                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla industries",3,6,$request->use_id);
+                    Controller::NewRegisterTrigger("Se realizo una inserción en la tabla industries",3,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'message' => "The indrustry'". $industries->ind_name ."' has been added succesfully."
@@ -78,7 +78,7 @@ class IndustryController extends Controller
                     $industries = Industry::find($id);
                     $industries->ind_name = $request->ind_name;
                     $industries->save();
-                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla industries",1,6,$request->use_id);
+                    Controller::NewRegisterTrigger("Se realizo una edición en la tabla industries",1,$request->use_id);
                     return response()->json([
                     'status' => true,
                     'data' => "The industry with ID: ". $industries -> ind_id." has been updated to '" . $industries->ind_name ."' succesfully.",

@@ -38,7 +38,7 @@ class CareerController extends Controller
                 $careers->car_name = $request->car_name;
                 $careers->car_typ_id = $request->car_typ_id;
                 $careers->save();
-                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla careers",3,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una inserción en la tabla careers",3,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'message' => "The career '". $careers->car_name ."' has been added succesfully."
@@ -81,7 +81,7 @@ class CareerController extends Controller
                 $careers->car_name = $request->car_name;
                 $careers->car_typ_id = $request->car_typ_id;
                 $careers->save();
-                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers",1,6,$request->use_id);
+                Controller::NewRegisterTrigger("Se realizo una edición en la tabla careers",1,$request->use_id);
                 return response()->json([
                     'status' => true,
                     'data' => "The career with ID: ". $careers->car_id." has been updated to '" . $careers->car_name ."' succesfully.",
