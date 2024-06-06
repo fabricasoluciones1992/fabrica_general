@@ -49,16 +49,18 @@ class Student extends Model
         try {
             $student = DB::select("SELECT viewStudents.* FROM viewStudents
             WHERE viewStudents.per_document = ? AND viewStudents.doc_typ_id = ?", [$request->per_document, $request->doc_typ_id]);
-
+            if ($student == []) {
+                return "the user not is a student";
+            }
             $history_scholarships = DB::select("SELECT history_scholarships.*, scholarships.sch_name FROM history_scholarships INNER JOIN  scholarships ON history_scholarships.sch_id = scholarships.sch_id WHERE stu_id = ?", [$student[0]->stu_id]);
 
-            $student_enrollmentsOn = DB::select("SELECT student_enrollments.*, careers.car_name, CONCAT(promotions.pro_name, ' ', promotions.pro_group) AS pro_name_with_group
+            $student_enrollmentsOn = DB::select("SELECT student_enrollments.*, careers.car_name, promotions.pro_name
             FROM student_enrollments 
             INNER JOIN careers ON student_enrollments.car_id = careers.car_id 
             INNER JOIN promotions ON student_enrollments.pro_id = promotions.pro_id 
             WHERE student_enrollments.stu_id = ? AND student_enrollments.stu_enr_status = 1", [$student[0]->stu_id]);
 
-            $student_enrollmentsOff = DB::select("SELECT student_enrollments.*, careers.car_name, CONCAT(promotions.pro_name, ' ', promotions.pro_group) AS pro_name_with_group
+            $student_enrollmentsOff = DB::select("SELECT student_enrollments.*, careers.car_name, promotions.pro_name
             FROM student_enrollments 
             INNER JOIN careers ON student_enrollments.car_id = careers.car_id 
             INNER JOIN promotions ON student_enrollments.pro_id = promotions.pro_id 
