@@ -20,7 +20,7 @@ class PruneExpiredTokens extends Command
     {
         // Suponiendo que tu tabla de tokens se llama "tokens"
         $expirationTime = Carbon::now()->subHours(24);
-        DB::table('tokens')
+        DB::table('personal_access_tokens')
             ->where('last_used_at', '<', $expirationTime)
             ->orWhereNull('last_used_at')
             ->delete();
