@@ -12,7 +12,7 @@ class ContactCompaniesTypesController extends Controller
         $contact_companies_types = Contact_Companies_Types::all();
         return response()->json([
         'status' => true,
-        'data' => $contact_companes_types,
+        'data' => $contact_companies_types,
         ], 200);
     } catch (\Throwable $th) {
         return response()->json([
