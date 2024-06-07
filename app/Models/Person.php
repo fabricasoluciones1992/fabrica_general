@@ -75,6 +75,7 @@ class Person extends Model
             $telephones = DB::table('telephones')->where('per_id','=',$person[0]->per_id)->get();
             $contacts = DB::select("SELECT contacts.*, relationships.rel_name FROM contacts INNER JOIN relationships ON contacts.rel_id = relationships.rel_id WHERE per_id = ?", [$person[0]->per_id]);
             $medical_histories = DB::select("SELECT medical_histories.*, diseases.dis_name FROM medical_histories INNER JOIN diseases ON medical_histories.dis_id = diseases.dis_id WHERE per_id = ?", [$person[0]->per_id]);
+            $person[0]->use_photo = base64_decode($person[0]->use_photo);
             $person[0]->mails = $mail;
             $person[0]->telephones = $telephones;
             $person[0]->contacts = $contacts;

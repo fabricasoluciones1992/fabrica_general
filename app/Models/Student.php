@@ -66,6 +66,7 @@ class Student extends Model
             INNER JOIN promotions ON student_enrollments.pro_id = promotions.pro_id 
             WHERE student_enrollments.stu_id = ? AND student_enrollments.stu_enr_status = 0", [$student[0]->stu_id]);
 
+            $student[0]->use_photo = base64_decode($student[0]->use_photo);
             $student[0]->history_scholarships = $history_scholarships;
             $student[0]->student_enrollmentsOn = $student_enrollmentsOn;
             $student[0]->student_enrollmentsOff = $student_enrollmentsOff;

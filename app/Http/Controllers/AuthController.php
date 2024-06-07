@@ -57,7 +57,7 @@ class AuthController extends Controller
                     }
                     $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                     $person = DB::table('ViewPersons')->where('use_id','=',$user->use_id)->first();
-                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 5,$request->proj_id,$user->use_id);
+                    Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4,$request->proj_id,$user->use_id);
                     return response()->json([
                         'status' => True,
                         'message' => "User login successfully",
