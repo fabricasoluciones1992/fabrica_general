@@ -80,6 +80,7 @@ class StudentEnrollmentsController extends Controller
         $oldEnrollments = Student_enrollments::where('stu_id', $request->stu_id)
             ->where('stu_enr_status', 1)
             ->where('stu_enr_id', '!=', $students_enrollments->stu_enr_id)
+            ->where('car_id', $students_enrollments->car_id)
             ->get();
 
         foreach ($oldEnrollments as $oldEnrollment) {
@@ -114,8 +115,7 @@ class StudentEnrollmentsController extends Controller
             ], 200);
         }
     }
-    public function update(Request $request, $id) //pendiente o no se edita o se edita el mismo dia
-    {
+    public function update(Request $request, $id){
         $rules = [
             'stu_enr_semester' => 'required|numeric|max:7|min:1',
             'stu_enr_journey' => 'required|numeric|max:1|min:0',
