@@ -30,6 +30,8 @@ class Student extends Model
         }
         $students = Student::find($student->stu_id);
         $student->semester = $students->lastEnrollments();
+        $student->personal_contact = $students->PersonalContacts();
+        $student->personal_contact = $students->EmergencyContacts();
         $student->use_photo = base64_decode($student->use_photo);
         return $student;
     }
@@ -42,7 +44,37 @@ class Student extends Model
             ->first();
         return $data;
     }
-
+    public function PersonalContacts()
+    { //traiga
+        $telephones = DB::table('students')
+        ->select('telephones.*')
+        ->join('persons as p1', 'p1.per_id', '=', 'students.per_id')
+        ->join('telephones', 'telephones.per_id', '=', 'p1.per_id')
+        ->where('students.stu_id', '=', $this->stu_id)
+        ->get();
+        $mails = DB::table('students')
+        ->select('mails.*')
+        ->join('persons as p1', 'p1.per_id', '=', 'students.per_id')
+        ->join('mails', 'mails.per_id', '=', 'p1.per_id')
+        ->where('students.stu_id', '=', $this->stu_id)
+        ->get();
+        $contacts = [
+            'telephones' => $telephones,
+            'mails' => $mails,
+        ];
+        return $contacts;
+    }
+    public function EmergencyContacts()
+    { //traiga
+        $data = DB::table('students')
+        ->select('contacts.*','relationships.rel_name')
+        ->join('persons as p1', 'p1.per_id', '=', 'students.per_id')
+        ->join('contacts', 'contacts.per_id', '=', 'p1.per_id')
+        ->join('relationships', 'relationships.rel_id', '=', 'contacts.rel_id')
+        ->where('students.stu_id', '=', $this->stu_id)
+        ->get();
+        return $data;
+    }
 
     public static function viewForDocumentStudent($request)
     {
