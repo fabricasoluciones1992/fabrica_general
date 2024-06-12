@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class PeriodController extends Controller
 {
-
     public function index()
     {
         try {
