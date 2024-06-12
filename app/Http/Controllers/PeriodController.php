@@ -30,7 +30,6 @@ class PeriodController extends Controller
             'peri_name' => 'required|string|max:15',
             'peri_start' => 'required|date',
             'peri_end' => 'required|date',
-            'pha_id' => 'required|integer|exists:phases',
             'use_id' => 'required|integer|exists:users'
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -78,7 +77,6 @@ class PeriodController extends Controller
                 'peri_name' => 'required|string|max:15',
                 'peri_start' => 'required|date',
                 'peri_end' => 'required|date',
-                'pha_id' => 'required|integer|exists:phases',
                 'use_id' => 'required|integer|exists:users'
             ];
             $validator = Validator::make($request->input(), $rules);

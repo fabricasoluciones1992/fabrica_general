@@ -15,7 +15,6 @@ class Period extends Model
         'peri_name',
         'peri_start',
         'peri_end',
-        'pha_id',
     ];
     public $timestamps = false;
 }
