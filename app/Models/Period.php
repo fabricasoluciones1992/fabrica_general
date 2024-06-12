@@ -18,16 +18,4 @@ class Period extends Model
         'pha_id',
     ];
     public $timestamps = false;
-
-    public static function select(){
-        return Period::join("phases","periods.pha_id","phases.pha_id")->get();
-    }
-    public static function search($id){
-        $periods = DB::table('periods')
-        ->join('phases', 'periods.pha_id', '=', 'phases.pha_id')
-        ->where('periods.peri_id', $id)
-        ->get();
-        return $periods;
-
-    }
 }

@@ -13,7 +13,7 @@ class PeriodController extends Controller
     public function index()
     {
         try {
-            $periods = Period::select();
+            $periods = Period::all();
             return response()->json([
                 'status' => true,
                 'data' => $periods
@@ -52,7 +52,7 @@ class PeriodController extends Controller
     }
     public function show($id)
     {
-        $periods = Period::search($id);
+        $periods = Period::find($id);
         if ($periods == null) {
             return response()->json([
                 'status' => false,
