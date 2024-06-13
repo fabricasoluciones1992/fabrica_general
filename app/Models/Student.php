@@ -30,8 +30,8 @@ class Student extends Model
         }
         $students = Student::find($student->stu_id);
         $student->semester = $students->lastEnrollments();
-        $student->personal_contact = $students->PersonalContacts();
-        $student->personal_contact = $students->EmergencyContacts();
+        $student->personal_contacts = $students->PersonalContacts();
+        $student->emergency_contacts = $students->EmergencyContacts();
         $student->use_photo = base64_decode($student->use_photo);
         return $student;
     }
