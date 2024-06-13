@@ -11,12 +11,15 @@ class NewTypeController extends Controller
     public function index()
     {
         try {
+            // Intenta obtener todos los tipos de noticias
             $newtypes = NewType::all();
+            // Devuelve una respuesta JSON con los tipos de noticias obtenidos
             return response()->json([
                 'status' => true,
                 'data' => $newtypes
             ],200);
         } catch (\Throwable $th) {
+            // Maneja errores y devuelve una respuesta JSON con un mensaje de error
             return response()->json([
               'status' => false,
               'message' => "Error occurred while found elements"
@@ -25,35 +28,44 @@ class NewTypeController extends Controller
     }
     public function store(Request $request)
     {
+        // Reglas de validación para los datos de entrada
         $rules = [
             'new_typ_name' => 'required|string|min:1|max:255|unique:new_types|regex:/^[A-ZÁÉÍÓÚÜÑ ]+$/',
             'use_id' =>'required|integer|exists:users'
         ];
+        // Validar los datos de entrada
         $validator = Validator::make($request->input(), $rules);
         if ($validator->fails()) {
+            // Si la validación falla, devuelve una respuesta JSON con los errores de validación
             return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
             ]);
-        }else{
+        } else {
+            // Crear un nuevo tipo de noticia
             $newtype = new NewType($request->input());
             $newtype->save();
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla NewType : $request->new_typ_name ",3,$request->use_id);
+            // Registrar la acción en el sistema
+            Controller::NewRegisterTrigger("Se creó un registro en la tabla NewType: $request->new_typ_name", 3, $request->use_id);
+            // Devolver una respuesta JSON con un mensaje de éxito
             return response()->json([
-             'status' => True,
-             'message' => "The newType: ".$newtype->new_typ_name." has been created."
+                'status' => True,
+                'message' => "The newType: ".$newtype->new_typ_name." has been created."
             ],200);
         }
     }
     public function show($id)
     {
+        // Buscar el tipo de noticia por su ID
         $newType = NewType::find($id);
         if ($newType == null) {
+            // Si el tipo de noticia no se encuentra, devuelve una respuesta JSON con un mensaje de error
             return response()->json([
                 'status' => false,
                 'data' => ['message' => 'The NewType requested was not found']
             ],400);
-        }else{
+        } else {
+            // Si se encuentra el tipo de noticia, devuelve una respuesta JSON con los datos del tipo de noticia
             return response()->json([
                 'status' => true,
                 'data' => $newType
