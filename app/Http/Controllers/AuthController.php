@@ -62,7 +62,7 @@ class AuthController extends Controller
                 $use_status = $user->use_status;
 
                 // Verificar si el usuario tiene acceso. Debe tener acceso si o si en el proyecto general
-                if (($access == null && $proj_id == 6) || $acceso == 0 || $use_status == 0) {
+                if (($access == null && ($proj_id == 6||$proj_id==2)) || $acceso == 0 || $use_status == 0) {
                     return response()->json([
                         'status' => False,
                         'message' => "The user: " . $user->use_mail . " has no access."
