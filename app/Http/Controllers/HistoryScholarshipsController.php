@@ -24,7 +24,7 @@ public function store(Request $request)
         $rules = [
             'sch_id' => 'required|numeric|exists:scholarships',
             'stu_id' => 'required|numeric|exists:students',
-            'his_sch_star' => 'required|date',
+            'his_sch_start' => 'required|date',
             'his_sch_end' => 'date',
         ];
         
@@ -55,6 +55,7 @@ public function store(Request $request)
         return response()->json([
             'status' => true,
             'message' => "The scholarships history has been created successfully.",
+            'data' => $hScholar->his_sch_id,
         ], 200);
 
     

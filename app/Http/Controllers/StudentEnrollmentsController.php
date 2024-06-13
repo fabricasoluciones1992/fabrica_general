@@ -97,6 +97,8 @@ class StudentEnrollmentsController extends Controller
         return response()->json([
             'status' => true,
             'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been added successfully.",
+            'data' => $student->stu_enr_id,
+            'date' => $student->stu_enr_date
         ], 200);
     }
 
@@ -122,7 +124,7 @@ class StudentEnrollmentsController extends Controller
             'peri_id' => 'required|exists:periods',
             'stu_id' => 'required|exists:students',
             'car_id' => 'required|exists:careers',
-            'stu_enr_status' => 'required|numeric|max:2|min:0',
+            // 'stu_enr_status' => 'required|numeric|max:2|min:0',
             'pro_id' => 'required|exists:promotions',
             'pha_id' => 'required|exists:phases'
 
@@ -134,6 +136,7 @@ class StudentEnrollmentsController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => $validator->errors()->all()
+                
             ]);
         } else {
             $students_enrollments = Student_enrollments::find($id);
@@ -143,7 +146,7 @@ class StudentEnrollmentsController extends Controller
             $students_enrollments->car_id = $request->car_id;
             $students_enrollments->pro_id = $request->pro_id;
             $students_enrollments->pha_id = $request->pha_id;
-            $students_enrollments->stu_enr_status = $request->stu_enr_status;
+            // $students_enrollments->stu_enr_status = $request->stu_enr_status;
             $students_enrollments->stu_enr_date = now()->toDateString();
 
 
@@ -156,6 +159,8 @@ class StudentEnrollmentsController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been updated successfully.",
+                'date' => $student->stu_enr_date
+
             ], 200);
         }
     }
