@@ -30,8 +30,9 @@ class Student extends Model
         }
         $students = Student::find($student->stu_id);
         $student->semester = $students->lastEnrollments();
-        $student->personal_contacts = $students->PersonalContacts();
-        $student->emergency_contacts = $students->EmergencyContacts();
+        $student->personal_contacts = $students->personalContacts();
+        $student->emergency_contacts = $students->emergencyContacts();
+        $student->medical_info = $students->medicalInfo();
         $student->use_photo = base64_decode($student->use_photo);
         return $student;
     }
@@ -44,7 +45,7 @@ class Student extends Model
             ->first();
         return $data;
     }
-    public function PersonalContacts()
+    public function personalContacts()
     { //traiga
         $telephones = DB::table('students')
         ->select('telephones.*')
@@ -64,7 +65,7 @@ class Student extends Model
         ];
         return $contacts;
     }
-    public function EmergencyContacts()
+    public function emergencyContacts()
     { //traiga
         $data = DB::table('students')
         ->select('contacts.*','relationships.rel_name')
@@ -73,6 +74,29 @@ class Student extends Model
         ->join('relationships', 'relationships.rel_id', '=', 'contacts.rel_id')
         ->where('students.stu_id', '=', $this->stu_id)
         ->get();
+        return $data;
+    }
+
+    public function medicalInfo(){
+        $diseases = DB::table('students')
+        ->join('persons as p1', 'p1.per_id', '=', 'students.per_id')
+        ->join('medical_histories', 'medical_histories.per_id', '=', 'p1.per_id')
+        ->join('diseases', 'medical_histories.dis_id', '=', 'diseases.dis_id' )
+        ->select('diseases.*')
+        ->where('students.stu_id', '=', $this->stu_id)
+        ->get();
+
+        $allergies = DB::table('students')
+        ->join('persons as p1', 'p1.per_id', '=', 'students.per_id')
+        ->join('allergy_histories', 'allergy_histories.per_id', '=', 'p1.per_id',)
+        ->join('allergies', 'allergy_histories.all_id', '=', 'allergies.all_id')
+        ->select('allergies.*')
+        ->where('students.stu_id', '=', $this->stu_id)
+        ->get();
+        $data = [
+            'diseases' => $diseases,
+            'allergies' => $allergies,
+        ];
         return $data;
     }
 
