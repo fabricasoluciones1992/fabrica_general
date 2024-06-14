@@ -86,17 +86,9 @@ class Student extends Model
             }
             $history_scholarships = DB::select("SELECT history_scholarships.*, scholarships.sch_name FROM history_scholarships INNER JOIN  scholarships ON history_scholarships.sch_id = scholarships.sch_id WHERE stu_id = ?", [$student[0]->stu_id]);
 
-            $student_enrollmentsOn = DB::select("SELECT student_enrollments.*, careers.car_name, promotions.pro_name
-            FROM student_enrollments 
-            INNER JOIN careers ON student_enrollments.car_id = careers.car_id 
-            INNER JOIN promotions ON student_enrollments.pro_id = promotions.pro_id 
-            WHERE student_enrollments.stu_id = ? AND student_enrollments.stu_enr_status = 1", [$student[0]->stu_id]);
+            $student_enrollmentsOn = DB::table('viewEnrollments')->where('stu_enr_status', '=', 1);
 
-            $student_enrollmentsOff = DB::select("SELECT student_enrollments.*, careers.car_name, promotions.pro_name
-            FROM student_enrollments 
-            INNER JOIN careers ON student_enrollments.car_id = careers.car_id 
-            INNER JOIN promotions ON student_enrollments.pro_id = promotions.pro_id 
-            WHERE student_enrollments.stu_id = ? AND student_enrollments.stu_enr_status = 0", [$student[0]->stu_id]);
+            $student_enrollmentsOff = DB::table('viewEnrollments')->where('stu_enr_status', '=', 0);
 
             $student[0]->use_photo = base64_decode($student[0]->use_photo);
             $student[0]->history_scholarships = $history_scholarships;
