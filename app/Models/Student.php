@@ -110,9 +110,9 @@ class Student extends Model
             }
             $history_scholarships = DB::select("SELECT history_scholarships.*, scholarships.sch_name FROM history_scholarships INNER JOIN  scholarships ON history_scholarships.sch_id = scholarships.sch_id WHERE stu_id = ?", [$student[0]->stu_id]);
 
-            $student_enrollmentsOn = DB::table('viewEnrollments')->select('pha_name','peri_name','stu_enr_semester','stu_enr_journey','pro_name','car_name','stu_enr_date','car_name','car_id','peri_id','pha_id','peri_start','peri_end','car_typ_id','car_typ_name')->where('stu_enr_status', '=', 1)->get();
+            $student_enrollmentsOn = DB::table('viewEnrollments')->select('pha_name','stu_id','stu_enr_status','peri_name','stu_enr_semester','stu_enr_journey','pro_name','car_name','stu_enr_date','car_name','car_id','peri_id','pha_id','peri_start','peri_end','car_typ_id','car_typ_name')->where('stu_enr_status', '=', 1)->where('stu_id','=',$student[0]->stu_id)->get();
 
-            $student_enrollmentsOff = DB::table('viewEnrollments')->select('pha_name','peri_name','stu_enr_semester','stu_enr_journey','pro_name','car_name','stu_enr_date','car_name','car_id','peri_id','pha_id','peri_start','peri_end','car_typ_id','car_typ_name')->where('stu_enr_status', '=', 0)->get();
+            $student_enrollmentsOff = DB::table('viewEnrollments')->select('pha_name','stu_id','stu_enr_status','peri_name','stu_enr_semester','stu_enr_journey','pro_name','car_name','stu_enr_date','car_name','car_id','peri_id','pha_id','peri_start','peri_end','car_typ_id','car_typ_name')->where('stu_enr_status', '=', 0)->where('stu_id','=',$student[0]->stu_id)->get();
 
             $student[0]->use_photo = base64_decode($student[0]->use_photo);
             $student[0]->history_scholarships = $history_scholarships;
