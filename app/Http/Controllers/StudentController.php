@@ -18,9 +18,9 @@ class StudentController extends Controller
         $lastEnrollment = $data->lastEnrollments();
 
         if (is_null($lastEnrollment)) {
-            $studentData = $data;
-            $studentData->Enrollment = "Missing Enrollment";
-            array_push($students, $studentData);
+            $student = $data;
+            $student->Enrollment = "Missing Enrollment";
+            array_push($students, $student);
         } else {
             array_push($students, $lastEnrollment);
         }
