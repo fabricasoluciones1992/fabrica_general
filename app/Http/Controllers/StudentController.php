@@ -18,7 +18,6 @@ class StudentController extends Controller
         $lastEnrollment = $data->lastEnrollments();
 
         if (is_null($lastEnrollment)) {
-            $student = $data;
             $student->Enrollment = "Missing Enrollment";
             array_push($students, $student);
         } else {
@@ -126,7 +125,7 @@ class StudentController extends Controller
     {
         $rules = [
         'stu_stratum' => 'required',
-            'stu_military' => 'nullable|numeric|min:1|max:10',
+            'stu_military' => 'nullable|numeric|min:1|max:9999999999',
             'stu_piar' => 'nullable|string|min:1|max:50|regex:/^[a-zA-Z0-9nÑÁÉÍÓÚÜáéíóúü\s\-,.;]+$/',
             'stu_typ_id' => 'required|integer|exists:students_types',
             'per_id' => 'required|integer|exists:persons',
