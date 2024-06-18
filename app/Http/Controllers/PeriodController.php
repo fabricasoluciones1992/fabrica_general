@@ -89,7 +89,6 @@ class PeriodController extends Controller
                 $periods->peri_name = $request->peri_name;
                 $periods->peri_start = $request->peri_start;
                 $periods->peri_end = $request->peri_end;
-                $periods->pha_id = $request->pha_id;
                 $periods->save();
                 Controller::NewRegisterTrigger("Se realizo una edición en la tabla Periods",1,$request->use_id);
                 return response()->json([
