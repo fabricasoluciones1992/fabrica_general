@@ -41,7 +41,7 @@ class LearningObjectsController extends Controller
 
         // Definir las reglas de validación para los datos de entrada
         $rules = [
-            'lea_obj_object' => ['required|string|min:5|max:50'],
+            'lea_obj_object' => ['required|string|min:5|max:500'],
             'cor_mat_id' => 'required|integer|exists:core_material',
             'use_id' => 'required|integer|exists:users'
         ];
