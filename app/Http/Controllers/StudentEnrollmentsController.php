@@ -33,7 +33,8 @@ class StudentEnrollmentsController extends Controller
             'peri_id' => 'required|exists:periods',
             'car_id' => 'required|exists:careers',
             'pro_id' => 'required|exists:promotions',
-            'pha_id' => 'required|exists:phases'
+            'pha_id' => 'required|exists:phases',
+            'use_id' => 'required|exists:users'
 
         ];
 
@@ -83,13 +84,6 @@ class StudentEnrollmentsController extends Controller
             ->where('car_id', $students_enrollments->car_id)
             ->get();
 
-// Obtén el ID del registro recién insertado
-$newStuEnrId = $students_enrollments->stu_enr_id;
-
-
-
-
-
         foreach ($oldEnrollments as $oldEnrollment) {
             $oldEnrollment->stu_enr_status = 0;
             $oldEnrollment->save();
@@ -104,9 +98,7 @@ $newStuEnrId = $students_enrollments->stu_enr_id;
         return response()->json([
             'status' => true,
             'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been added successfully.",
-            'data' => $newStuEnrId,
-            'date' => $students_enrollments->stu_enr_date,
-            'stu_enr_status' => $students_enrollments->stu_enr_status
+            'data' => $students_enrollments->stu_enr_id
         ], 200);
     }
 
@@ -134,7 +126,8 @@ $newStuEnrId = $students_enrollments->stu_enr_id;
             'car_id' => 'required|exists:careers',
             // 'stu_enr_status' => 'required|numeric|max:2|min:0',
             'pro_id' => 'required|exists:promotions',
-            'pha_id' => 'required|exists:phases'
+            'pha_id' => 'required|exists:phases',
+            'use_id' => 'required|exists:users'
 
         ];
 
@@ -168,8 +161,6 @@ $newStuEnrId = $students_enrollments->stu_enr_id;
             return response()->json([
                 'status' => true,
                 'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been updated successfully.",
-                'date' => $student->stu_enr_date
-
             ], 200);
         }
     }
