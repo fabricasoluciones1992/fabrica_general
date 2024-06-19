@@ -83,6 +83,13 @@ class StudentEnrollmentsController extends Controller
             ->where('car_id', $students_enrollments->car_id)
             ->get();
 
+// Obtén el ID del registro recién insertado
+$newStuEnrId = $students_enrollments->stu_enr_id;
+
+
+
+
+
         foreach ($oldEnrollments as $oldEnrollment) {
             $oldEnrollment->stu_enr_status = 0;
             $oldEnrollment->save();
@@ -97,8 +104,9 @@ class StudentEnrollmentsController extends Controller
         return response()->json([
             'status' => true,
             'message' => "The enrollment of student '" . $student->per_name . "' in semester '" . $students_enrollments->stu_enr_semester . "' in the period '" . $student->peri_name . "' has been added successfully.",
-            'data' => $student->stu_enr_id,
-            'date' => $student->stu_enr_date
+            'data' => $newStuEnrId,
+            'date' => $students_enrollments->stu_enr_date,
+            'stu_enr_status' => $students_enrollments->stu_enr_status
         ], 200);
     }
 
@@ -135,7 +143,8 @@ class StudentEnrollmentsController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()->all()
+                'message' => $validator->errors()->all(),
+                
                 
             ]);
         } else {
