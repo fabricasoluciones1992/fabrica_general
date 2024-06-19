@@ -48,7 +48,7 @@ class StudentEnrollmentsController extends Controller
         }
 
         $existingRecord = Student_enrollments::where('stu_enr_semester', $request->stu_enr_semester)
-            ->where('stu_enr_journey', $request->stu_enr_semester)
+            ->where('stu_enr_journey', $request->stu_enr_journey)
             ->where('stu_id', $request->stu_id)
             ->where('peri_id', $request->peri_id)
             ->where('car_id', $request->car_id)
@@ -118,13 +118,14 @@ class StudentEnrollmentsController extends Controller
         }
     }
     public function update(Request $request, $id){
+        $students_enrollments = Student_enrollments::find($id);
+
         $rules = [
             'stu_enr_semester' => 'required|numeric|max:7|min:1',
             'stu_enr_journey' => 'required|numeric|max:1|min:0',
             'peri_id' => 'required|exists:periods',
             'stu_id' => 'required|exists:students',
             'car_id' => 'required|exists:careers',
-            // 'stu_enr_status' => 'required|numeric|max:2|min:0',
             'pro_id' => 'required|exists:promotions',
             'pha_id' => 'required|exists:phases',
             'use_id' => 'required|exists:users'
@@ -132,7 +133,7 @@ class StudentEnrollmentsController extends Controller
         ];
 
         $validator = Validator::make($request->input(), $rules);
-
+        
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -141,20 +142,47 @@ class StudentEnrollmentsController extends Controller
                 
             ]);
         } else {
-            $students_enrollments = Student_enrollments::find($id);
+        
+            $existingRecord = Student_enrollments::where('stu_enr_semester', $request->stu_enr_semester)
+            ->where('stu_enr_journey', $request->stu_enr_journey)
+            ->where('stu_id', $request->stu_id)
+            ->where('peri_id', $request->peri_id)
+            ->where('car_id', $request->car_id)
+            ->where('pro_id', $request->pro_id)
+            ->where('pha_id', $request->pha_id)
+            ->where('stu_enr_status', 1)
+            ->first();
+        if ($existingRecord) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'A record with the same characteristics already exists.'
+            ], 409);
+        }
+
             $students_enrollments->stu_enr_semester = $request->stu_enr_semester;
             $students_enrollments->stu_enr_journey = $request->stu_enr_journey;
             $students_enrollments->peri_id = $request->peri_id;
+            $students_enrollments->stu_id = $request->stu_id;
             $students_enrollments->car_id = $request->car_id;
             $students_enrollments->pro_id = $request->pro_id;
             $students_enrollments->pha_id = $request->pha_id;
-            // $students_enrollments->stu_enr_status = $request->stu_enr_status;
             $students_enrollments->stu_enr_date = now()->toDateString();
+            $students_enrollments->stu_enr_status = 1;
 
 
             $students_enrollments->save();
 
+            $oldEnrollments = Student_enrollments::where('stu_id', $request->stu_id)
+            ->where('stu_enr_status', 1)
+            ->where('stu_enr_id', '!=', $students_enrollments->stu_enr_id)
+            ->where('car_id', $students_enrollments->car_id)
+            ->get();
 
+        foreach ($oldEnrollments as $oldEnrollment) {
+            $oldEnrollment->stu_enr_status = 0;
+            $oldEnrollment->save();
+        }
 
             $student = DB::table('viewEnrollments')->where('stu_id', $request->stu_id)->first();
             Controller::NewRegisterTrigger("Se realizo una edición en la tabla students enrollments", 4,$request->use_id);
