@@ -33,7 +33,7 @@ class PayTimesController extends Controller
                     return response()->json([
                       'status' => False,
                       'message' => $validator->errors()->all()
-                    ],400);
+                    ]);
                 }else{
                     $paytimes = new Pay_Times($request->input());
                     $paytimes->save();
@@ -66,7 +66,7 @@ class PayTimesController extends Controller
                     return response()->json([
                       'status' => false,
                         'data' => ['message' => 'Could not find required pay type']
-                    ],400);
+                    ]);
                 }else{
                     $rules = [
                         'pay_tim_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -79,7 +79,7 @@ class PayTimesController extends Controller
                         return response()->json([
                           'status' => False,
                           'message' => $msg
-                        ],400);
+                        ]);
                     }else{
                         $paytimes->pay_tim_name = $request->pay_tim_name;
                         $paytimes->save();

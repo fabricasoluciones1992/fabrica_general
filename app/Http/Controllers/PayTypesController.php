@@ -32,7 +32,7 @@ class PayTypesController extends Controller
                     return response()->json([
                       'status' => False,
                       'message' => $validator->errors()->all()
-                    ],400);
+                    ]);
                 }else{
                     $payType = new Pay_Types($request->input());
                     $payType->save();
@@ -65,7 +65,7 @@ class PayTypesController extends Controller
                     return response()->json([
                       'status' => false,
                         'data' => ['message' => 'Could not find required pay type']
-                    ],400);
+                    ]);
                 }else{
                     $rules = [
                         'pay_typ_name' =>'required|string|regex:/^[A-ZÑÁÉÍÓÚÜ ]+$/u',
@@ -78,7 +78,7 @@ class PayTypesController extends Controller
                         return response()->json([
                           'status' => False,
                           'message' => $msg
-                        ],400);
+                        ],);
                     }else{
                         $payType->pay_typ_name = $request->pay_typ_name;
                         $payType->save();
