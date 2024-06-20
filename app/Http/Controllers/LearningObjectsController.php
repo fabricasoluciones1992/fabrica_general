@@ -64,7 +64,7 @@ class LearningObjectsController extends Controller
             $learningObject->save();
 
             // Registrar la acción en un sistema de seguimiento
-            Controller::NewRegisterTrigger("Se creo un registro en la tabla LearningObject: $request->lea_obj_object ", 3, $request->use_id);
+            Controller::NewRegisterTrigger("Se creo un registro en la tabla LearningObject", 3, $request->use_id);
 
             // Devolver una respuesta JSON indicando que se ha creado el objeto de aprendizaje exitosamente
             return response()->json([
