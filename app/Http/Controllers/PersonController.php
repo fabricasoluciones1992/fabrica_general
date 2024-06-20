@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -337,4 +338,53 @@ class PersonController extends Controller
         ], 500);
     }
 }
+public function coforInformation(Request $request)
+    {
+        if ($request->acc_administrator == 1) {
+            $rules = [
+                'per_name' => 'min:1|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+                'per_lastname' => 'min:1|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]+$/',
+                'per_birthdate' => 'date|before_or_equal:now',
+                'per_document' => 'min:1|max:999999999999999|regex:/^[a-zA-ZñÑ\s0-9]+$/',
+                'per_direction' => 'min:1|max:255|regex:/^(?=.*[a-zA-Z0-9])[\w\s\-\#\.]+$/',
+                'doc_typ_id' => 'exists:document_types',
+                'loc_id' => 'exists:localities',
+                'gen_id' => 'exists:genders',
+                'per_id' => 'exists:persons'
+            ];
+
+            $validator = Validator::make($request->input(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => False,
+                    'message' => $validator->errors()->all()
+                ]);
+            } else {
+                $person = Person::find($request->per_id);
+                $student = Student::find($request->stu_id);
+                $person->per_name = $request->per_name;
+                $person->per_lastname = $request->per_lastname;
+                $person->per_document = $request->per_document;
+                $person->per_birthdate = $request->per_birthdate;
+                $person->per_direction = $request->per_direction;
+                $person->doc_typ_id = $request->doc_typ_id;
+                $person->gen_id = $request->gen_id;
+                $student->loc_id = $request->loc_id;
+                $person->save();
+                $student->save();
+                
+                return response()->json([
+                    'status' => true,
+                   'person' => $person,
+                   'student' => $student
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Access denied. This action can only be performed by active administrators.'
+            ], 403);
+        }
+
+    }
 }
