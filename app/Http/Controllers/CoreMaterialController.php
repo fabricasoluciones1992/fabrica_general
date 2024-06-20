@@ -51,7 +51,7 @@ class CoreMaterialController extends Controller
             return response()->json([
                 'status' => False,
                 'message' => $validator->errors()->all()
-            ],400);
+            ]);
         }else{
 
             // Crea un nuevo material principal
@@ -108,7 +108,7 @@ class CoreMaterialController extends Controller
             return response()->json([
             'status' => False,
             'message' => 'There are no core materials available.'
-            ],400);
+            ]);
         }
 
         // Reglas de validación para actualizar los datos del material principal
