@@ -38,4 +38,17 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        // Verifica si es un error 404
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json([
+                'message' => 'The route you are looking for does not exist.'
+            ], 404);
+        }
+
+        // Deja que el manejador por defecto maneje otras excepciones
+        return parent::render($request, $exception);
+    }
 }
