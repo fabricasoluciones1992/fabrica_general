@@ -9,11 +9,14 @@ class NewType extends Model
 {
     use HasFactory;
     //=========IMPORTANTE ADAPTAR AL MODELO=============
-    protected $primaryKey = 'new_typ_id';
+  // Define la clave primaria personalizada
+  protected $primaryKey = 'new_typ_id';
 
-    protected $fillable = [
-        'new_typ_name',
-    ];
+  // Define los atributos que se pueden asignar en masa
+  protected $fillable = [
+      'new_typ_name',
+  ];
 
-    public $timestamps = false;
+  // Indica que el modelo no utiliza marcas de tiempo
+  public $timestamps = false;
 }

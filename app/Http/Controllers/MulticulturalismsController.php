@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\multiculturalisms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class MulticulturalismsController extends Controller
 {
     public function index()

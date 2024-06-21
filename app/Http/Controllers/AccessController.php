@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Access;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -111,7 +110,7 @@ class AccessController extends Controller
                     'message' => $validator->errors()->all()
                 ]);
             }else{
-                //Se usa el paquete DB para hacer una consulta en la tabla Access en la cual el proj_id dentro de la variable request del parametro, sea igual a los valores de la columna proj_id de la tabla, lo mismo se hace con la columna use_id. Se trae el primer valor encontrado usando la funcion first() y se almacena en la varibale $acces
+                //Se usa el paquete DB para hacer una consulta en la tabla Access en la cual el proj_id dentro de la variable request del parametro, sea igual a los valores de la columna proj_id de la tabla, lo mismo se hace con la columna use_id. Se trae el primer valor encontrado usando la funcion first() y se almacena en la variable $acces
                 $access = DB::table("access")->where('proj_id','=', $request->proj_id)->where('use_id','=', $request->use_id)->first();
                 //Se usa un if para validar si el usuario ya pertenece al proyecto deseado, devolverá un mensaje de error en caso de que la variable $acces no esté vacia
                 if ($access != []) {

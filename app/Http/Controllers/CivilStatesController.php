@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\civilStates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class CivilStatesController extends Controller
 {

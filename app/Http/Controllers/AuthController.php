@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Access;
 use App\Models\User;
 use App\Models\Person;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -89,7 +86,7 @@ class AuthController extends Controller
                     ], 401);
                 }
 
-               
+
                 $project_id = ($request->proj_id === null) ? env('APP_ID') : $request->proj_id;
                 $person = DB::table('ViewPersons')->where('use_id', '=', $user->use_id)->first();
 

@@ -8,8 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Diseases extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'dis_id';
+
+    // Nombre de la tabla en la base de datos
     protected $table = 'diseases';
-    protected $fillable = ['dis_name'];
+
+    // Clave primaria de la tabla
+    protected $primaryKey = 'dis_id';
+
+    // Campos que pueden ser llenados mediante asignación en masa (mass assignment)
+    protected $fillable = [
+        'dis_name',
+    ];
+
+    // Desactivar timestamps created_at y updated_at
     public $timestamps = false;
 }
+

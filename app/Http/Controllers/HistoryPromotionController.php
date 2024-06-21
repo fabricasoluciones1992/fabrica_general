@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\History_Promotion;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class HistoryPromotionController extends Controller

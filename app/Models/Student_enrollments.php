@@ -9,8 +9,14 @@ use Illuminate\Support\Facades\DB;
 class Student_enrollments extends Model
 {
     use HasFactory;
+
+    // Nombre de la tabla en la base de datos
     protected $table = 'student_enrollments';
+
+    // Define la clave primaria personalizada
     protected $primaryKey = 'stu_enr_id';
+
+    // Atributos que se pueden asignar en masa
     protected $fillable = [
         'stu_enr_semester',
         'stu_enr_status',
@@ -22,27 +28,33 @@ class Student_enrollments extends Model
         'pro_id',
         'pha_id'
     ];
+
+    // Indica que el modelo no utiliza marcas de tiempo
     public $timestamps = false;
+
+        // Método para seleccionar todos los registros de matrículas con transformaciones
 
     public static function select(){
         $datas = DB::select("SELECT *
         FROM viewEnrollments");
-        $enrollmentsType0 = [];
-        $enrollmentsType1 = [];
-        $enrollmentsType2 = [];
+
+        // Arreglos para almacenar matrículas por tipo de estado
+        $enrollmentsType0 = []; // Inactivo
+        $enrollmentsType1 = []; // Activo
+        $enrollmentsType2 = []; // Pospuesto
 
         foreach($datas as $data){
             $data->status_name = Student_enrollments::getStatusName($data->stu_enr_status);
             $data->journey_name = Student_enrollments::getJourneyName($data->stu_enr_journey);
-            if($data->stu_enr_status==0){
-                $enrollmentsType0[] = $data;
-            }elseif($data->stu_enr_status==1){
-                $enrollmentsType1[] = $data;
-
-            }elseif($data->stu_enr_status==3){
-                $enrollmentsType2[] = $data;
-
+            // Clasifica las matrículas según su estado
+            if ($data->stu_enr_status == 0) {
+                $enrollmentsType0[] = $data; // Inactivo
+            } elseif ($data->stu_enr_status == 1) {
+                $enrollmentsType1[] = $data; // Activo
+            } elseif ($data->stu_enr_status == 3) {
+                $enrollmentsType2[] = $data; // Pospuesto
             }
+
         }
         return[
             'enrollment_Active'=>$enrollmentsType1,
@@ -53,6 +65,7 @@ class Student_enrollments extends Model
 
         ];
     }
+    // Método para obtener el nombre de la jornada según el código
 
     public static function getJourneyName($journey){
         switch($journey){
@@ -62,6 +75,8 @@ class Student_enrollments extends Model
                 return 'Nocturno';
         }
     }
+        // Método para obtener el nombre del estado según el código
+
     public static function getStatusName($status) {
         switch ($status) {
             case 0:
@@ -72,6 +87,9 @@ class Student_enrollments extends Model
                 return 'Postpone';
         }
     }
+
+        // Método para obtener matrículas inactivas
+
     public static function inactive(){
         $data = DB::select("SELECT *
         FROM viewEnrollments
@@ -80,6 +98,7 @@ class Student_enrollments extends Model
         return $data;
     }
 
+    // Método para buscar una matrícula activa por documento de identidad
 
     public static function search($id)
 {
