@@ -64,6 +64,7 @@ Route::post('reset/password', [PersonController::class, 'reset_password'])->name
 Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('send.email');
 Route::post('password/emergency', [PersonController::class, 'passwordEmergency'])->name('password.emergency');
 Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->name('profile');
+Route::get('Unauthenticated', [Controller::class, 'Unauthenticated'])->name('Unauthenticated');
 Route::fallback(function () {
     return response()->json([
         'message' => 'The route you are looking for does not exist.'

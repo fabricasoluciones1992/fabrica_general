@@ -38,4 +38,11 @@ class Controller extends BaseController
         // Si no se encuentra ninguna coincidencia, devuelve 1
         return 1;
     }
+
+    public static function Unauthenticated()
+    {
+        return response()->json([
+            'message'=> "Unauthenticated."
+        ],401);
+    }
 }
