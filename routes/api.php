@@ -10,6 +10,7 @@ use App\Http\Controllers\CivilStatesController;
 use App\Http\Controllers\CoformationProcessTypesController;
 use App\Http\Controllers\ContactCompaniesTypesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CoreMaterialController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CovenantTypesController;
@@ -63,6 +64,11 @@ Route::post('reset/password', [PersonController::class, 'reset_password'])->name
 Route::post('send/email/', [PersonController::class, 'sendEmailReminder'])->name('send.email');
 Route::post('password/emergency', [PersonController::class, 'passwordEmergency'])->name('password.emergency');
 Route::get('profile/{proj_id}/{use_id}', [PersonController::class, 'profile'])->name('profile');
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'The route you are looking for does not exist.'
+    ], 404);
+});
 
 //===============NO QUITAR EL MIDDLEWARE================================
 Route::middleware(['auth:sanctum'])->group(function() {
