@@ -59,7 +59,7 @@ class AuthController extends Controller
                 $use_status = $user->use_status;
 
                 // Verificar si el usuario tiene acceso. Debe tener acceso si o si en el proyecto general
-                if (($access == null && ($proj_id == 6||$proj_id==2)) || $acceso == 0 || $use_status == 0) {
+                if (($access == null && ($proj_id == 6||$proj_id==2 || $proj_id == 1)) || $acceso == 0 || $use_status == 0) {
                     return response()->json([
                         'status' => False,
                         'message' => "The user: " . $user->use_mail . " has no access."
@@ -91,7 +91,7 @@ class AuthController extends Controller
                 $person = DB::table('ViewPersons')->where('use_id', '=', $user->use_id)->first();
 
                 // Registrar el evento de inicio de sesión
-                Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4, $request->proj_id, $user->use_id);
+                Controller::NewRegisterTrigger("Se logeo un usuario: $user->use_mail", 4, $user->use_id);
 
 
                 // Devolver los datos de inicio de sesión en formato JSON
@@ -188,7 +188,7 @@ class AuthController extends Controller
             $person->save();
 
             // Registrar el evento de registro
-            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name", 3, 6, $use_id);
+            Controller::NewRegisterTrigger("Se Registro un usuario: $request->per_name", 3, $use_id);
 
             // Devolver un mensaje de éxito en formato JSON
             return response()->json([
