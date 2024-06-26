@@ -104,7 +104,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('period', PeriodController::class)->names('period')->parameter('','period');
     Route::resource('persons', PersonController::class)->names('persons')->parameter('','persons');
     Route::post('persons/document', [PersonController::class, 'viewForDocument'])->name('view.for.document');
-    Route::post('personal/information', [PersonController::class, 'coforInformation'])->name('cofor.information');
+    Route::put('update/personal/information', [PersonController::class, 'updateCoforInformation'])->name('update.cofor.information');
     Route::post('persons/documentStudent', [StudentController::class, 'viewForDocumentStudent'])->name('view.for.document');
     Route::get('persons/filtred'.'{column}/{data}', [PersonController::class, 'filtredfortypeperson'])->name('filtrar.personas');
     Route::post('prueba', [AuthController::class, 'uploadFile'])->name('upload.persons');

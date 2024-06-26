@@ -387,7 +387,7 @@ class PersonController extends Controller
             ], 500);
         }
     }
-    public function coforInformation(Request $request)
+    public function updateCoforInformation(Request $request)
     {
         if ($request->acc_administrator == 1) {  // Verifica si el usuario es administrador activo
             $rules = [
