@@ -41,7 +41,7 @@ class StudentController extends Controller
     public function indexAmount()
     {
         // Obtener los estudiantes de la vista 'viewStudents'
-        $lastStudents = DB::table('viewStudents')->get();
+        $lastStudents = DB::table('viewStudents')->take(50)->get();
         $students = array();
 
         // Iterar sobre los estudiantes obtenidos
@@ -53,9 +53,8 @@ class StudentController extends Controller
 
             // Si no hay inscripción encontrada, agregar un mensaje de falta de inscripción
             if (is_null($lastEnrollment)) {
-                $studentData = $data;
-                $studentData->Enrollment = "Missing Enrollment";
-                array_push($students, $studentData);
+                $student->Enrollment = "Missing Enrollment";
+                array_push($students, $student);
             } else {
                 array_push($students, $lastEnrollment);
             }
