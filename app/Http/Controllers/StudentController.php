@@ -41,7 +41,7 @@ class StudentController extends Controller
     public function indexAmount()
     {
         // Obtener los estudiantes de la vista 'viewStudents'
-        $lastStudents = DB::table('viewStudents')->take(50)->get();
+        $lastStudents = DB::table('viewStudents')->orderBy('stu_id', 'desc')->take(50)->get();
         $students = array();
 
         // Iterar sobre los estudiantes obtenidos
